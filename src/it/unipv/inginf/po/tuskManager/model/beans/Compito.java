@@ -1,4 +1,4 @@
-package tuskManager.model.beans;
+package it.unipv.inginf.po.tuskManager.model.beans;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -9,7 +9,7 @@ import java.util.Date;
  * @see Scheda
  * @see Workspace
  * */
-public class Compito implements Comparable<Compito>{
+public class Compito{
 
 	private String titolo, descrizione;
 	private Date scadenza;
@@ -87,13 +87,21 @@ public class Compito implements Comparable<Compito>{
 	}
 	
 	/**
-	 * Uguali solo se hanno tutti i parametri uguali, ordinamento in base alla scadenza.
+	 * Uguali solo se hanno tutti i parametri uguali e le liste di ruoli contengono gli stessi ruoli.
 	 * */
 	@Override
-	public int compareTo(Compito c) {
-		if(this.titolo.equals(c.getTitolo()) && this.descrizione.equals(c.getDescrizione()) && this.scadenza.equals(c.getScadenza()) && this.ruoli.equals(c.getRuoli())) {
-			return 0;
+	public boolean equals(Object o) {
+		Compito c;
+		try {
+			c = (Compito)o;
+		}catch(ClassCastException ex) {
+			return false;
 		}
-		return this.scadenza.compareTo(c.getScadenza());
+		if (this.titolo.equals(c.getTitolo()) && this.descrizione.equals(c.getDescrizione()) && this.scadenza.equals(c.getScadenza())) {
+			if(this.ruoli.containsAll(c.getRuoli()) && c.getRuoli().containsAll(this.getRuoli())) {
+				return true;
+			}
+		}
+		return false;
 	}
 }

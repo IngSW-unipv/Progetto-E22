@@ -1,4 +1,4 @@
-package tuskManager;
+package it.unipv.inginf.po.tuskManager;
 
 /**
  * Classe utilizzata semplecemente per contenere il main.

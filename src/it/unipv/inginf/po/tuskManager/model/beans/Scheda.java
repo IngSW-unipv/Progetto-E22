@@ -1,4 +1,4 @@
-package tuskManager.model.beans;
+package it.unipv.inginf.po.tuskManager.model.beans;
 
 import java.util.ArrayList;
 
