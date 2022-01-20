@@ -1,1 +1,1 @@
-packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"tuskManager"},{"l":"tuskManager.model"},{"l":"tuskManager.model.beans"}];updateSearchResults();
+packageSearchIndex = [{"l":"All Packages","u":"allpackages-index.html"},{"l":"it.unipv.inginf.po.tuskManager"},{"l":"it.unipv.inginf.po.tuskManager.model"},{"l":"it.unipv.inginf.po.tuskManager.model.beans"},{"l":"it.unipv.inginf.po.tuskManager.test.beansTest"}];updateSearchResults();

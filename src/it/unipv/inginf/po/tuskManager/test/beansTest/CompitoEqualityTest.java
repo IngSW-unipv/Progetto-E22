@@ -10,10 +10,20 @@ import org.junit.Test;
 import it.unipv.inginf.po.tuskManager.model.beans.Compito;
 import it.unipv.inginf.po.tuskManager.model.beans.Ruolo;
 
+/**
+ * Test per verificare se l'uguaglianza tra Compiti è corretta.
+ * @see Compito
+ * @version 1.0
+ * */
 public class CompitoEqualityTest {
 	
 	Compito primo_compito, secondo_compito;
 	int counter_test;
+	
+	/**
+	 * Crea due compiti che poi comparerà.
+	 * Crea inoltre due liste di ruoli per istanziare correttamente i due compiti.
+	 * */
 	@Before
 	public void initTest() {
 		ArrayList<Ruolo> prima_lista_ruoli = new ArrayList<Ruolo>();
@@ -25,6 +35,9 @@ public class CompitoEqualityTest {
 		counter_test = 1;
 	}
 	
+	/**
+	 * Esegue una serie di test.
+	 * */
 	@Test
 	public void test() {
 		// 1: compito uguale a se stesso:
@@ -76,6 +89,13 @@ public class CompitoEqualityTest {
  */ 
 	}
 	
+	/**
+	 * Funzione che testa se i due compiti passati sono uguali.
+	 * Poi confronta il risultato e se è diverso da quello aspettato genera fail.
+	 * @param c1 Il primo compito da confrontare.
+	 * @param c2 Il secondo compito da confrontare.
+	 * @param expected Il risultato atteso del confronto.
+	 * */
 	private void testa(Compito c1, Compito c2, boolean expected) {
 		boolean res;
 		res = c1.equals(c2);

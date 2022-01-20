@@ -30,6 +30,7 @@ public class Compito{
 	}
 	
 	/**
+	 * Sostituisce il titolo del compito.
 	 * @param titolo Nuovo titolo del compito.
 	 * */
 	public void setTitolo(String titolo) {
@@ -42,6 +43,7 @@ public class Compito{
 		return titolo;
 	}
 	/**
+	 * Sostituisce la descrizione del compito.
 	 * @param descrizione Nuova descrizione del compito.
 	 * */
 	public void setDescrizione(String descrizione) {
@@ -54,6 +56,7 @@ public class Compito{
 		return descrizione;
 	}
 	/**
+	 * Sostituisce la scadenza del compito.
 	 * @param scadenza Nuova scadenza del compito.
 	 * */
 	public void setScadenza(Date scadenza) {
@@ -73,13 +76,15 @@ public class Compito{
 	}
 	
 	/**
+	 * Aggiunge un ruolo alla lista dei ruoli associati al compito.
 	 * @param ruolo Il ruolo da aggiungere.
 	 * */
 	public void addRuolo(Ruolo ruolo) {
 		ruoli.add(ruolo);
 	}
 	/**
-	 * @param ruolo Il ruolo da aggiungere.
+	 * Rimuove un ruolo dalla lista dei ruoli associati al compito.
+	 * @param ruolo Il ruolo da rimuovere.
 	 * @return true se il ruolo è stato rimosso, false altrimenti.
 	 * */
 	public boolean removeRuolo(Ruolo ruolo) {
@@ -88,6 +93,8 @@ public class Compito{
 	
 	/**
 	 * Uguali solo se hanno tutti i parametri uguali e le liste di ruoli contengono gli stessi ruoli.
+	 * @param o Compito da confrontare.
+	 * @return true se @param o è uguale al compito.
 	 * */
 	@Override
 	public boolean equals(Object o) {

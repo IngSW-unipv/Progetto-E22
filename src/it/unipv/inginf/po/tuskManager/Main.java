@@ -1,7 +1,7 @@
 package it.unipv.inginf.po.tuskManager;
 
 /**
- * Classe utilizzata semplecemente per contenere il main.
+ * Classe utilizzata semplicemente per contenere il main.
  * @version 1.0
  * */
 public class Main {
