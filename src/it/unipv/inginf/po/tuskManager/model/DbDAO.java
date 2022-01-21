@@ -30,6 +30,12 @@ public class DbDAO implements ITaskManagerDAO{
 	}
 
 	@Override
+	public Membro selectRuoloOfAccount(Workspace w, Account a) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
 	public boolean insertIntoAccount(Account a) {
 		// TODO Auto-generated method stub
 		return false;
