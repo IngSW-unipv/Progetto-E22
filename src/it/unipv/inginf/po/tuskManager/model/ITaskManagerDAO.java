@@ -12,9 +12,11 @@ import it.unipv.inginf.po.tuskManager.model.beans.Workspace;
 public interface ITaskManagerDAO {
 	
 	public ArrayList<String> selectAllEmails();
+	public ArrayList<String> selectAllEmailsByWorkspace(Workspace w);
 	public ArrayList<Workspace> selectWorkspaceByAccount(Account a);//ritorna solo id e nome workspace associati
 	public Workspace selectWorkspace(Workspace w);
 	public Membro selectRuoloOfAccount(Workspace w, Account a);
+	public Membro selectMembro(Workspace w, Membro m);
 	
 	public boolean insertIntoAccount(Account a);
 	public boolean insertIntoWorkspace(Workspace w);

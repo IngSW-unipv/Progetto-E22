@@ -18,6 +18,12 @@ public class DbDAO implements ITaskManagerDAO{
 	}
 
 	@Override
+	public ArrayList<String> selectAllEmailsByWorkspace(Workspace w) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
 	public ArrayList<Workspace> selectWorkspaceByAccount(Account a) {
 		// TODO Auto-generated method stub
 		return null;
@@ -31,6 +37,12 @@ public class DbDAO implements ITaskManagerDAO{
 
 	@Override
 	public Membro selectRuoloOfAccount(Workspace w, Account a) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Membro selectMembro(Workspace w, Membro m) {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -113,6 +125,5 @@ public class DbDAO implements ITaskManagerDAO{
 		return false;
 	}
 
-	
 
 }

@@ -14,10 +14,6 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
-import javax.activation.DataHandler;
-import javax.activation.DataSource;
-import javax.activation.FileDataSource;
-
 
 public class EmailSender {
 	  private String user;
@@ -26,8 +22,7 @@ public class EmailSender {
 	  private String mittente;
 	  private String destinatario;
 	  private String oggetto;
-	  private String allegato;
-
+	  private String contenuto;
 	  /**
 	  * Costruttore completo, richiede i parametri
 	  * di connessione al server di posta
@@ -41,7 +36,7 @@ public class EmailSender {
 	  */
 	  public EmailSender(String user, String password, String host, 
 	                     String mittente, String destinatario, 
-	                     String oggetto, String allegato){
+	                     String oggetto, String contenuto){
 
 	    this.user = user;
 	    this.password = password;
@@ -49,11 +44,12 @@ public class EmailSender {
 	    this.mittente = mittente;
 	    this.destinatario = destinatario;
 	    this.oggetto = oggetto;
-	    this.allegato = allegato;
+	    this.contenuto = contenuto;
+//	    this.allegato = allegato;
 	  }
 
 	  // Metodo che si occupa dell'invio effettivo della mail
-	  public void inviaEmail() {
+	  public boolean inviaEmail() throws AddressException, NoSuchProviderException, MessagingException{
 	    int port = 465; //porta 25 per non usare SSL
 
 	    Properties props = new Properties();
@@ -71,7 +67,7 @@ public class EmailSender {
 	    props.put("mail.smtp.socketFactory.fallback", "false");
 
 	    Session session = Session.getInstance(props, null);
-	    session.setDebug(true);
+	    session.setDebug(false);
 
 	    // Creazione delle BodyParts del messaggio
 	    MimeBodyPart messageBodyPart1 = new MimeBodyPart();
@@ -92,14 +88,14 @@ public class EmailSender {
 	      new InternetAddress(destinatario));
 
 	      // corpo del messaggio
-	      messageBodyPart1.setText("Saluti dal Blog di Lancill! Vieni a trovarmi su http://lancill.blogspot.it");
+	      messageBodyPart1.setText(contenuto);
 	      multipart.addBodyPart(messageBodyPart1);
 
 	      // allegato al messaggio
-	      DataSource source = new FileDataSource(allegato);
-	      messageBodyPart2.setDataHandler(new DataHandler(source));
-	      messageBodyPart2.setFileName(allegato);
-	      multipart.addBodyPart(messageBodyPart2);
+//	      DataSource source = new FileDataSource(allegato);
+//	      messageBodyPart2.setDataHandler(new DataHandler(source));
+//	      messageBodyPart2.setFileName(allegato);
+//	      multipart.addBodyPart(messageBodyPart2);
 
 	      // inserimento delle parti nel messaggio
 	      msg.setContent(multipart);
@@ -109,14 +105,17 @@ public class EmailSender {
 	      transport.sendMessage(msg, msg.getAllRecipients());
 	      transport.close();
 
-	      System.out.println("Invio dell'email Terminato");
+	      return true;
 
 	    }catch(AddressException ae) {
 	      ae.printStackTrace();
+	      return false;
 	    }catch(NoSuchProviderException nspe){
 	      nspe.printStackTrace();
+	      return false;
 	    }catch(MessagingException me){
 	      me.printStackTrace();
+	      return false;
 	    }
 	  }
 	}
