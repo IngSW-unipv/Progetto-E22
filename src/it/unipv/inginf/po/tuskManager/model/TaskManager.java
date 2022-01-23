@@ -163,7 +163,7 @@ public class TaskManager {
 	/**
 	 * Aggiunge un utente alla lista di utenti associati al workspace.
 	 * @param email
-	 * @param ruolo Il ruolo addociato al nuovo utente.
+	 * @param r Il ruolo addociato al nuovo utente.
 	 * @return true se l'aggiunta è andata a buon fine.
 	 * */
 	public boolean addMembro(String email, Ruolo r) throws RoleNotAcceptedException, CannotSendMailException, CannotConnectToDbException{
@@ -177,7 +177,7 @@ public class TaskManager {
 	
 	/**
 	 * Crea un ruolo.
-	 * @param ruolo
+	 * @param r
 	 * @return true se la creazione è andata a buon fine.
 	 * */
 	public boolean createRuolo(Ruolo r) throws RoleNotAcceptedException, CannotConnectToDbException{
@@ -192,8 +192,8 @@ public class TaskManager {
 	
 	/**
 	 * Crea un compito.
-	 * @param scheda La scheda che deve contenere il compito.
-	 * @param compito 
+	 * @param s La scheda che deve contenere il compito.
+	 * @param c 
 	 * @return true se la creazione è andata a buon fine.
 	 * */
 	public boolean createCompito(Scheda s, Compito c) throws RoleNotAcceptedException, CannotConnectToDbException{
@@ -210,7 +210,7 @@ public class TaskManager {
 	
 	/**
 	 * Modifica un compito.
-	 * @param scheda La scheda contentente il vecchio compito.
+	 * @param s La scheda contentente il vecchio compito.
 	 * @param vecchio Compito vecchio.
 	 * @param nuovo Compito nuovo.
 	 * @return true se la modifica è andata a buon fine. 
@@ -242,8 +242,8 @@ public class TaskManager {
 	
 	/**
 	 * Modifica il ruolo di un membro.
-	 * @param membro
-	 * @param ruolo
+	 * @param m
+	 * @param r
 	 * @return true se la modifica è andata a buon fine.
 	 * */
 	public boolean modifyMembro(Membro m, Ruolo r) throws RoleNotAcceptedException, CannotSendMailException, CannotConnectToDbException{
@@ -281,8 +281,8 @@ public class TaskManager {
 	
 	/**
 	 * Rimuove un compito.
-	 * @param scheda La scheda che contiene il compito.
-	 * @param compito
+	 * @param s La scheda che contiene il compito.
+	 * @param c Il compito.
 	 * @return true se la rimozione è andata a buon fine.
 	 * */
 	public boolean removeCompito (Scheda s, Compito c) throws RoleNotAcceptedException, CannotConnectToDbException{
@@ -299,7 +299,7 @@ public class TaskManager {
 	
 	/**
 	 * Rimuove un membro, inviando anche una mail di avviso.
-	 * @param membro
+	 * @param m
 	 * @return true se la rimozione è andata a buon fine.
 	 * */
 	public boolean removeMembro(Membro m) throws RoleNotAcceptedException, CannotSendMailException, CannotConnectToDbException{
@@ -319,7 +319,7 @@ public class TaskManager {
 	
 	/**
 	 * Elimina un workspace, inviando anche una mail di avviso ai membri coinvolti.
-	 * @param workspace
+	 * @param w
 	 * @return true se la rimozione è andata a buon fine.
 	 * */
 	public boolean removeWorkspace(Workspace w) throws RoleNotAcceptedException, CannotSendMailException, CannotConnectToDbException{

@@ -1,4 +1,6 @@
 it.unipv.inginf.po.tuskManager
 it.unipv.inginf.po.tuskManager.model
 it.unipv.inginf.po.tuskManager.model.beans
+it.unipv.inginf.po.tuskManager.model.exceptions
+it.unipv.inginf.po.tuskManager.model.utils
 it.unipv.inginf.po.tuskManager.test.beansTest

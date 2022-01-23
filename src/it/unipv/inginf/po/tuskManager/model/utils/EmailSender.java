@@ -36,9 +36,9 @@ public class EmailSender {
 	  * @param password
 	  * @param host
 	  * @param mittente
-	  * @param destinatari
+	  * @param destinatario
 	  * @param oggetto
-	  * @param allegati
+	  * @param contenuto
 	  */
 	  public EmailSender(String user, String password, String host, 
 	                     String mittente, String destinatario, 
