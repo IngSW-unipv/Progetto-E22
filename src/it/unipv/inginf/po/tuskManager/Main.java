@@ -1,6 +1,7 @@
 package it.unipv.inginf.po.tuskManager;
 
 import it.unipv.inginf.po.tuskManager.model.TaskManager;
+import it.unipv.inginf.po.tuskManager.model.utils.PasswordCoder;
 
 /**
  * Classe utilizzata semplicemente per contenere il main.
@@ -14,7 +15,6 @@ public class Main {
 	public static void main(String[] args) {
 
 		TaskManager t = TaskManager.getInstance();
-		
 	}
 
 }

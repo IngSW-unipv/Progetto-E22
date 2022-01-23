@@ -8,15 +8,16 @@ import it.unipv.inginf.po.tuskManager.model.beans.Membro;
 import it.unipv.inginf.po.tuskManager.model.beans.Ruolo;
 import it.unipv.inginf.po.tuskManager.model.beans.Scheda;
 import it.unipv.inginf.po.tuskManager.model.beans.Workspace;
+import it.unipv.inginf.po.tuskManager.model.exceptions.CannotConnectToDbException;
 
 public interface ITaskManagerDAO {
 	
-	public ArrayList<String> selectAllEmails();
-	public ArrayList<String> selectAllEmailsByWorkspace(Workspace w);
-	public ArrayList<Workspace> selectWorkspaceByAccount(Account a);//ritorna solo id e nome workspace associati
-	public Workspace selectWorkspace(Workspace w);
-	public Membro selectRuoloOfAccount(Workspace w, Account a);
-	public Membro selectMembro(Workspace w, Membro m);
+	public ArrayList<String> selectAllEmails() throws CannotConnectToDbException;
+	public ArrayList<String> selectAllEmailsByWorkspace(Workspace w) throws CannotConnectToDbException;
+	public ArrayList<Workspace> selectWorkspaceByAccount(Account a) throws CannotConnectToDbException;//ritorna solo id e nome workspace associati
+	public Workspace selectWorkspace(Workspace w) throws CannotConnectToDbException;
+	public Membro selectRuoloOfAccount(Workspace w, Account a) throws CannotConnectToDbException;
+	public Membro selectMembro(Workspace w, Membro m) throws CannotConnectToDbException;
 	
 	public boolean insertIntoAccount(Account a);
 	public boolean insertIntoWorkspace(Workspace w);

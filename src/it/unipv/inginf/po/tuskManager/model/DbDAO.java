@@ -8,41 +8,42 @@ import it.unipv.inginf.po.tuskManager.model.beans.Membro;
 import it.unipv.inginf.po.tuskManager.model.beans.Ruolo;
 import it.unipv.inginf.po.tuskManager.model.beans.Scheda;
 import it.unipv.inginf.po.tuskManager.model.beans.Workspace;
+import it.unipv.inginf.po.tuskManager.model.exceptions.CannotConnectToDbException;
 
 public class DbDAO implements ITaskManagerDAO{
 
 	@Override
-	public ArrayList<String> selectAllEmails() {
+	public ArrayList<String> selectAllEmails() throws CannotConnectToDbException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public ArrayList<String> selectAllEmailsByWorkspace(Workspace w) {
+	public ArrayList<String> selectAllEmailsByWorkspace(Workspace w) throws CannotConnectToDbException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public ArrayList<Workspace> selectWorkspaceByAccount(Account a) {
+	public ArrayList<Workspace> selectWorkspaceByAccount(Account a) throws CannotConnectToDbException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Workspace selectWorkspace(Workspace w) {
+	public Workspace selectWorkspace(Workspace w) throws CannotConnectToDbException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Membro selectRuoloOfAccount(Workspace w, Account a) {
+	public Membro selectRuoloOfAccount(Workspace w, Account a) throws CannotConnectToDbException {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public Membro selectMembro(Workspace w, Membro m) {
+	public Membro selectMembro(Workspace w, Membro m) throws CannotConnectToDbException {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -124,6 +125,7 @@ public class DbDAO implements ITaskManagerDAO{
 		// TODO Auto-generated method stub
 		return false;
 	}
+
 
 
 }

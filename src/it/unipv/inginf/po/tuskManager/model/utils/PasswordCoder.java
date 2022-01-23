@@ -19,25 +19,6 @@ public class PasswordCoder {
 		stringa = stringa.replace('l', 'o');
 		stringa = stringa.replace('m', 'n');
 		
-		
-		return stringa;
-	}
-	public static String decodifica(String stringa) {
-		
-		stringa = stringa.replace('n', 'm');
-		stringa = stringa.replace('o', 'l');
-		stringa = stringa.replace('p', 'k');
-		stringa = stringa.replace('q', 'j');
-		stringa = stringa.replace('r', 'i');
-		stringa = stringa.replace('s', 'h');
-		stringa = stringa.replace('t', 'g');
-		stringa = stringa.replace('u', 'f');
-		stringa = stringa.replace('v', 'e');
-		stringa = stringa.replace('w', 'd');
-		stringa = stringa.replace('x', 'c');
-		stringa = stringa.replace('y', 'b');
-		stringa = stringa.replace('z', 'a');
-		
 		return stringa;
 	}
 }

@@ -15,6 +15,11 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
+/**
+ * Classe che permette di inviare mail con Java.
+ * @author "lancill@gmail.com"
+ * @version 1.0
+ * */
 public class EmailSender {
 	  private String user;
 	  private String password;
@@ -23,9 +28,10 @@ public class EmailSender {
 	  private String destinatario;
 	  private String oggetto;
 	  private String contenuto;
+	  
 	  /**
 	  * Costruttore completo, richiede i parametri
-	  * di connessione al server di posta
+	  * di connessione al server di posta.
 	  * @param user
 	  * @param password
 	  * @param host
@@ -48,7 +54,9 @@ public class EmailSender {
 //	    this.allegato = allegato;
 	  }
 
-	  // Metodo che si occupa dell'invio effettivo della mail
+	  /**
+	   * Metodo che si occupa dell'invio effettivo della mail.
+	   * */
 	  public boolean inviaEmail() throws AddressException, NoSuchProviderException, MessagingException{
 	    int port = 465; //porta 25 per non usare SSL
 
