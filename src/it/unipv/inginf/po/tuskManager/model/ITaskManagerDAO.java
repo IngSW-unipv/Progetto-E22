@@ -19,19 +19,20 @@ public interface ITaskManagerDAO {
 	public Membro selectRuoloOfAccount(Workspace w, Account a) throws CannotConnectToDbException;
 	public Membro selectMembro(Workspace w, Membro m) throws CannotConnectToDbException;
 	
-	public boolean insertIntoAccount(Account a);
-	public boolean insertIntoWorkspace(Workspace w);
-	public boolean insertIntoRuolo(Ruolo r);
-	public boolean insertIntoCompito(Workspace w, Scheda s, Compito c);
+	public boolean insertIntoAccount(Account a) throws CannotConnectToDbException;
+	public boolean insertIntoWorkspace(Workspace w) throws CannotConnectToDbException;
+	public boolean insertIntoRuolo(Ruolo r) throws CannotConnectToDbException;
+	public boolean insertIntoCompito(Workspace w, Scheda s, Compito c) throws CannotConnectToDbException;
+	public boolean insertIntoScheda(Workspace w, Scheda s) throws CannotConnectToDbException;
 	
-	public boolean createAssociazioneMembroWorkspace(Membro m);
-	public boolean modifyCompito(Workspace w, Scheda s, Compito vecchio, Compito nuovo);
-	public boolean modifyScheda(Workspace w, Scheda vecchia, Scheda nuova);
-	public boolean modifyMembro(Workspace w, Membro m);
-	public boolean modifyWorkspace(Workspace vecchio, Workspace nuovo);
-	public boolean removeCompito(Workspace w, Scheda s, Compito c);
-	public boolean removeMembro(Workspace w, Membro m);
-	public boolean removeWorkspace(Workspace w);
-	public boolean login(String user, String pw);
+	public boolean createAssociazioneMembroWorkspace(Workspace w, Membro m) throws CannotConnectToDbException;
+	public boolean modifyCompito(Workspace w, Scheda s, Compito vecchio, Compito nuovo) throws CannotConnectToDbException;
+	public boolean modifyScheda(Workspace w, Scheda vecchia, Scheda nuova) throws CannotConnectToDbException;
+	public boolean modifyMembro(Workspace w, Membro m) throws CannotConnectToDbException;
+	public boolean modifyWorkspace(Workspace vecchio, Workspace nuovo) throws CannotConnectToDbException;//serve a cambiare il nome e basta
+	public boolean removeCompito(Workspace w, Scheda s, Compito c) throws CannotConnectToDbException;
+	public boolean removeMembro(Workspace w, Membro m) throws CannotConnectToDbException;
+	public boolean removeWorkspace(Workspace w) throws CannotConnectToDbException;
+	public boolean login(String user, String pw) throws CannotConnectToDbException;
 	
 }

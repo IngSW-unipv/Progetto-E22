@@ -1,7 +1,7 @@
 package it.unipv.inginf.po.tuskManager.model.beans;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.sql.Date;
 
 /**
  * Rappresenta un compito.
@@ -18,7 +18,7 @@ public class Compito{
 	/**
 	 * Crea un compito.
 	 * @param titolo Il titolo del compito.
-	 * @param descrizione La descrizione più dettagliata del compito.
+	 * @param descrizione La descrizione piï¿½ dettagliata del compito.
 	 * @param scadenza Deadline prevista per il compito.
 	 * @param ruoli Lista di ruoli a cui associare il compito.
 	 * */
@@ -85,7 +85,7 @@ public class Compito{
 	/**
 	 * Rimuove un ruolo dalla lista dei ruoli associati al compito.
 	 * @param ruolo Il ruolo da rimuovere.
-	 * @return true se il ruolo è stato rimosso, false altrimenti.
+	 * @return true se il ruolo ï¿½ stato rimosso, false altrimenti.
 	 * */
 	public boolean removeRuolo(Ruolo ruolo) {
 		return ruoli.remove(ruolo);
@@ -94,7 +94,7 @@ public class Compito{
 	/**
 	 * Uguali solo se hanno tutti i parametri uguali e le liste di ruoli contengono gli stessi ruoli.
 	 * @param o Compito da confrontare.
-	 * @return true se @param o è uguale al compito.
+	 * @return true se @param o ï¿½ uguale al compito.
 	 * */
 	@Override
 	public boolean equals(Object o) {

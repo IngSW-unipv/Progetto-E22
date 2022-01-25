@@ -1,0 +1,5 @@
+db=127.0.0.1
+porta=3306
+schema=TUSKMANAGER
+user=appTuskManager
+password=tricheco

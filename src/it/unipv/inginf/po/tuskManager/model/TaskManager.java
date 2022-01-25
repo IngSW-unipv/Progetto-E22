@@ -96,7 +96,7 @@ public class TaskManager {
 	 * Crea un account.
 	 * @param email
 	 * @param pw
-	 * @return true se l'inserimento è andato a buon fine, false altrimenti.
+	 * @return true se l'inserimento ï¿½ andato a buon fine, false altrimenti.
 	 * */
 	public boolean createAccount(String email, String pw) throws CannotConnectToDbException {
 		ArrayList<String> lista_email = db.selectAllEmails();
@@ -129,7 +129,7 @@ public class TaskManager {
 	}
 	
 	/**
-	 * Restituisce gli id dei workspace associati all'account che è loggato,
+	 * Restituisce gli id dei workspace associati all'account che ï¿½ loggato,
 	 * permettendo cosi, in futuro, di selezionarne uno.
 	 * @return Workspace associati.
 	 * @see DbDAO
@@ -156,6 +156,7 @@ public class TaskManager {
 	 * */
 	public boolean createWorkspace(String nome) throws CannotConnectToDbException {
 		boolean res = db.insertIntoWorkspace(new Workspace(0,nome,null,null));
+		db.createAssociazioneMembroWorkspace(ws_selected,new Membro(membro_logged.getEmail(),membro_logged.getPassword(),new Ruolo("manager")));
 		updateWorkspace();
 		return res;
 	}
@@ -164,11 +165,12 @@ public class TaskManager {
 	 * Aggiunge un utente alla lista di utenti associati al workspace.
 	 * @param email
 	 * @param r Il ruolo addociato al nuovo utente.
-	 * @return true se l'aggiunta è andata a buon fine.
+	 * @return true se l'aggiunta ï¿½ andata a buon fine.
 	 * */
 	public boolean addMembro(String email, Ruolo r) throws RoleNotAcceptedException, CannotSendMailException, CannotConnectToDbException{
 		updateWorkspace();
 		if(membro_logged.getRuolo().equals(new Ruolo("manager"))) {
+			db.createAssociazioneMembroWorkspace(ws_selected,new Membro(membro_logged.getEmail(),membro_logged.getPassword(),r));
 			String oggetto = "Ciao, sei stato aggiunto ad un workspace su TuskManager!"; //MODIFICARE
 			String contenuto = "";
 			return sendMail(email,oggetto,contenuto);
@@ -178,7 +180,7 @@ public class TaskManager {
 	/**
 	 * Crea un ruolo.
 	 * @param r
-	 * @return true se la creazione è andata a buon fine.
+	 * @return true se la creazione ï¿½ andata a buon fine.
 	 * */
 	public boolean createRuolo(Ruolo r) throws RoleNotAcceptedException, CannotConnectToDbException{
 		updateWorkspace();
@@ -194,7 +196,7 @@ public class TaskManager {
 	 * Crea un compito.
 	 * @param s La scheda che deve contenere il compito.
 	 * @param c 
-	 * @return true se la creazione è andata a buon fine.
+	 * @return true se la creazione ï¿½ andata a buon fine.
 	 * */
 	public boolean createCompito(Scheda s, Compito c) throws RoleNotAcceptedException, CannotConnectToDbException{
 		updateWorkspace();
@@ -209,11 +211,28 @@ public class TaskManager {
 	}
 	
 	/**
+	 * Crea una scheda.
+	 * @param s 
+	 * @return true se la creazione ï¿½ andata a buon fine.
+	 * */
+	public boolean createScheda(Scheda s) throws RoleNotAcceptedException, CannotConnectToDbException{
+		updateWorkspace();
+		if(membro_logged.getRuolo().equals(new Ruolo("manager"))) {
+			if(db.insertIntoScheda(ws_selected, s)) {
+				updateWorkspace();
+				return true;
+			}
+			return false;
+		}
+		else throw new RoleNotAcceptedException();
+	}
+	
+	/**
 	 * Modifica un compito.
 	 * @param s La scheda contentente il vecchio compito.
 	 * @param vecchio Compito vecchio.
 	 * @param nuovo Compito nuovo.
-	 * @return true se la modifica è andata a buon fine. 
+	 * @return true se la modifica ï¿½ andata a buon fine. 
 	 * */
 	public boolean modifyCompito(Scheda s, Compito vecchio, Compito nuovo) throws RoleNotAcceptedException, CannotConnectToDbException{
 		updateWorkspace();
@@ -230,7 +249,7 @@ public class TaskManager {
 	 * Modifica una scheda.
 	 * @param vecchia
 	 * @param nuova
-	 * @return true se la modifica è andata a buon fine.
+	 * @return true se la modifica ï¿½ andata a buon fine.
 	 * */
 	public boolean modifyScheda(Scheda vecchia, Scheda nuova) throws CannotConnectToDbException {
 		if(db.modifyScheda(ws_selected, vecchia, nuova)) {
@@ -244,13 +263,13 @@ public class TaskManager {
 	 * Modifica il ruolo di un membro.
 	 * @param m
 	 * @param r
-	 * @return true se la modifica è andata a buon fine.
+	 * @return true se la modifica ï¿½ andata a buon fine.
 	 * */
 	public boolean modifyMembro(Membro m, Ruolo r) throws RoleNotAcceptedException, CannotSendMailException, CannotConnectToDbException{
 		updateWorkspace();
 		if(membro_logged.getRuolo().equals(new Ruolo("manager"))) {
 			if(db.modifyMembro(ws_selected, new Membro(m.getEmail(),null,r))) {
-				String oggetto = "Ciao, il tuo ruolo nel workspace "+ws_selected.getNome()+"è cambiato!\nOra è: "+r.getNome()+" su TuskManager!"; //MODIFICARE
+				String oggetto = "Ciao, il tuo ruolo nel workspace "+ws_selected.getNome()+"ï¿½ cambiato!\nOra ï¿½: "+r.getNome()+" su TuskManager!"; //MODIFICARE
 				String contenuto = "";
 				updateWorkspace();
 				return sendMail(m.getEmail(),oggetto,contenuto);
@@ -265,7 +284,7 @@ public class TaskManager {
 	 * Modifica un workspace.
 	 * @param vecchio
 	 * @param nuovo
-	 * @return true se la modifica è andata a buon fine.
+	 * @return true se la modifica ï¿½ andata a buon fine.
 	 * */
 	public boolean modifyWorkspace(Workspace vecchio, Workspace nuovo) throws RoleNotAcceptedException, CannotConnectToDbException{
 		updateWorkspace();
@@ -283,7 +302,7 @@ public class TaskManager {
 	 * Rimuove un compito.
 	 * @param s La scheda che contiene il compito.
 	 * @param c Il compito.
-	 * @return true se la rimozione è andata a buon fine.
+	 * @return true se la rimozione ï¿½ andata a buon fine.
 	 * */
 	public boolean removeCompito (Scheda s, Compito c) throws RoleNotAcceptedException, CannotConnectToDbException{
 		updateWorkspace();
@@ -300,7 +319,7 @@ public class TaskManager {
 	/**
 	 * Rimuove un membro, inviando anche una mail di avviso.
 	 * @param m
-	 * @return true se la rimozione è andata a buon fine.
+	 * @return true se la rimozione ï¿½ andata a buon fine.
 	 * */
 	public boolean removeMembro(Membro m) throws RoleNotAcceptedException, CannotSendMailException, CannotConnectToDbException{
 		updateWorkspace();
@@ -320,14 +339,14 @@ public class TaskManager {
 	/**
 	 * Elimina un workspace, inviando anche una mail di avviso ai membri coinvolti.
 	 * @param w
-	 * @return true se la rimozione è andata a buon fine.
+	 * @return true se la rimozione ï¿½ andata a buon fine.
 	 * */
 	public boolean removeWorkspace(Workspace w) throws RoleNotAcceptedException, CannotSendMailException, CannotConnectToDbException{
 		updateWorkspace();
 		if(membro_logged.getRuolo().equals(new Ruolo("manager"))) {
 			ArrayList<String> emails = db.selectAllEmailsByWorkspace(ws_selected);
 			if(db.removeWorkspace(w)) {
-				String oggetto = "Ciao, il workspace "+ws_selected.getNome()+" è stato eliminato su TuskManager!"; //MODIFICARE
+				String oggetto = "Ciao, il workspace "+ws_selected.getNome()+" ï¿½ stato eliminato su TuskManager!"; //MODIFICARE
 				String contenuto = "";
 				for(String email : emails) {
 					sendMail(email,oggetto,contenuto);

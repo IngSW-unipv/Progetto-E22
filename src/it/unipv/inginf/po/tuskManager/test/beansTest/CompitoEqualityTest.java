@@ -1,7 +1,7 @@
 package it.unipv.inginf.po.tuskManager.test.beansTest;
 
 import java.util.ArrayList;
-import java.util.Date;
+import java.sql.Date;
 
 import org.junit.Assert;
 import org.junit.Before;
@@ -11,7 +11,7 @@ import it.unipv.inginf.po.tuskManager.model.beans.Compito;
 import it.unipv.inginf.po.tuskManager.model.beans.Ruolo;
 
 /**
- * Test per verificare se l'uguaglianza tra Compiti è corretta.
+ * Test per verificare se l'uguaglianza tra Compiti ï¿½ corretta.
  * @see Compito
  * @version 1.0
  * */
@@ -21,7 +21,7 @@ public class CompitoEqualityTest {
 	int counter_test;
 	
 	/**
-	 * Crea due compiti che poi comparerà.
+	 * Crea due compiti che poi comparerï¿½.
 	 * Crea inoltre due liste di ruoli per istanziare correttamente i due compiti.
 	 * */
 	@Before
@@ -29,8 +29,8 @@ public class CompitoEqualityTest {
 		ArrayList<Ruolo> prima_lista_ruoli = new ArrayList<Ruolo>();
 		ArrayList<Ruolo> seconda_lista_ruoli = new ArrayList<Ruolo>();
 		
-		primo_compito = new Compito("tit","descr",new Date(), prima_lista_ruoli);
-		secondo_compito = new Compito("tit","descr",new Date(), seconda_lista_ruoli);
+		primo_compito = new Compito("tit","descr",new Date(10), prima_lista_ruoli);
+		secondo_compito = new Compito("tit","descr",new Date(10), seconda_lista_ruoli);
 		
 		counter_test = 1;
 	}
@@ -91,7 +91,7 @@ public class CompitoEqualityTest {
 	
 	/**
 	 * Funzione che testa se i due compiti passati sono uguali.
-	 * Poi confronta il risultato e se è diverso da quello aspettato genera fail.
+	 * Poi confronta il risultato e se ï¿½ diverso da quello aspettato genera fail.
 	 * @param c1 Il primo compito da confrontare.
 	 * @param c2 Il secondo compito da confrontare.
 	 * @param expected Il risultato atteso del confronto.
