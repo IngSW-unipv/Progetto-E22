@@ -90,8 +90,67 @@ public class DbDAO implements ITaskManagerDAO{
 
 	@Override
 	public Workspace selectWorkspace(Workspace w) throws CannotConnectToDbException {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			Workspace res = null;
+			conn = DBConnection.startConnection();
+			
+			PreparedStatement statement;
+			ResultSet workspace;
+			
+			statement = conn.prepareStatement("(SELECT * FROM WORKSPACE WHERE ID = ?)");
+			statement.setInt(1,w.getId());
+			
+			workspace=statement.executeQuery();
+			
+			while(workspace.next()) {
+				res = new Workspace(workspace.getInt("ID"),workspace.getString("NOME"),null,null);
+			}
+			ResultSet schede;
+			statement = conn.prepareStatement("(SELECT * FROM SCHEDA WHERE ID_WORKSPACE = ?)");
+			statement.setInt(1,w.getId());
+			
+			schede=statement.executeQuery();
+			PreparedStatement statement_schede;
+			ResultSet compiti;
+			while(schede.next()) {
+					Scheda s = new Scheda(schede.getString("TITOLO"),null);
+					statement_schede = conn.prepareStatement("(SELECT * FROM COMPITO WHERE ID_WORKSPACE = ? AND TITOLO_SCHEDA = ?)");
+					statement_schede.setInt(1,w.getId());
+					statement_schede.setString(2,schede.getString("TITOLO"));
+					
+					compiti=statement_schede.executeQuery();
+					PreparedStatement statement_compiti;
+					ResultSet ruoli;
+					while(compiti.next()) {
+						Compito c = new Compito(compiti.getString("TITOLO"),compiti.getString("DESCRIZIONE"),compiti.getDate("SCADENZA"),null);
+						statement_compiti = conn.prepareStatement("(SELECT * FROM GESTIONE WHERE TITOLO_COMPITO = ? AND TITOLO_SCHEDA = ? AND ID_WORKSPACE = ?)");
+						statement_compiti.setString(1,schede.getString("TITOLO"));
+						statement_compiti.setString(2,compiti.getString("TITOLO"));
+						statement_compiti.setInt(3,w.getId());
+						
+						ruoli=statement_compiti.executeQuery();
+						while(ruoli.next()) {
+							c.addRuolo(new Ruolo(ruoli.getString("NOME_RUOLO")));
+						}
+						s.addCompito(c);
+					}
+					res.addScheda(s);
+				}
+			statement = conn.prepareStatement("(SELECT EMAIL_UTENTE, NOME_RUOLO FROM MEMBRO WHERE ID_WORKSPACE = ?)");
+			statement.setInt(1,w.getId());
+			
+			ResultSet membri;
+			membri=statement.executeQuery();
+			
+			while(membri.next()) {
+				res.addMembro(new Membro(membri.getString("EMAIL_UTENTE"),null,new Ruolo(membri.getString("NOME_RUOLO"))));
+			}
+			conn = DBConnection.closeConnection(conn);
+			return res;
+		}catch(Exception ex) {
+			ex.printStackTrace();
+			throw new CannotConnectToDbException();
+		}
 	}
 
 	@Override
@@ -417,7 +476,6 @@ public class DbDAO implements ITaskManagerDAO{
 			conn = DBConnection.startConnection();
 			
 			PreparedStatement statement;
-			ResultSet resultset;
 			
 			statement = conn.prepareStatement("(DELETE FROM TUSKMANAGER.WORKSPACE WHERE ID == ?)");
 			statement.setInt(1,w.getId());

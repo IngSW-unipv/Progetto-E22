@@ -26,8 +26,14 @@ public class Workspace {
 	public Workspace(int id, String nome, ArrayList<Membro> lista_membri, ArrayList<Scheda> lista_schede) {
 		this.setId(id);
 		this.setNome(nome);
-		this.lista_membri = lista_membri;
-		this.lista_schede = lista_schede;
+		if(lista_membri != null)
+			this.lista_membri = lista_membri;
+		else
+			this.lista_membri = new ArrayList<Membro>();
+		if(lista_schede != null)
+			this.lista_schede = lista_schede;
+		else
+			this.lista_schede = new ArrayList<Scheda>();
 	}
 	
 	/**
@@ -85,7 +91,7 @@ public class Workspace {
 	/**
 	 * Rimuove un membro dalla lista dei membri.
 	 * @param membro Il membro da rimuovere.
-	 * @return true se il membro è stato rimosso, false altrimenti.
+	 * @return true se il membro ï¿½ stato rimosso, false altrimenti.
 	 * */
 	public boolean removeMembro(Membro membro) {
 		return lista_membri.remove(membro);
@@ -102,7 +108,7 @@ public class Workspace {
 	/**
 	 * Rimuove una scheda dalla lista delle schede.
 	 * @param scheda La scheda da rimuovere.
-	 * @return true se la scheda è stata rimossa, false altrimenti.
+	 * @return true se la scheda ï¿½ stata rimossa, false altrimenti.
 	 * */
 	public boolean removeScheda(Scheda scheda) {
 		return lista_schede.remove(scheda);

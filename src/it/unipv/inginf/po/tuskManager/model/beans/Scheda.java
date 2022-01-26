@@ -20,7 +20,10 @@ public class Scheda{
 	 * */
 	public Scheda(String titolo, ArrayList<Compito> lista_compiti) {
 		this.titolo = titolo;
-		this.lista_compiti = lista_compiti;
+		if(lista_compiti != null)
+			this.lista_compiti = lista_compiti;
+		else
+			this.lista_compiti = new ArrayList<Compito>();
 	}
 	
 	/**
@@ -56,7 +59,7 @@ public class Scheda{
 	/**
 	 * Rimuove un compito dalla lista di compiti associati alla scheda.
 	 * @param compito Il compito da rimuovere.
-	 * @return true se il compito è stato rimosso, false altrimenti.
+	 * @return true se il compito ï¿½ stato rimosso, false altrimenti.
 	 * */
 	public boolean removeCompito(Compito compito) {
 		return lista_compiti.remove(compito);
