@@ -1,30 +1,16 @@
 package it.unipv.inginf.po.tuskManager;
 
-import java.awt.GraphicsEnvironment;
-import java.awt.Image;
-import java.awt.Toolkit;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.ArrayList;
-
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
-import it.unipv.inginf.po.tuskManager.model.DbDAO;
-import it.unipv.inginf.po.tuskManager.model.beans.Compito;
-import it.unipv.inginf.po.tuskManager.model.beans.Scheda;
-import it.unipv.inginf.po.tuskManager.model.beans.Workspace;
 import it.unipv.inginf.po.tuskManager.model.exceptions.CannotConnectToDbException;
 import it.unipv.inginf.po.tuskManager.model.exceptions.CannotSendMailException;
 import it.unipv.inginf.po.tuskManager.model.exceptions.RoleNotAcceptedException;
-import it.unipv.inginf.po.tuskManager.view.apertura.Accedi;
-import it.unipv.inginf.po.tuskManager.view.apertura.Apertura;
-import it.unipv.inginf.po.tuskManager.view.apertura.Registrati;
-import it.unipv.inginf.po.tuskManager.view.homepage.HomePage;
-import it.unipv.inginf.po.tuskManager.view.homepage.Seleziona;
+import it.unipv.inginf.po.tuskManager.view.modifica.compito.AggiungiModificaCompito;
 
 /**
  * Classe utilizzata semplicemente per contenere il main.
@@ -69,11 +55,11 @@ public class Main {
 //		}
 		
 		JFrame frame = new JFrame();
-		ArrayList<String> array = new ArrayList<String>();
-		array.add("ciao");
+//		ArrayList<String> array = new ArrayList<String>();
+//		array.add("ciao");
 		
-		Seleziona s = new Seleziona(array);
-		frame.add(new Accedi());
+//		Seleziona s = new Seleziona(array);
+		frame.add(new AggiungiModificaCompito());
 //		frame.add(s);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(1600, 900);

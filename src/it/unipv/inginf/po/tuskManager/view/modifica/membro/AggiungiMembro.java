@@ -1,4 +1,4 @@
-package it.unipv.inginf.po.tuskManager.view.apertura;
+package it.unipv.inginf.po.tuskManager.view.modifica.membro;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -9,11 +9,10 @@ import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 
-public class Accedi extends JPanel{
+public class AggiungiMembro extends JPanel{
 	
 	/**
 	 * 
@@ -21,11 +20,11 @@ public class Accedi extends JPanel{
 	private static Color arancione_scuro = new Color(255,128,0);
 	private static Color arancione = new Color(255,178,102);
 	private static final long serialVersionUID = 1L;
-	private JButton bottone_accedi, bottone_esci;
+	private JButton bottone_invia, bottone_indietro;
 	private JTextField email; 
-	private JPasswordField pw;
+	private JTextField ruolo;
 	
-	public Accedi() {
+	public AggiungiMembro() {
 		super();
 		setSize(1600, 900);
 		setBackground(arancione);
@@ -42,31 +41,31 @@ public class Accedi extends JPanel{
 		email.setBackground(arancione_scuro);
 		email.setForeground(Color.BLACK);
 		email.setFont(new Font("Serif", Font.PLAIN, 30));
-		email.setToolTipText("INSERIRE EMAIL");
+		email.setToolTipText("INSERIRE EMAIL DA ASSOCIARE AL WORKSPACE");
 		email.setHorizontalAlignment(JTextField.CENTER);
 		
-		pw = new JPasswordField("");
-		pw.setBorder(new LineBorder(Color.BLACK));
-		pw.setBackground(arancione_scuro);
-		pw.setForeground(Color.BLACK);
-		pw.setFont(new Font("Serif", Font.PLAIN, 30));
-		pw.setToolTipText("INSERIRE PASSWORD");
-		pw.setHorizontalAlignment(JTextField.CENTER);
+		ruolo = new JTextField("");
+		ruolo.setBorder(new LineBorder(Color.BLACK));
+		ruolo.setBackground(arancione_scuro);
+		ruolo.setForeground(Color.BLACK);
+		ruolo.setFont(new Font("Serif", Font.PLAIN, 30));
+		ruolo.setToolTipText("INSERIRE IL RUOLO ASSOCIATO");
+		ruolo.setHorizontalAlignment(JTextField.CENTER);
 		
-		bottone_accedi = new JButton("INVIA");
-		bottone_accedi.setBorder(new LineBorder(Color.BLACK));
-		bottone_accedi.setFocusPainted(false);
-		bottone_accedi.setBackground(arancione_scuro);
-		bottone_accedi.setForeground(Color.BLACK);
-		bottone_accedi.setFont(new Font("Serif", Font.PLAIN, 30));
+		bottone_invia = new JButton("INVIA");
+		bottone_invia.setBorder(new LineBorder(Color.BLACK));
+		bottone_invia.setFocusPainted(false);
+		bottone_invia.setBackground(arancione_scuro);
+		bottone_invia.setForeground(Color.BLACK);
+		bottone_invia.setFont(new Font("Serif", Font.PLAIN, 30));
 		
 		
-		bottone_esci = new JButton("INDIETRO");
-		bottone_esci.setBorder(new LineBorder(Color.BLACK));
-		bottone_esci.setFocusPainted(false);
-		bottone_esci.setBackground(Color.RED);
-		bottone_esci.setForeground(Color.WHITE);
-		bottone_esci.setFont(new Font("Serif", Font.BOLD, 20));
+		bottone_indietro = new JButton("INDIETRO");
+		bottone_indietro.setBorder(new LineBorder(Color.BLACK));
+		bottone_indietro.setFocusPainted(false);
+		bottone_indietro.setBackground(Color.RED);
+		bottone_indietro.setForeground(Color.WHITE);
+		bottone_indietro.setFont(new Font("Serif", Font.BOLD, 20));
 		
 		JPanel pannello = new JPanel();
 		pannello.setOpaque(false);
@@ -78,10 +77,10 @@ public class Accedi extends JPanel{
 		pannello.add(email);
 		pannello.add(label.get(4));
 		pannello.add(label.get(5));
-		pannello.add(pw);
+		pannello.add(ruolo);
 		pannello.add(label.get(6));
 		pannello.add(label.get(7));
-		pannello.add(bottone_accedi);
+		pannello.add(bottone_invia);
 		pannello.add(label.get(8));
 		pannello.add(label.get(9));
 		pannello.add(label.get(10));
@@ -95,7 +94,7 @@ public class Accedi extends JPanel{
 		pannello_sopra.add(label.get(13));
 		pannello_sopra.add(label.get(14));
 		pannello_sopra.add(label.get(15));
-		pannello_sopra.add(bottone_esci);
+		pannello_sopra.add(bottone_indietro);
 		this.add(pannello_sopra, BorderLayout.SOUTH);
 	}
 	
@@ -103,14 +102,14 @@ public class Accedi extends JPanel{
 		return email;
 	}
 	
-	public JPasswordField getPw() {
-		return pw;
+	public JTextField getRuolo() {
+		return ruolo;
 	}
 	
-	public JButton getBottoneAccedi() {
-		return this.bottone_accedi;
+	public JButton getBottoneInvia() {
+		return this.bottone_invia;
 	}
-	public JButton getBottoneEsci() {
-		return this.bottone_esci;
+	public JButton getBottoneIndietro() {
+		return this.bottone_indietro;
 	}
 }

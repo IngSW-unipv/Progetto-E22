@@ -42,7 +42,7 @@ public class Registrati extends JPanel{
 		email.setBackground(arancione_scuro);
 		email.setForeground(Color.BLACK);
 		email.setFont(new Font("Serif", Font.PLAIN, 30));
-		email.setToolTipText("EMAIL");
+		email.setToolTipText("INSERIRE EMAIL");
 		email.setHorizontalAlignment(JTextField.CENTER);
 		
 		pw = new JPasswordField("");
@@ -50,7 +50,7 @@ public class Registrati extends JPanel{
 		pw.setBackground(arancione_scuro);
 		pw.setForeground(Color.BLACK);
 		pw.setFont(new Font("Serif", Font.PLAIN, 30));
-		pw.setToolTipText("PASSWORD");
+		pw.setToolTipText("INSERIRE PASSWORD");
 		pw.setHorizontalAlignment(JTextField.CENTER);
 		
 		pw_conferma = new JPasswordField("");
@@ -58,7 +58,7 @@ public class Registrati extends JPanel{
 		pw_conferma.setBackground(arancione_scuro);
 		pw_conferma.setForeground(Color.BLACK);
 		pw_conferma.setFont(new Font("Serif", Font.PLAIN, 30));
-		pw_conferma.setToolTipText("CONFERMA PASSWORD");
+		pw_conferma.setToolTipText("CONFERMARE PASSWORD");
 		pw_conferma.setHorizontalAlignment(JTextField.CENTER);
 		
 		bottone_accedi = new JButton("INVIA");
