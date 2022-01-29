@@ -54,7 +54,7 @@ public class OperazioniCompito extends JPanel{
 		bottone_modifica.setForeground(Color.BLACK);
 		bottone_modifica.setFont(new Font("Serif", Font.PLAIN, 30));
 		
-		bottone_sposta = new JButton("CAMBIA POSIZIONE COMPITO");
+		bottone_sposta = new JButton("GESTISCI STATO COMPITO");
 		bottone_sposta.setBorder(new LineBorder(Color.BLACK));
 		bottone_sposta.setFocusPainted(false);
 		bottone_sposta.setBackground(arancione_scuro);

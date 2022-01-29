@@ -4,8 +4,9 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.sql.Date;
 import java.util.ArrayList;
-
+import java.util.Calendar;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -21,8 +22,8 @@ public class AggiungiModificaCompito extends JPanel{
 	private static Color arancione = new Color(255,178,102);
 	private static final long serialVersionUID = 1L;
 	private JButton bottone_avanti, bottone_indietro;
-	private JTextField titolo, descrizione, scadenza;
-	
+	private JTextField titolo, descrizione,scadenza_gg,scadenza_mm,scadenza_yyyy;
+	private JPanel pannello_scadenza;
 	public AggiungiModificaCompito() {
 		super();
 		setSize(1600, 900);
@@ -40,7 +41,7 @@ public class AggiungiModificaCompito extends JPanel{
 		titolo.setBackground(arancione_scuro);
 		titolo.setForeground(Color.BLACK);
 		titolo.setFont(new Font("Serif", Font.PLAIN, 30));
-		titolo.setToolTipText("INSERIRE IL TITOLO DEL COMPITO DA CREARE");
+		titolo.setToolTipText("INSERIRE IL TITOLO DEL COMPITO");
 		titolo.setHorizontalAlignment(JTextField.CENTER);
 		
 		descrizione = new JTextField("");
@@ -48,16 +49,40 @@ public class AggiungiModificaCompito extends JPanel{
 		descrizione.setBackground(arancione_scuro);
 		descrizione.setForeground(Color.BLACK);
 		descrizione.setFont(new Font("Serif", Font.PLAIN, 30));
-		descrizione.setToolTipText("INSERIRE UNA DESCRIZIONE PER IL COMPITO");
+		descrizione.setToolTipText("INSERIRE UNA DESCRIZIONE");
 		descrizione.setHorizontalAlignment(JTextField.CENTER);
 		
-		scadenza = new JTextField("");
-		scadenza.setBorder(new LineBorder(Color.BLACK));
-		scadenza.setBackground(arancione_scuro);
-		scadenza.setForeground(Color.BLACK);
-		scadenza.setFont(new Font("Serif", Font.PLAIN, 30));
-		scadenza.setToolTipText("INSERIRE LA SCADENZA DEL COMPITO");
-		scadenza.setHorizontalAlignment(JTextField.CENTER);;
+		pannello_scadenza = new JPanel();
+		pannello_scadenza.setBackground(arancione);
+		
+		scadenza_gg = new JTextField();
+		scadenza_gg.setBorder(new LineBorder(Color.BLACK));
+		scadenza_gg.setBackground(arancione_scuro);
+		scadenza_gg.setForeground(Color.BLACK);
+		scadenza_gg.setFont(new Font("Serif", Font.PLAIN, 30));
+		scadenza_gg.setToolTipText("gg");
+		scadenza_gg.setHorizontalAlignment(JTextField.CENTER);;
+		
+		scadenza_mm = new JTextField();
+		scadenza_mm.setBorder(new LineBorder(Color.BLACK));
+		scadenza_mm.setBackground(arancione_scuro);
+		scadenza_mm.setForeground(Color.BLACK);
+		scadenza_mm.setFont(new Font("Serif", Font.PLAIN, 30));
+		scadenza_mm.setToolTipText("mm");
+		scadenza_mm.setHorizontalAlignment(JTextField.CENTER);;
+		
+		scadenza_yyyy = new JTextField();
+		scadenza_yyyy.setBorder(new LineBorder(Color.BLACK));
+		scadenza_yyyy.setBackground(arancione_scuro);
+		scadenza_yyyy.setForeground(Color.BLACK);
+		scadenza_yyyy.setFont(new Font("Serif", Font.PLAIN, 30));
+		scadenza_yyyy.setToolTipText("yyyy");
+		scadenza_yyyy.setHorizontalAlignment(JTextField.CENTER);;
+		
+		pannello_scadenza.setLayout(new GridLayout(1,3));
+		pannello_scadenza.add(scadenza_gg);
+		pannello_scadenza.add(scadenza_mm);
+		pannello_scadenza.add(scadenza_yyyy);
 		
 		bottone_avanti = new JButton("AVANTI");
 		bottone_avanti.setBorder(new LineBorder(Color.BLACK));
@@ -87,7 +112,7 @@ public class AggiungiModificaCompito extends JPanel{
 		pannello.add(descrizione);
 		pannello.add(label.get(16));
 		pannello.add(label.get(17));
-		pannello.add(scadenza);
+		pannello.add(pannello_scadenza);
 		pannello.add(label.get(6));
 		pannello.add(label.get(7));
 		pannello.add(bottone_avanti);
@@ -114,8 +139,17 @@ public class AggiungiModificaCompito extends JPanel{
 	public JTextField getDescrizione() {
 		return descrizione;
 	}
-	public JTextField getScadenza() {
-		return scadenza;
+	public Date getScadenza() {
+		Calendar temp = Calendar.getInstance();
+		Date res;
+		try {
+			temp.set(Integer.parseInt(scadenza_yyyy.getText()), Integer.parseInt(scadenza_mm.getText()), Integer.parseInt(scadenza_gg.getText()));
+			res = new Date(temp.getTimeInMillis());
+		}catch(Exception ex) {
+			return null;
+		}
+		
+		return res;
 	}
 	
 	public JButton getBottoneAvanti() {

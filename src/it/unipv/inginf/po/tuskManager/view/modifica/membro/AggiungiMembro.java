@@ -41,7 +41,7 @@ public class AggiungiMembro extends JPanel{
 		email.setBackground(arancione_scuro);
 		email.setForeground(Color.BLACK);
 		email.setFont(new Font("Serif", Font.PLAIN, 30));
-		email.setToolTipText("INSERIRE EMAIL DA ASSOCIARE AL WORKSPACE");
+		email.setToolTipText("INSERIRE EMAIL DEL MEMBRO DA AGGIUNGERE AL WORKSPACE");
 		email.setHorizontalAlignment(JTextField.CENTER);
 		
 		ruolo = new JTextField("");
