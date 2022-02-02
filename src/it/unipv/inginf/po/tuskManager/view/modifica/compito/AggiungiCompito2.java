@@ -22,9 +22,19 @@ public class AggiungiCompito2 extends JPanel{
 	private static final long serialVersionUID = 1L;
 	private JButton bottone_aggiungi, bottone_fine, bottone_indietro;
 	private JTextField ruolo;
-	
-	public AggiungiCompito2() {
+	private ArrayList<String> ruoli;
+	private String titolo,descrizione;
+	private int giorno,mese,anno;
+	public AggiungiCompito2(String titolo, String descrizione, int giorno, int mese, int anno) {
 		super();
+		
+		this.titolo = titolo;
+		this.descrizione=descrizione;
+		this.giorno = giorno;
+		this.mese = mese;
+		this.anno = anno;
+		ruoli = new ArrayList<String>();
+		
 		setSize(1600, 900);
 		setBackground(arancione);
 		this.setLayout(new BorderLayout());
@@ -99,6 +109,28 @@ public class AggiungiCompito2 extends JPanel{
 		
 	public JTextField getRuolo() {
 		return ruolo;
+	}
+	public void addRuolo(String s) {
+		ruoli.add(s);
+	}
+	public ArrayList<String> getLista(){
+		return ruoli;
+	}
+	
+	public String getTitolo() {
+		return this.titolo;
+	}
+	public String getDescrizione() {
+		return this.descrizione;
+	}
+	public int getGiorno() {
+		return this.giorno;
+	}
+	public int getMese() {
+		return this.mese;
+	}
+	public int getAnno() {
+		return this.anno;
 	}
 	public JButton getBottoneAggiungi() {
 		return this.bottone_aggiungi;

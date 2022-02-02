@@ -107,10 +107,10 @@ public class Accedi extends JPanel{
 		return pw;
 	}
 	
-	public JButton getBottoneAccedi() {
+	public JButton getBottoneInvia() {
 		return this.bottone_accedi;
 	}
-	public JButton getBottoneEsci() {
+	public JButton getBottoneIndietro() {
 		return this.bottone_esci;
 	}
 }

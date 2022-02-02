@@ -27,7 +27,7 @@ public class WindowWorkspace extends JPanel{
 	private static Color arancione = new Color(255,178,102);
 	private static final long serialVersionUID = 1L;
 	private JButton bottone_operazioni, bottone_indietro;
-	
+	private ArrayList<JButton> bottoni;
 	public WindowWorkspace(Workspace w, Ruolo r) {
 		super();
 		setSize(1600, 900);
@@ -39,6 +39,7 @@ public class WindowWorkspace extends JPanel{
 			JLabel lab = new JLabel();
 			label.add(lab);
 		}
+		bottoni = new ArrayList<JButton>();
 		
 		bottone_operazioni = new JButton("OPERAZIONI");
 		bottone_operazioni.setBorder(new LineBorder(Color.BLACK));
@@ -96,6 +97,7 @@ public class WindowWorkspace extends JPanel{
 				b.setForeground(Color.BLACK);
 				b.setFont(new Font("Serif", Font.PLAIN, 20));
 				panel.add(b);
+				bottoni.add(b);
 			}
 			pannello_schede.add(panel);
 		}
@@ -138,5 +140,8 @@ public class WindowWorkspace extends JPanel{
 	}
 	public JButton getBottoneIndietro() {
 		return this.bottone_indietro;
+	}
+	public ArrayList<JButton> getAllBottoni(){
+		return bottoni;
 	}
 }

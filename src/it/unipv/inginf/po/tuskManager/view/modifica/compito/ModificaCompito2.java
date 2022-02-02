@@ -5,12 +5,15 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
+
+import it.unipv.inginf.po.tuskManager.model.beans.Ruolo;
 
 public class ModificaCompito2 extends JPanel{
 	
@@ -22,12 +25,23 @@ public class ModificaCompito2 extends JPanel{
 	private static final long serialVersionUID = 1L;
 	private JButton bottone_aggiungi, bottone_rimuovi, bottone_fine, bottone_indietro;
 	private JTextField ruolo;
+	private String titolo,titolo_vecchio, descrizione;
+	private Calendar scadenza;
+	ArrayList<Ruolo> ruoli_da_togliere;
+	ArrayList<Ruolo> ruoli_da_aggiungere;
 	
-	public ModificaCompito2() {
+	public ModificaCompito2(String titolo_vecchio, String titolo, String descrizione, Calendar scadenza) {
 		super();
 		setSize(1600, 900);
 		setBackground(arancione);
 		this.setLayout(new BorderLayout());
+		
+		this.titolo = titolo;
+		this.descrizione = descrizione;
+		this.scadenza = scadenza;
+		this.titolo_vecchio = titolo_vecchio;
+		ruoli_da_togliere = new ArrayList<Ruolo>();
+		ruoli_da_aggiungere = new ArrayList<Ruolo>();
 		
 		ArrayList<JLabel> label = new ArrayList<JLabel>();
 		for(int i = 0; i< 18; i++) {
@@ -116,6 +130,30 @@ public class ModificaCompito2 extends JPanel{
 		return this.bottone_rimuovi;
 	}
 	
+	public String getTitolo() {
+		return titolo;
+	}
+	public String getTitoloVecchio() {
+		return titolo;
+	}
+	public String getDescrizione() {
+		return descrizione;
+	}
+	public Calendar getScadenza() {
+		return scadenza;
+	}
+	public void addRuolo(Ruolo r) {
+		ruoli_da_aggiungere.add(r);
+	}
+	public void removeRuolo(Ruolo r) {
+		ruoli_da_togliere.add(r);
+	}
+	public ArrayList<Ruolo> getRuoliDaAggiungere(){
+		return ruoli_da_aggiungere;
+	}
+	public ArrayList<Ruolo> getRuoliDaTogliere(){
+		return ruoli_da_togliere;
+	}
 	public JButton getBottoneFine() {
 		return this.bottone_fine;
 	}

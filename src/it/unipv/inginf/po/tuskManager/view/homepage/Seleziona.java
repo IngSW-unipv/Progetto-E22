@@ -21,6 +21,7 @@ public class Seleziona extends JPanel{
 	private static final long serialVersionUID = 1L;
 	private JPanel pannello;
 	ArrayList<JLabel> label;
+	ArrayList<JButton> bottoni;
 	private JButton bottone_logout;
 	public Seleziona(ArrayList<String> stringhe) {
 		super();
@@ -48,6 +49,8 @@ public class Seleziona extends JPanel{
 		pannello.add(new JLabel());
 		pannello.add(new JLabel());
 		
+		bottoni = new ArrayList<JButton>();
+		
 		if(stringhe != null) {
 			JButton bottone;
 			for(String s : stringhe) {
@@ -60,6 +63,7 @@ public class Seleziona extends JPanel{
 				pannello.add(new JLabel());
 				pannello.add(bottone);
 				pannello.add(new JLabel());
+				bottoni.add(bottone);
 			}
 		}
 		pannello.add(new JLabel());
@@ -79,7 +83,10 @@ public class Seleziona extends JPanel{
 		this.add(pannello_sopra, BorderLayout.SOUTH);
 	}
 	
-	public JButton getBottoneLogout() {
+	public JButton getBottoneIndietro() {
 		return this.bottone_logout;
+	}
+	public ArrayList<JButton> getAllBottoni(){
+		return bottoni;
 	}
 }

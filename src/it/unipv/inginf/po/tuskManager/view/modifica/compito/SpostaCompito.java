@@ -21,7 +21,7 @@ public class SpostaCompito extends JPanel{
 	private static Color arancione = new Color(255,178,102);
 	private static final long serialVersionUID = 1L;
 	private JButton bottone_invia, bottone_indietro;
-	private JTextField scheda; 
+	private JTextField scheda,titolo; 
 	
 	public SpostaCompito() {
 		super();
@@ -43,6 +43,13 @@ public class SpostaCompito extends JPanel{
 		scheda.setToolTipText("INSERIRE IL TITOLO DELLA SCHEDA DI DESTINAZIONE");
 		scheda.setHorizontalAlignment(JTextField.CENTER);
 		
+		titolo = new JTextField("");
+		titolo.setBorder(new LineBorder(Color.BLACK));
+		titolo.setBackground(arancione_scuro);
+		titolo.setForeground(Color.BLACK);
+		titolo.setFont(new Font("Serif", Font.PLAIN, 30));
+		titolo.setToolTipText("INSERIRE IL TITOLO DEL COMPITO DA SPOSTARE");
+		titolo.setHorizontalAlignment(JTextField.CENTER);
 		
 		bottone_invia = new JButton("INVIA");
 		bottone_invia.setBorder(new LineBorder(Color.BLACK));
@@ -61,7 +68,7 @@ public class SpostaCompito extends JPanel{
 		
 		JPanel pannello = new JPanel();
 		pannello.setOpaque(false);
-		pannello.setLayout(new GridLayout(4,3));
+		pannello.setLayout(new GridLayout(5,3));
 		pannello.add(label.get(0));
 		pannello.add(label.get(1));
 		pannello.add(label.get(2));
@@ -69,6 +76,9 @@ public class SpostaCompito extends JPanel{
 		pannello.add(scheda);
 		pannello.add(label.get(4));
 		pannello.add(label.get(5));
+		pannello.add(titolo);
+		pannello.add(label.get(14));
+		pannello.add(label.get(15));
 		pannello.add(bottone_invia);
 		pannello.add(label.get(6));
 		pannello.add(label.get(7));
@@ -89,6 +99,9 @@ public class SpostaCompito extends JPanel{
 	
 	public JTextField getScheda() {
 		return scheda;
+	}
+	public JTextField getCompito() {
+		return titolo;
 	}
 	public JButton getBottoneInvia() {
 		return this.bottone_invia;

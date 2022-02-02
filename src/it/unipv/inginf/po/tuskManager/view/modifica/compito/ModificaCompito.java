@@ -13,7 +13,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 
-public class AggiungiModificaCompito extends JPanel{
+public class ModificaCompito extends JPanel{
 	
 	/**
 	 * 
@@ -22,9 +22,9 @@ public class AggiungiModificaCompito extends JPanel{
 	private static Color arancione = new Color(255,178,102);
 	private static final long serialVersionUID = 1L;
 	private JButton bottone_avanti, bottone_indietro;
-	private JTextField titolo, descrizione,scadenza_gg,scadenza_mm,scadenza_yyyy;
+	private JTextField titolo,titolo_vecchio, descrizione,scadenza_gg,scadenza_mm,scadenza_yyyy;
 	private JPanel pannello_scadenza;
-	public AggiungiModificaCompito() {
+	public ModificaCompito() {
 		super();
 		setSize(1600, 900);
 		setBackground(arancione);
@@ -36,12 +36,20 @@ public class AggiungiModificaCompito extends JPanel{
 			label.add(lab);
 		}
 		
+		titolo_vecchio = new JTextField("");
+		titolo_vecchio.setBorder(new LineBorder(Color.BLACK));
+		titolo_vecchio.setBackground(arancione_scuro);
+		titolo_vecchio.setForeground(Color.BLACK);
+		titolo_vecchio.setFont(new Font("Serif", Font.PLAIN, 30));
+		titolo_vecchio.setToolTipText("INSERIRE IL VECCHIO TITOLO DEL COMPITO");
+		titolo_vecchio.setHorizontalAlignment(JTextField.CENTER);
+		
 		titolo = new JTextField("");
 		titolo.setBorder(new LineBorder(Color.BLACK));
 		titolo.setBackground(arancione_scuro);
 		titolo.setForeground(Color.BLACK);
 		titolo.setFont(new Font("Serif", Font.PLAIN, 30));
-		titolo.setToolTipText("INSERIRE IL TITOLO DEL COMPITO");
+		titolo.setToolTipText("INSERIRE IL NUOVO TITOLO DEL COMPITO");
 		titolo.setHorizontalAlignment(JTextField.CENTER);
 		
 		descrizione = new JTextField("");
@@ -106,6 +114,9 @@ public class AggiungiModificaCompito extends JPanel{
 		pannello.add(label.get(1));
 		pannello.add(label.get(2));
 		pannello.add(label.get(3));
+		pannello.add(titolo_vecchio);
+		pannello.add(label.get(16));
+		pannello.add(label.get(17));
 		pannello.add(titolo);
 		pannello.add(label.get(4));
 		pannello.add(label.get(5));
@@ -136,20 +147,23 @@ public class AggiungiModificaCompito extends JPanel{
 	public JTextField getTitolo() {
 		return titolo;
 	}
+	public JTextField getTitoloVecchio() {
+		return titolo_vecchio;
+	}
 	public JTextField getDescrizione() {
 		return descrizione;
 	}
-	public Date getScadenza() {
+	public Calendar getScadenza() {
 		Calendar temp = Calendar.getInstance();
-		Date res;
+//		Date res;
 		try {
 			temp.set(Integer.parseInt(scadenza_yyyy.getText()), Integer.parseInt(scadenza_mm.getText()), Integer.parseInt(scadenza_gg.getText()));
-			res = new Date(temp.getTimeInMillis());
+//			res = new Date(temp.getTimeInMillis());
 		}catch(Exception ex) {
 			return null;
 		}
 		
-		return res;
+		return temp;
 	}
 	
 	public JButton getBottoneAvanti() {

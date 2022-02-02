@@ -122,10 +122,10 @@ public class Registrati extends JPanel{
 		return pw_conferma;
 	}
 	
-	public JButton getBottoneAccedi() {
+	public JButton getBottoneInvia() {
 		return this.bottone_accedi;
 	}
-	public JButton getBottoneEsci() {
+	public JButton getBottoneIndietro() {
 		return this.bottone_esci;
 	}
 }

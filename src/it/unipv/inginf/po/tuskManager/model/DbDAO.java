@@ -97,14 +97,15 @@ public class DbDAO implements ITaskManagerDAO{
 			PreparedStatement statement;
 			ResultSet workspace;
 			
-			statement = conn.prepareStatement("(SELECT * FROM WORKSPACE WHERE ID = ?)");
-			statement.setInt(1,w.getId());
+			statement = conn.prepareStatement("(SELECT * FROM WORKSPACE WHERE NOME = ?)");
+			statement.setString(1,w.getNome());
 			
 			workspace=statement.executeQuery();
 			
-			while(workspace.next()) {
+			while(workspace.next()) {//first era meglio
 				res = new Workspace(workspace.getInt("ID"),workspace.getString("NOME"),null,null);
 			}
+			w=res;
 			ResultSet schede;
 			statement = conn.prepareStatement("(SELECT * FROM SCHEDA WHERE ID_WORKSPACE = ?)");
 			statement.setInt(1,w.getId());
@@ -174,6 +175,7 @@ public class DbDAO implements ITaskManagerDAO{
 			conn = DBConnection.closeConnection(conn);
 			return res;
 		}catch(Exception ex) {
+			ex.printStackTrace();
 			throw new CannotConnectToDbException();
 		}
 	}
@@ -199,6 +201,7 @@ public class DbDAO implements ITaskManagerDAO{
 			conn = DBConnection.closeConnection(conn);
 			return res;
 		}catch(Exception ex) {
+			ex.printStackTrace();
 			throw new CannotConnectToDbException();
 		}
 	}
@@ -309,9 +312,11 @@ public class DbDAO implements ITaskManagerDAO{
 			statement.executeUpdate();
 			
 			for(Ruolo r : c.getRuoli()) {
-				statement = conn.prepareStatement("INSERT INTO TUSKMANAGER.GESTIONE(TITOLO_COMPITO,NOME_RUOLO) VALUES(?,?)");
+				statement = conn.prepareStatement("INSERT INTO TUSKMANAGER.GESTIONE(TITOLO_COMPITO,TITOLO_SCHEDA,ID_WORKSPACE,NOME_RUOLO) VALUES(?,?,?,?)");
 				statement.setString(1,c.getTitolo());
-				statement.setString(2,r.getNome());
+				statement.setString(2,s.getTitolo());
+				statement.setInt(3,w.getId());
+				statement.setString(4,r.getNome());
 				
 				statement.executeUpdate();
 			}
@@ -319,9 +324,11 @@ public class DbDAO implements ITaskManagerDAO{
 			conn = DBConnection.closeConnection(conn);
 			return true;
 		}catch(SQLIntegrityConstraintViolationException e) {
+			e.printStackTrace();
 			conn = DBConnection.closeConnection(conn);
 			return false;
 		}catch(Exception ex) {
+			ex.printStackTrace();
 			throw new CannotConnectToDbException();
 		}
 	}
@@ -335,7 +342,8 @@ public class DbDAO implements ITaskManagerDAO{
 			
 			statement = conn.prepareStatement("INSERT INTO TUSKMANAGER.MEMBRO(EMAIL_UTENTE,ID_WORKSPACE,NOME_RUOLO) VALUES(?,?,?)");
 			statement.setString(1,m.getEmail());
-			statement.setString(2,m.getPassword());
+			statement.setInt(2,w.getId());
+			statement.setString(3, m.getRuolo().getNome());
 			statement.executeUpdate();
 			
 			conn = DBConnection.closeConnection(conn);
@@ -345,6 +353,7 @@ public class DbDAO implements ITaskManagerDAO{
 			return true;
 		}
 		catch(Exception ex) {
+			ex.printStackTrace();
 			throw new CannotConnectToDbException();
 		}
 	}

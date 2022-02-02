@@ -41,6 +41,10 @@ public class TaskManager {
 		db = new DbDAO();
 	}
 	
+	public Membro getMembroLogged() throws CannotConnectToDbException {
+		return membro_logged;
+	}
+	
 	/**
 	 * @return L'istanza del task manager.
 	 * */
@@ -113,7 +117,7 @@ public class TaskManager {
 	 * */
 	public boolean login(String email, String pw) throws CannotConnectToDbException {
 		if(db.login(email, PasswordCoder.codifica(pw))) {
-			membro_logged = db.selectRuoloOfAccount(ws_selected, new Account(email,null));
+			membro_logged = new Membro(email,"",null);
 			return true;
 		}
 		return false;
@@ -146,6 +150,7 @@ public class TaskManager {
 	 * */
 	public Workspace getWorkspace(Workspace w) throws CannotConnectToDbException {
 		ws_selected = db.selectWorkspace(w);
+		membro_logged.setRuolo(db.selectRuoloOfAccount(ws_selected, (Account) membro_logged).getRuolo());
 		return ws_selected;
 	}
 	
@@ -155,9 +160,13 @@ public class TaskManager {
 	 * @return true se la creazione va a buon fine.
 	 * */
 	public boolean createWorkspace(String nome) throws CannotConnectToDbException {
+		if(nome.isEmpty())
+			return false;
 		boolean res = db.insertIntoWorkspace(new Workspace(0,nome,null,null));
-		db.createAssociazioneMembroWorkspace(ws_selected,new Membro(membro_logged.getEmail(),membro_logged.getPassword(),new Ruolo("manager")));
-		updateWorkspace();
+		if(res) {
+			ws_selected = db.selectWorkspace(new Workspace(0,nome,null,null));
+			db.createAssociazioneMembroWorkspace(ws_selected,new Membro(membro_logged.getEmail()," ",new Ruolo("manager")));
+		}
 		return res;
 	}
 	
@@ -170,7 +179,7 @@ public class TaskManager {
 	public boolean addMembro(String email, Ruolo r) throws RoleNotAcceptedException, CannotSendMailException, CannotConnectToDbException{
 		updateWorkspace();
 		if(membro_logged.getRuolo().equals(new Ruolo("manager"))) {
-			db.createAssociazioneMembroWorkspace(ws_selected,new Membro(membro_logged.getEmail(),membro_logged.getPassword(),r));
+			db.createAssociazioneMembroWorkspace(ws_selected,new Membro(email," ",r));
 			String oggetto = "Ciao, sei stato aggiunto ad un workspace su TuskManager!"; //MODIFICARE
 			String contenuto = "";
 			return sendMail(email,oggetto,contenuto);
@@ -265,14 +274,14 @@ public class TaskManager {
 	 * @param r
 	 * @return true se la modifica � andata a buon fine.
 	 * */
-	public boolean modifyMembro(Membro m, Ruolo r) throws RoleNotAcceptedException, CannotSendMailException, CannotConnectToDbException{
+	public boolean modifyMembro(String  email, Ruolo r) throws RoleNotAcceptedException, CannotSendMailException, CannotConnectToDbException{
 		updateWorkspace();
 		if(membro_logged.getRuolo().equals(new Ruolo("manager"))) {
-			if(db.modifyMembro(ws_selected, new Membro(m.getEmail(),null,r))) {
+			if(db.modifyMembro(ws_selected, new Membro(email,null,r))) {
 				String oggetto = "Ciao, il tuo ruolo nel workspace "+ws_selected.getNome()+"� cambiato!\nOra �: "+r.getNome()+" su TuskManager!"; //MODIFICARE
 				String contenuto = "";
 				updateWorkspace();
-				return sendMail(m.getEmail(),oggetto,contenuto);
+				return sendMail(email,oggetto,contenuto);
 			}else {
 				return false;
 			}
@@ -304,10 +313,22 @@ public class TaskManager {
 	 * @param c Il compito.
 	 * @return true se la rimozione � andata a buon fine.
 	 * */
-	public boolean removeCompito (Scheda s, Compito c) throws RoleNotAcceptedException, CannotConnectToDbException{
+	public boolean removeCompito (Compito c) throws RoleNotAcceptedException, CannotConnectToDbException{
 		updateWorkspace();
+		Scheda scheda_sel = null;
+		for(Scheda sc : ws_selected.getLista_schede()) {
+			for(Compito co : sc.getCompiti()) {
+				if(co.getTitolo().equals(c.getTitolo())) {
+					scheda_sel = sc;
+				}
+			}
+		}
+		if(scheda_sel == null) {
+			return false;
+		}
+		
 		if(membro_logged.getRuolo().equals(new Ruolo("manager")) || c.getRuoli().contains(membro_logged.getRuolo())) {
-			if(db.removeCompito(ws_selected,s,c)) {
+			if(db.removeCompito(ws_selected,scheda_sel,c)) {
 				updateWorkspace();
 				return true;
 			}
