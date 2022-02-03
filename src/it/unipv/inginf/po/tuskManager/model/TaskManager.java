@@ -179,10 +179,12 @@ public class TaskManager {
 	public boolean addMembro(String email, Ruolo r) throws RoleNotAcceptedException, CannotSendMailException, CannotConnectToDbException{
 		updateWorkspace();
 		if(membro_logged.getRuolo().equals(new Ruolo("manager"))) {
-			db.createAssociazioneMembroWorkspace(ws_selected,new Membro(email," ",r));
-			String oggetto = "Ciao, sei stato aggiunto ad un workspace su TuskManager!"; //MODIFICARE
-			String contenuto = "";
-			return sendMail(email,oggetto,contenuto);
+			if(db.createAssociazioneMembroWorkspace(ws_selected,new Membro(email," ",r))) {
+				String oggetto = "Ciao, sei stato aggiunto ad un workspace su TuskManager!"; //MODIFICARE
+				String contenuto = "";
+				return sendMail(email,oggetto,contenuto);
+			}else
+				return false;
 		}else throw new RoleNotAcceptedException();
 	}
 	
@@ -260,8 +262,8 @@ public class TaskManager {
 	 * @param nuova
 	 * @return true se la modifica � andata a buon fine.
 	 * */
-	public boolean modifyScheda(Scheda vecchia, Scheda nuova) throws CannotConnectToDbException {
-		if(db.modifyScheda(ws_selected, vecchia, nuova)) {
+	public boolean modifyScheda(Scheda vecchia1,Scheda vecchia2, Scheda nuova1, Scheda nuova2) throws CannotConnectToDbException {
+		if(db.modifyScheda(ws_selected, vecchia1, vecchia2, nuova1, nuova2)) {
 			updateWorkspace();
 			return true;
 		}
@@ -299,7 +301,6 @@ public class TaskManager {
 		updateWorkspace();
 		if(membro_logged.getRuolo().equals(new Ruolo("manager")) ) {
 			if(db.modifyWorkspace(vecchio, nuovo)) {
-				updateWorkspace();
 				return true;
 			}
 			return false;
@@ -363,7 +364,7 @@ public class TaskManager {
 	 * @return true se la rimozione � andata a buon fine.
 	 * */
 	public boolean removeWorkspace(Workspace w) throws RoleNotAcceptedException, CannotSendMailException, CannotConnectToDbException{
-		updateWorkspace();
+		
 		if(membro_logged.getRuolo().equals(new Ruolo("manager"))) {
 			ArrayList<String> emails = db.selectAllEmailsByWorkspace(ws_selected);
 			if(db.removeWorkspace(w)) {
@@ -372,7 +373,6 @@ public class TaskManager {
 				for(String email : emails) {
 					sendMail(email,oggetto,contenuto);
 				}
-				updateWorkspace();
 				return true;
 			}else {
 				return false;

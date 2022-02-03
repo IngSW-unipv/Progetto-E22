@@ -204,16 +204,23 @@ public class Controller {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
-					if(frame.getPanel_crea().getNome().getText().isEmpty())
+					if(frame.getPanel_crea().getNome().getText().isEmpty()) {
 						return;
-					tm.createWorkspace(frame.getPanel_crea().getNome().getText());
-					tm.createScheda(new Scheda("TO DO",null));
-					tm.createScheda(new Scheda("DOING",null));
-					tm.createScheda(new Scheda("DONE",null));
-					frame.seePanelWorkspace(tm.getWorkspace(new Workspace(0,frame.getPanel_crea().getNome().getText(),null,null)),tm.getMembroLogged().getRuolo());
-					initTempListenersPanelWorkspace();
+					}
+					if(tm.createWorkspace(frame.getPanel_crea().getNome().getText())) {
+						tm.createScheda(new Scheda("TO DO",null));
+						tm.createScheda(new Scheda("DOING",null));
+						tm.createScheda(new Scheda("DONE",null));
+						frame.seePanelWorkspace(tm.getWorkspace(new Workspace(0,frame.getPanel_crea().getNome().getText(),null,null)),tm.getMembroLogged().getRuolo());
+						initTempListenersPanelWorkspace();
+					}
+					else {
+						//POP UP WS NON CREATO
+						frame.seePanelHomePage();
+					}
 				} catch (CannotConnectToDbException | RoleNotAcceptedException e1) {
-					e1.printStackTrace();//POP UP DB SPENTO
+					//POP UP DB SPENTO
+					frame.seePanelHomePage();
 				}
 			}
 		});
@@ -371,7 +378,7 @@ public class Controller {
 						frame.seePanelModifica();
 					}else {
 						//POP UP NON AGGIUNTO MEMBRO
-						frame.seePanelModifica();
+						frame.seePanelAggiungiMembro();
 					}
 				} catch (RoleNotAcceptedException | CannotSendMailException | CannotConnectToDbException e1) {
 					// POP UP VARI
@@ -394,11 +401,12 @@ public class Controller {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
-					if(tm.modifyMembro(frame.getPanel_aggiungiMembro().getEmail().getText(), new Ruolo(frame.getPanel_aggiungiMembro().getRuolo().getText()))) {
+					if(tm.modifyMembro(frame.getPanel_modificaRuolo().getEmail().getText(), new Ruolo(frame.getPanel_modificaRuolo().getRuolo().getText()))) {
 						//POP UP MODIFICATO MEMBRO
-						frame.seePanelModificaRuolo();
+						frame.seePanelMembro();
 					}else {
 						//POP UP NON MODIFICATO MEMBRO
+						frame.seePanelModificaRuolo();
 					}
 				} catch (RoleNotAcceptedException | CannotSendMailException | CannotConnectToDbException e1) {
 					// POP UP VARI
@@ -407,10 +415,10 @@ public class Controller {
 			}
 		});
 		//bottone indetro nel panel modifica ruolo:
-		frame.getPanel_modificaRuolo().getBottoneInvia().addActionListener(new ActionListener() {
+		frame.getPanel_modificaRuolo().getBottoneIndietro().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				frame.seePanelModificaRuolo();
+				frame.seePanelMembro();
 			}
 		});
 	}
@@ -426,6 +434,7 @@ public class Controller {
 						frame.seePanelMembro();
 					}else {
 						//POP UP NON RIMOSSO MEMBRO
+						frame.seePanelRimuoviMembro();
 					}
 				} catch (RoleNotAcceptedException | CannotSendMailException | CannotConnectToDbException e1) {
 					// POP UP VARI
@@ -475,13 +484,13 @@ public class Controller {
 			}
 		});
 		//bottone invia nel panel modifica nome:
-		frame.getPanel_modificaNome().getBottoneIndietro().addActionListener(new ActionListener() {
+		frame.getPanel_modificaNome().getBottoneInvia().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
 					if(tm.modifyWorkspace(tm.getWorkspace(), new Workspace(0,frame.getPanel_modificaNome().getNome().getText(),null,null))) {
 						//POP UP MODIFICA NOME WS RIUSCITA
-						frame.seePanelOperazioniWs();
+						frame.seePanelHomePage();
 					}
 					else {
 						//POP UP MODIFICA NOME WS NON RIUSCITA
@@ -509,12 +518,13 @@ public class Controller {
 				try {
 					if(frame.getPanel_rimuoviWs().getNome().getText().equals(tm.getWorkspace().getNome())) {
 						//POP UP ELIMINAZIONE RIUSCITA
-						frame.seePanelOperazioniWs();
+						tm.removeWorkspace(tm.getWorkspace());
+						frame.seePanelHomePage();
 					}else {
 						//POP UP ELIMINAZIONE NON RIUSCITA
 						frame.seePanelRimuoviWs();
 					}
-				} catch (CannotConnectToDbException e1) {
+				} catch (CannotConnectToDbException | RoleNotAcceptedException | CannotSendMailException e1) {
 					e1.printStackTrace();//POP UP DB SPENTO
 				}
 			}
@@ -579,8 +589,8 @@ public class Controller {
 					ruoli.add(new Ruolo(s));
 				}
 				
-				try {//se non ci sono le tre schede todo doing e done QUA CAMBIARE
-					if(tm.createCompito(tm.getWorkspace().getLista_schede().get(2), new Compito(frame.getPanel_aggiungiCompito2().getTitolo(),frame.getPanel_aggiungiCompito2().getDescrizione(),scadenza,ruoli))) {
+				try {//lo aggiunge nella prima!
+					if(tm.createCompito(tm.getWorkspace().getLista_schede().get(0), new Compito(frame.getPanel_aggiungiCompito2().getTitolo(),frame.getPanel_aggiungiCompito2().getDescrizione(),scadenza,ruoli))) {
 						//POP UP COMPITO CREATO
 						frame.seePanelOperazioniCompito();
 					}else {
@@ -674,22 +684,33 @@ public class Controller {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
-					Scheda sc_vecchia = null;
-					Scheda sc_nuova = null;
+					Scheda sc_vecchia1 = null;
+					Scheda sc_vecchia2 = null;
+					Scheda sc_nuova1 = null;
+					Scheda sc_nuova2 = null;
+					Compito compito_da_togliere = null;
 					Workspace w = tm.getWorkspace();
+					for(Scheda s : w.getLista_schede()) {
+						if(s.getTitolo().equals(frame.getPanel_spostaCompito().getScheda().getText())) {
+							sc_nuova1 = s;
+							sc_nuova2 = new Scheda(s.getTitolo(),new ArrayList<Compito>());
+							for(Compito c : s.getCompiti()) {
+								sc_nuova2.addCompito(c);
+							}
+						}
+					}
 					for(Scheda s : w.getLista_schede()) {
 						for(Compito c : s.getCompiti()) {
 							if(c.getTitolo().equals(frame.getPanel_spostaCompito().getCompito().getText())) {
-								s.removeCompito(new Compito(frame.getPanel_spostaCompito().getCompito().getText(),null,null,null));
-								sc_vecchia = s;
+								sc_vecchia1 = s;
+								sc_vecchia2 = sc_vecchia1;
+								compito_da_togliere=c;
+								sc_nuova2.addCompito(c);
 							}
 						}
-						if(s.getTitolo().equals(frame.getPanel_spostaCompito().getScheda().getText())) {
-							s.addCompito(new Compito(frame.getPanel_spostaCompito().getCompito().getText(),null,null,null));
-							sc_nuova = s;
-						}
 					}
-					if(tm.modifyScheda(sc_vecchia, sc_nuova)) {
+					sc_vecchia2.removeCompito(compito_da_togliere);
+					if(tm.modifyScheda(sc_vecchia1,sc_vecchia2,sc_nuova1, sc_nuova2)) {
 						//POP UP COMPITO SPOSTATO
 						frame.seePanelOperazioniCompito();
 					}else {
@@ -742,7 +763,7 @@ public class Controller {
 				frame.getPanel_modificaCompito2().getRuolo().setText("");
 			}
 		});
-		//bottone aggiungi nel panel modifica compito 2:
+		//bottone rimuovi nel panel modifica compito 2:
 		frame.getPanel_modificaCompito2().getBottoneRimuovi().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -762,7 +783,6 @@ public class Controller {
 						for(Compito c : s.getCompiti()) {
 							if(c.getTitolo().equals(frame.getPanel_modificaCompito2().getTitoloVecchio())) {
 								sc = s;
-								
 								for(Ruolo r : frame.getPanel_modificaCompito2().getRuoliDaTogliere()) {
 									try{
 										c.removeRuolo(r);
@@ -779,8 +799,14 @@ public class Controller {
 					String tit = frame.getPanel_modificaCompito2().getTitolo();
 					String desc = frame.getPanel_modificaCompito2().getDescrizione();
 					Date scad = new Date(frame.getPanel_modificaCompito2().getScadenza().getTimeInMillis());
+					ArrayList<Ruolo> ruoli;
+					try {
+					ruoli = compito_con_nuova_lista_ruoli.getRuoli();
+					}catch(Exception exe) {
+						ruoli = new ArrayList<Ruolo>();
+					}
 					
-					if(tm.modifyCompito(sc, new Compito(frame.getPanel_modificaCompito2().getTitoloVecchio(), null,null,null),new Compito(tit,desc,scad,compito_con_nuova_lista_ruoli.getRuoli()))) {
+					if(tm.modifyCompito(sc, new Compito(frame.getPanel_modificaCompito2().getTitoloVecchio(), null,null,null),new Compito(tit,desc,scad,ruoli))) {
 						//POP UP COMPITO MODIFICATO
 						frame.seePanelOperazioniCompito();
 					}else {
@@ -789,7 +815,9 @@ public class Controller {
 					}
 				} catch (CannotConnectToDbException | RoleNotAcceptedException e1) {
 					// POP UP DB SPENTO
-					e1.printStackTrace();
+					frame.seePanelOperazioniCompito();
+				}catch(Exception ex1) {
+					//POP UP errore sconosciuto
 				}
 			}
 		});	

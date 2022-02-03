@@ -134,7 +134,7 @@ public class ModificaCompito2 extends JPanel{
 		return titolo;
 	}
 	public String getTitoloVecchio() {
-		return titolo;
+		return titolo_vecchio;
 	}
 	public String getDescrizione() {
 		return descrizione;

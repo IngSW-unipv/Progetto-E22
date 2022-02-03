@@ -27,6 +27,8 @@ public class Compito{
 		this.descrizione = descrizione;
 		this.scadenza = scadenza;
 		this.ruoli = ruoli;
+		if(this.ruoli == null)
+			this.ruoli = new ArrayList<Ruolo>();
 	}
 	
 	/**
@@ -80,7 +82,8 @@ public class Compito{
 	 * @param ruolo Il ruolo da aggiungere.
 	 * */
 	public void addRuolo(Ruolo ruolo) {
-		ruoli.add(ruolo);
+		if(ruolo != null)
+			ruoli.add(ruolo);
 	}
 	/**
 	 * Rimuove un ruolo dalla lista dei ruoli associati al compito.

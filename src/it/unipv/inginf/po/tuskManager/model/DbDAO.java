@@ -49,17 +49,18 @@ public class DbDAO implements ITaskManagerDAO{
 			PreparedStatement statement;
 			ResultSet resultset;
 			
-			statement = conn.prepareStatement("(SELECT EMAIL FROM TUSKMANAGER.MEMBRO WHERE ID_WORKSPACE = ?)");
+			statement = conn.prepareStatement("(SELECT EMAIL_UTENTE FROM TUSKMANAGER.MEMBRO WHERE ID_WORKSPACE = ?)");
 			statement.setInt(1,w.getId());
 			
 			resultset=statement.executeQuery();
 			
 			while(resultset.next()) {
-				res.add(resultset.getString("EMAIL"));
+				res.add(resultset.getString("EMAIL_UTENTE"));
 			}
 			conn = DBConnection.closeConnection(conn);
 			return res;
 		}catch(Exception ex) {
+			ex.printStackTrace();
 			throw new CannotConnectToDbException();
 		}
 	}
@@ -84,6 +85,7 @@ public class DbDAO implements ITaskManagerDAO{
 			conn = DBConnection.closeConnection(conn);
 			return res;
 		}catch(Exception ex) {
+			ex.printStackTrace();
 			throw new CannotConnectToDbException();
 		}
 	}
@@ -106,6 +108,8 @@ public class DbDAO implements ITaskManagerDAO{
 				res = new Workspace(workspace.getInt("ID"),workspace.getString("NOME"),null,null);
 			}
 			w=res;
+			if(w == null)
+				return null;
 			ResultSet schede;
 			statement = conn.prepareStatement("(SELECT * FROM SCHEDA WHERE ID_WORKSPACE = ?)");
 			statement.setInt(1,w.getId());
@@ -240,7 +244,11 @@ public class DbDAO implements ITaskManagerDAO{
 			
 			conn = DBConnection.closeConnection(conn);
 			return true;
+		}catch(SQLIntegrityConstraintViolationException exs) {
+			conn = DBConnection.closeConnection(conn);
+			return false;
 		}catch(Exception ex) {
+			ex.printStackTrace();
 			throw new CannotConnectToDbException();
 		}
 	}
@@ -298,6 +306,9 @@ public class DbDAO implements ITaskManagerDAO{
 	@Override
 	public boolean insertIntoCompito(Workspace w, Scheda s, Compito c) throws CannotConnectToDbException {
 		try {
+			for(Ruolo r : c.getRuoli()) {
+				insertIntoRuolo(r);
+			}
 			conn = DBConnection.startConnection();
 			
 			PreparedStatement statement;
@@ -324,7 +335,6 @@ public class DbDAO implements ITaskManagerDAO{
 			conn = DBConnection.closeConnection(conn);
 			return true;
 		}catch(SQLIntegrityConstraintViolationException e) {
-			e.printStackTrace();
 			conn = DBConnection.closeConnection(conn);
 			return false;
 		}catch(Exception ex) {
@@ -336,6 +346,9 @@ public class DbDAO implements ITaskManagerDAO{
 	@Override
 	public boolean createAssociazioneMembroWorkspace(Workspace w, Membro m) throws CannotConnectToDbException {
 		try {
+			
+			insertIntoRuolo(m.getRuolo());
+			
 			conn = DBConnection.startConnection();
 			
 			PreparedStatement statement;
@@ -348,9 +361,9 @@ public class DbDAO implements ITaskManagerDAO{
 			
 			conn = DBConnection.closeConnection(conn);
 			return true;
-		}catch(SQLIntegrityConstraintViolationException e) {//se c'è gia va bene uguale
+		}catch(SQLIntegrityConstraintViolationException e) {
 			conn = DBConnection.closeConnection(conn);
-			return true;
+			return false;
 		}
 		catch(Exception ex) {
 			ex.printStackTrace();
@@ -361,39 +374,54 @@ public class DbDAO implements ITaskManagerDAO{
 	@Override
 	public boolean modifyCompito(Workspace w, Scheda s, Compito vecchio, Compito nuovo) throws CannotConnectToDbException { //da provare
 		try {
+			for(Ruolo r : nuovo.getRuoli()) {
+				insertIntoRuolo(r);
+			}
 			conn = DBConnection.startConnection();
 			
 			removeCompito(w,s,vecchio);
 			
-			insertIntoCompito(w,s,nuovo);
+			if(!insertIntoCompito(w,s,nuovo)) {
+				insertIntoCompito(w,s,vecchio);
+			}
 			
 			conn = DBConnection.closeConnection(conn);
 			return true;
 		}
 		catch(Exception ex) {
+			ex.printStackTrace();
 			throw new CannotConnectToDbException();
 		}
 	}
 
 	@Override
-	public boolean modifyScheda(Workspace w, Scheda vecchia, Scheda nuova) throws CannotConnectToDbException {
+	public boolean modifyScheda(Workspace w, Scheda vecchia1, Scheda vecchia2, Scheda nuova1, Scheda nuova2) throws CannotConnectToDbException {
 		try {
 			conn = DBConnection.startConnection();
 			
 			PreparedStatement statement;
 			
 			statement = conn.prepareStatement("DELETE FROM TUSKMANAGER.SCHEDA WHERE TITOLO = ? AND ID_WORKSPACE = ?");
-			statement.setString(1,vecchia.getTitolo());
+			statement.setString(1,vecchia1.getTitolo());
 			statement.setInt(2,w.getId());
 			
 			statement.executeUpdate();
-			
-			insertIntoScheda(w, nuova);
-			
 			conn = DBConnection.closeConnection(conn);
+			insertIntoScheda(w, vecchia2);
+			conn = DBConnection.startConnection();
+			
+			statement = conn.prepareStatement("DELETE FROM TUSKMANAGER.SCHEDA WHERE TITOLO = ? AND ID_WORKSPACE = ?");
+			statement.setString(1,nuova1.getTitolo());
+			statement.setInt(2,w.getId());
+			
+			statement.executeUpdate();
+			conn = DBConnection.closeConnection(conn);
+			insertIntoScheda(w, nuova2);
+			
 			return true;
 		}
 		catch(Exception ex) {
+			ex.printStackTrace();
 			throw new CannotConnectToDbException();
 		}
 	}
@@ -404,7 +432,8 @@ public class DbDAO implements ITaskManagerDAO{
 			conn = DBConnection.startConnection();
 			
 			removeMembro(w,m);
-			
+
+			insertIntoRuolo(m.getRuolo());
 			createAssociazioneMembroWorkspace(w, m);
 			
 			conn = DBConnection.closeConnection(conn);
@@ -454,6 +483,7 @@ public class DbDAO implements ITaskManagerDAO{
 			return true;
 		}
 		catch(Exception ex) {
+			ex.printStackTrace();
 			throw new CannotConnectToDbException();
 		}
 	}
@@ -469,7 +499,10 @@ public class DbDAO implements ITaskManagerDAO{
 			statement.setString(1,m.getEmail());
 			statement.setInt(2,w.getId());
 			
-			statement.executeUpdate();
+			if(statement.executeUpdate() == 0) {
+				conn = DBConnection.closeConnection(conn);
+				return false;
+			}
 			
 			conn = DBConnection.closeConnection(conn);
 			return true;
@@ -486,7 +519,7 @@ public class DbDAO implements ITaskManagerDAO{
 			
 			PreparedStatement statement;
 			
-			statement = conn.prepareStatement("(DELETE FROM TUSKMANAGER.WORKSPACE WHERE ID == ?)");
+			statement = conn.prepareStatement("DELETE FROM TUSKMANAGER.WORKSPACE WHERE ID = ?");
 			statement.setInt(1,w.getId());
 			
 			statement.executeUpdate();
@@ -495,6 +528,7 @@ public class DbDAO implements ITaskManagerDAO{
 			conn = DBConnection.closeConnection(conn);
 			return true;
 		}catch(Exception ex) {
+			ex.printStackTrace();
 			throw new CannotConnectToDbException();
 		}
 	}

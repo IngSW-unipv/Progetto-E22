@@ -31,7 +31,7 @@ public class ModificaCompito extends JPanel{
 		this.setLayout(new BorderLayout());
 		
 		ArrayList<JLabel> label = new ArrayList<JLabel>();
-		for(int i = 0; i< 18; i++) {
+		for(int i = 0; i< 20; i++) {
 			JLabel lab = new JLabel();
 			label.add(lab);
 		}
@@ -109,14 +109,14 @@ public class ModificaCompito extends JPanel{
 		
 		JPanel pannello = new JPanel();
 		pannello.setOpaque(false);
-		pannello.setLayout(new GridLayout(6,3));
+		pannello.setLayout(new GridLayout(7,3));
 		pannello.add(label.get(0));
 		pannello.add(label.get(1));
 		pannello.add(label.get(2));
 		pannello.add(label.get(3));
 		pannello.add(titolo_vecchio);
-		pannello.add(label.get(16));
-		pannello.add(label.get(17));
+		pannello.add(label.get(18));
+		pannello.add(label.get(19));
 		pannello.add(titolo);
 		pannello.add(label.get(4));
 		pannello.add(label.get(5));

@@ -103,6 +103,18 @@ public class Workspace {
 	 * */
 	public void addScheda(Scheda scheda) {
 		lista_schede.add(scheda);
+		Scheda s,s1;
+		s = lista_schede.get(0);
+		for(int i =0; i<lista_schede.size();i++) {
+			s1 = lista_schede.get(i);
+			if (s1.getTitolo().equals("TO DO")){
+				lista_schede.remove(0);
+				lista_schede.add(0, s1);
+				lista_schede.remove(i);
+				lista_schede.add(i, s); 
+			}
+		}
+		
 	}
 	
 	/**
