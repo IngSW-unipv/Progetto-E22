@@ -217,3 +217,5 @@ UNLOCK TABLES;
 -- Dump completed on 2022-02-04 12:58:20
 create user appTuskManager identified by "tricheco";
 grant all privileges on *.* to appTuskManager;
+
+USE TUSKMANAGER;

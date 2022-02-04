@@ -1,7 +1,5 @@
 package it.unipv.inginf.po.tuskManager.view;
 
-import java.awt.GraphicsDevice;
-import java.awt.GraphicsEnvironment;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -82,6 +80,7 @@ public class TMFrame extends JFrame{
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setVisible(true);
 		this.setSize(400,400);
+		
 //		this.setResizable(false);
 //		GraphicsEnvironment graphics = GraphicsEnvironment.getLocalGraphicsEnvironment();
 //		GraphicsDevice device = graphics.getDefaultScreenDevice();

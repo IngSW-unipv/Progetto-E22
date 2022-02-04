@@ -28,7 +28,6 @@ public class WindowWorkspace extends JPanel{
 	private ArrayList<JButton> bottoni;
 	public WindowWorkspace(Workspace w, Ruolo r) {
 		super();
-		setSize(1600, 900);
 		setBackground(arancione);
 		this.setLayout(new BorderLayout());
 		
