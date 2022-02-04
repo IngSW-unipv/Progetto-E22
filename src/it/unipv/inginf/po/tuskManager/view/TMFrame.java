@@ -13,6 +13,7 @@ import it.unipv.inginf.po.tuskManager.model.beans.Ruolo;
 import it.unipv.inginf.po.tuskManager.model.beans.Workspace;
 import it.unipv.inginf.po.tuskManager.view.apertura.Accedi;
 import it.unipv.inginf.po.tuskManager.view.apertura.Apertura;
+import it.unipv.inginf.po.tuskManager.view.apertura.Impostazioni;
 import it.unipv.inginf.po.tuskManager.view.apertura.Registrati;
 import it.unipv.inginf.po.tuskManager.view.homepage.Crea;
 import it.unipv.inginf.po.tuskManager.view.homepage.HomePage;
@@ -42,6 +43,7 @@ public class TMFrame extends JFrame{
 	private Apertura panel_apertura;
 	private Accedi panel_accedi;
 	private Registrati panel_registrati;
+	private Impostazioni panel_impostazioni;
 	
 	private HomePage panel_homepage;
 	private Seleziona panel_seleziona;
@@ -79,7 +81,7 @@ public class TMFrame extends JFrame{
 		this.setTitle("Tusk Manager");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setVisible(true);
-		this.setSize(400,400);
+		this.setSize(1200,600);
 		
 //		this.setResizable(false);
 //		GraphicsEnvironment graphics = GraphicsEnvironment.getLocalGraphicsEnvironment();
@@ -109,6 +111,12 @@ public class TMFrame extends JFrame{
 		if(panel_registrati == null)
 			panel_registrati = new Registrati();
 		return panel_registrati;
+	}
+	
+	public Impostazioni getPanel_impostazioni() {
+		if(panel_impostazioni == null)
+			panel_impostazioni = new Impostazioni();
+		return panel_impostazioni;
 	}
 	
 	public HomePage getPanel_homepage() {
@@ -222,6 +230,11 @@ public class TMFrame extends JFrame{
 		if(panel_registrati == null)
 			panel_registrati = new Registrati();
 		this.seePanel(panel_registrati);
+	}
+	public void seePanelImpostazioni() {
+		if(panel_impostazioni == null)
+			panel_impostazioni = new Impostazioni();
+		this.seePanel(panel_impostazioni);
 	}
 	
 	public void seePanelHomePage() {

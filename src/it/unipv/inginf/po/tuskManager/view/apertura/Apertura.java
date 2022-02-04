@@ -4,7 +4,10 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Properties;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -16,14 +19,22 @@ public class Apertura extends JPanel{
 	/**
 	 * 
 	 */
-	private static Color arancione_scuro = new Color(255,128,0);
-	private static Color arancione = new Color(255,178,102);
+	
+	private static Color colore_bottoni = new Color(255,128,0);
+	private static Color colore_sfondo = new Color(255,178,102);
 	private static final long serialVersionUID = 1L;
-	private JButton bottone_accedi, bottone_registrati, bottone_esci;
+	private JButton bottone_accedi, bottone_registrati,bottone_impostazioni, bottone_esci;
 	public Apertura() {
 		super();
-		setSize(1600, 900);
-		setBackground(arancione);
+		Properties p = System.getProperties();
+		try {
+			p.load(new FileInputStream("config/colors.txt"));
+			colore_bottoni = new Color(Integer.parseInt(p.getProperty("bottoni_red")),Integer.parseInt(p.getProperty("bottoni_green")),Integer.parseInt(p.getProperty("bottoni_blue")));
+			colore_sfondo = new Color(Integer.parseInt(p.getProperty("sfondo_red")),Integer.parseInt(p.getProperty("sfondo_green")),Integer.parseInt(p.getProperty("sfondo_blue")));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		setBackground(colore_sfondo);
 		this.setLayout(new BorderLayout());
 		
 		ArrayList<JLabel> label = new ArrayList<JLabel>();
@@ -34,16 +45,23 @@ public class Apertura extends JPanel{
 		bottone_accedi = new JButton("ACCEDI");
 		bottone_accedi.setBorder(new LineBorder(Color.BLACK));
 		bottone_accedi.setFocusPainted(false);
-		bottone_accedi.setBackground(arancione_scuro);
+		bottone_accedi.setBackground(colore_bottoni);
 		bottone_accedi.setForeground(Color.BLACK);
 		bottone_accedi.setFont(new Font("Serif", Font.PLAIN, 40));
 		
 		bottone_registrati = new JButton("REGISTRATI");
 		bottone_registrati.setBorder(new LineBorder(Color.BLACK));
 		bottone_registrati.setFocusPainted(false);
-		bottone_registrati.setBackground(arancione_scuro);
+		bottone_registrati.setBackground(colore_bottoni);
 		bottone_registrati.setForeground(Color.BLACK);
 		bottone_registrati.setFont(new Font("Serif", Font.PLAIN, 40));
+		
+		bottone_impostazioni = new JButton("IMPOSTAZIONI");
+		bottone_impostazioni.setBorder(new LineBorder(Color.BLACK));
+		bottone_impostazioni.setFocusPainted(false);
+		bottone_impostazioni.setBackground(colore_bottoni);
+		bottone_impostazioni.setForeground(Color.BLACK);
+		bottone_impostazioni.setFont(new Font("Serif", Font.PLAIN, 20));
 		
 		bottone_esci = new JButton("ESCI");
 		bottone_esci.setBorder(new LineBorder(Color.BLACK));
@@ -72,7 +90,7 @@ public class Apertura extends JPanel{
 		JPanel pannello_sopra = new JPanel();
 		pannello_sopra.setOpaque(false);
 		pannello_sopra.setLayout(new GridLayout(1,3));
-		pannello_sopra.add(label.get(10));
+		pannello_sopra.add(bottone_impostazioni);
 		pannello_sopra.add(label.get(11));
 		pannello_sopra.add(label.get(12));
 		pannello_sopra.add(label.get(13));
@@ -88,5 +106,8 @@ public class Apertura extends JPanel{
 	}
 	public JButton getBottoneEsci() {
 		return this.bottone_esci;
+	}
+	public JButton getBottoneImpostazioni() {
+		return this.bottone_impostazioni;
 	}
 }

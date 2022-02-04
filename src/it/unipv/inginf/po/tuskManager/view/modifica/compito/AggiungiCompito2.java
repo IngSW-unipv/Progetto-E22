@@ -4,7 +4,10 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Properties;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -17,8 +20,8 @@ public class AggiungiCompito2 extends JPanel{
 	/**
 	 * 
 	 */
-	private static Color arancione_scuro = new Color(255,128,0);
-	private static Color arancione = new Color(255,178,102);
+	private static Color colore_bottoni = new Color(255,128,0);
+	private static Color colore_sfondo = new Color(255,178,102);
 	private static final long serialVersionUID = 1L;
 	private JButton bottone_aggiungi, bottone_fine, bottone_indietro;
 	private JTextField ruolo;
@@ -27,7 +30,14 @@ public class AggiungiCompito2 extends JPanel{
 	private int giorno,mese,anno;
 	public AggiungiCompito2(String titolo, String descrizione, int giorno, int mese, int anno) {
 		super();
-		
+		Properties p = System.getProperties();
+		try {
+			p.load(new FileInputStream("config/colors.txt"));
+			colore_bottoni = new Color(Integer.parseInt(p.getProperty("bottoni_red")),Integer.parseInt(p.getProperty("bottoni_green")),Integer.parseInt(p.getProperty("bottoni_blue")));
+			colore_sfondo = new Color(Integer.parseInt(p.getProperty("sfondo_red")),Integer.parseInt(p.getProperty("sfondo_green")),Integer.parseInt(p.getProperty("sfondo_blue")));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 		this.titolo = titolo;
 		this.descrizione=descrizione;
 		this.giorno = giorno;
@@ -36,7 +46,7 @@ public class AggiungiCompito2 extends JPanel{
 		ruoli = new ArrayList<String>();
 		
 		setSize(1600, 900);
-		setBackground(arancione);
+		setBackground(colore_sfondo);
 		this.setLayout(new BorderLayout());
 		
 		ArrayList<JLabel> label = new ArrayList<JLabel>();
@@ -47,7 +57,7 @@ public class AggiungiCompito2 extends JPanel{
 		
 		ruolo = new JTextField("");
 		ruolo.setBorder(new LineBorder(Color.BLACK));
-		ruolo.setBackground(arancione_scuro);
+		ruolo.setBackground(colore_bottoni);
 		ruolo.setForeground(Color.BLACK);
 		ruolo.setFont(new Font("Serif", Font.PLAIN, 30));
 		ruolo.setToolTipText("INSERIRE IL RUOLO DA ASSOCIARE");
@@ -57,14 +67,14 @@ public class AggiungiCompito2 extends JPanel{
 		bottone_aggiungi = new JButton("+");
 		bottone_aggiungi.setBorder(new LineBorder(Color.BLACK));
 		bottone_aggiungi.setFocusPainted(false);
-		bottone_aggiungi.setBackground(arancione_scuro);
+		bottone_aggiungi.setBackground(colore_bottoni);
 		bottone_aggiungi.setForeground(Color.BLACK);
 		bottone_aggiungi.setFont(new Font("Serif", Font.PLAIN, 30));
 		
 		bottone_fine = new JButton("FINE");
 		bottone_fine.setBorder(new LineBorder(Color.BLACK));
 		bottone_fine.setFocusPainted(false);
-		bottone_fine.setBackground(arancione_scuro);
+		bottone_fine.setBackground(colore_bottoni);
 		bottone_fine.setForeground(Color.BLACK);
 		bottone_fine.setFont(new Font("Serif", Font.PLAIN, 30));
 		

@@ -4,7 +4,10 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Properties;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -16,15 +19,22 @@ public class Membro extends JPanel{
 	/**
 	 * 
 	 */
-	private static Color arancione_scuro = new Color(255,128,0);
-	private static Color arancione = new Color(255,178,102);
+	private static Color colore_bottoni = new Color(255,128,0);
+	private static Color colore_sfondo = new Color(255,178,102);
 	private static final long serialVersionUID = 1L;
 	private JButton bottone_aggiungi, bottone_rimuovi, bottone_ruolo, bottone_indietro;
 	
 	public Membro() {
 		super();
-		setSize(1600, 900);
-		setBackground(arancione);
+		Properties p = System.getProperties();
+		try {
+			p.load(new FileInputStream("config/colors.txt"));
+			colore_bottoni = new Color(Integer.parseInt(p.getProperty("bottoni_red")),Integer.parseInt(p.getProperty("bottoni_green")),Integer.parseInt(p.getProperty("bottoni_blue")));
+			colore_sfondo = new Color(Integer.parseInt(p.getProperty("sfondo_red")),Integer.parseInt(p.getProperty("sfondo_green")),Integer.parseInt(p.getProperty("sfondo_blue")));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		setBackground(colore_sfondo);
 		this.setLayout(new BorderLayout());
 		
 		ArrayList<JLabel> label = new ArrayList<JLabel>();
@@ -36,21 +46,21 @@ public class Membro extends JPanel{
 		bottone_aggiungi = new JButton("AGGIUNGI MEMBRO");
 		bottone_aggiungi.setBorder(new LineBorder(Color.BLACK));
 		bottone_aggiungi.setFocusPainted(false);
-		bottone_aggiungi.setBackground(arancione_scuro);
+		bottone_aggiungi.setBackground(colore_bottoni);
 		bottone_aggiungi.setForeground(Color.BLACK);
 		bottone_aggiungi.setFont(new Font("Serif", Font.PLAIN, 30));
 		
 		bottone_rimuovi = new JButton("ELIMINA MEMBRO");
 		bottone_rimuovi.setBorder(new LineBorder(Color.BLACK));
 		bottone_rimuovi.setFocusPainted(false);
-		bottone_rimuovi.setBackground(arancione_scuro);
+		bottone_rimuovi.setBackground(colore_bottoni);
 		bottone_rimuovi.setForeground(Color.BLACK);
 		bottone_rimuovi.setFont(new Font("Serif", Font.PLAIN, 30));
 		
 		bottone_ruolo = new JButton("MODIFICA RUOLO");
 		bottone_ruolo.setBorder(new LineBorder(Color.BLACK));
 		bottone_ruolo.setFocusPainted(false);
-		bottone_ruolo.setBackground(arancione_scuro);
+		bottone_ruolo.setBackground(colore_bottoni);
 		bottone_ruolo.setForeground(Color.BLACK);
 		bottone_ruolo.setFont(new Font("Serif", Font.PLAIN, 30));
 		

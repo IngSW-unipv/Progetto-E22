@@ -4,7 +4,10 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Properties;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -18,8 +21,9 @@ public class Registrati extends JPanel{
 	/**
 	 * 
 	 */
-	private static Color arancione_scuro = new Color(255,128,0);
-	private static Color arancione = new Color(255,178,102);
+	
+	private static Color colore_bottoni = new Color(255,128,0);
+	private static Color colore_sfondo = new Color(255,178,102);
 	private static final long serialVersionUID = 1L;
 	private JButton bottone_accedi, bottone_esci;
 	private JTextField email; 
@@ -28,7 +32,17 @@ public class Registrati extends JPanel{
 	public Registrati() {
 		super();
 		setSize(1600, 900);
-		setBackground(arancione);
+		
+		Properties p = System.getProperties();
+		try {
+			p.load(new FileInputStream("config/colors.txt"));
+			colore_bottoni = new Color(Integer.parseInt(p.getProperty("bottoni_red")),Integer.parseInt(p.getProperty("bottoni_green")),Integer.parseInt(p.getProperty("bottoni_blue")));
+			colore_sfondo = new Color(Integer.parseInt(p.getProperty("sfondo_red")),Integer.parseInt(p.getProperty("sfondo_green")),Integer.parseInt(p.getProperty("sfondo_blue")));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		setBackground(colore_sfondo);
 		this.setLayout(new BorderLayout());
 		
 		ArrayList<JLabel> label = new ArrayList<JLabel>();
@@ -39,7 +53,7 @@ public class Registrati extends JPanel{
 		
 		email = new JTextField("");
 		email.setBorder(new LineBorder(Color.BLACK));
-		email.setBackground(arancione_scuro);
+		email.setBackground(colore_bottoni);
 		email.setForeground(Color.BLACK);
 		email.setFont(new Font("Serif", Font.PLAIN, 30));
 		email.setToolTipText("INSERIRE EMAIL");
@@ -47,7 +61,7 @@ public class Registrati extends JPanel{
 		
 		pw = new JPasswordField("");
 		pw.setBorder(new LineBorder(Color.BLACK));
-		pw.setBackground(arancione_scuro);
+		pw.setBackground(colore_bottoni);
 		pw.setForeground(Color.BLACK);
 		pw.setFont(new Font("Serif", Font.PLAIN, 30));
 		pw.setToolTipText("INSERIRE PASSWORD");
@@ -55,7 +69,7 @@ public class Registrati extends JPanel{
 		
 		pw_conferma = new JPasswordField("");
 		pw_conferma.setBorder(new LineBorder(Color.BLACK));
-		pw_conferma.setBackground(arancione_scuro);
+		pw_conferma.setBackground(colore_bottoni);
 		pw_conferma.setForeground(Color.BLACK);
 		pw_conferma.setFont(new Font("Serif", Font.PLAIN, 30));
 		pw_conferma.setToolTipText("CONFERMARE PASSWORD");
@@ -64,7 +78,7 @@ public class Registrati extends JPanel{
 		bottone_accedi = new JButton("INVIA");
 		bottone_accedi.setBorder(new LineBorder(Color.BLACK));
 		bottone_accedi.setFocusPainted(false);
-		bottone_accedi.setBackground(arancione_scuro);
+		bottone_accedi.setBackground(colore_bottoni);
 		bottone_accedi.setForeground(Color.BLACK);
 		bottone_accedi.setFont(new Font("Serif", Font.PLAIN, 30));
 		

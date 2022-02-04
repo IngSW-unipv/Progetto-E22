@@ -4,7 +4,10 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Properties;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -17,8 +20,8 @@ public class ModificaRuolo extends JPanel{
 	/**
 	 * 
 	 */
-	private static Color arancione_scuro = new Color(255,128,0);
-	private static Color arancione = new Color(255,178,102);
+	private static Color colore_bottoni = new Color(255,128,0);
+	private static Color colore_sfondo = new Color(255,178,102);
 	private static final long serialVersionUID = 1L;
 	private JButton bottone_invia, bottone_indietro;
 	private JTextField email; 
@@ -26,8 +29,15 @@ public class ModificaRuolo extends JPanel{
 	
 	public ModificaRuolo() {
 		super();
-		setSize(1600, 900);
-		setBackground(arancione);
+		Properties p = System.getProperties();
+		try {
+			p.load(new FileInputStream("config/colors.txt"));
+			colore_bottoni = new Color(Integer.parseInt(p.getProperty("bottoni_red")),Integer.parseInt(p.getProperty("bottoni_green")),Integer.parseInt(p.getProperty("bottoni_blue")));
+			colore_sfondo = new Color(Integer.parseInt(p.getProperty("sfondo_red")),Integer.parseInt(p.getProperty("sfondo_green")),Integer.parseInt(p.getProperty("sfondo_blue")));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		setBackground(colore_sfondo);
 		this.setLayout(new BorderLayout());
 		
 		ArrayList<JLabel> label = new ArrayList<JLabel>();
@@ -38,7 +48,7 @@ public class ModificaRuolo extends JPanel{
 		
 		email = new JTextField("");
 		email.setBorder(new LineBorder(Color.BLACK));
-		email.setBackground(arancione_scuro);
+		email.setBackground(colore_bottoni);
 		email.setForeground(Color.BLACK);
 		email.setFont(new Font("Serif", Font.PLAIN, 30));
 		email.setToolTipText("INSERIRE EMAIL ASSOCIATA AL RUOLO CHE SI VUOLE MODIFICARE");
@@ -46,7 +56,7 @@ public class ModificaRuolo extends JPanel{
 		
 		ruolo = new JTextField("");
 		ruolo.setBorder(new LineBorder(Color.BLACK));
-		ruolo.setBackground(arancione_scuro);
+		ruolo.setBackground(colore_bottoni);
 		ruolo.setForeground(Color.BLACK);
 		ruolo.setFont(new Font("Serif", Font.PLAIN, 30));
 		ruolo.setToolTipText("INSERIRE IL NUOVO RUOLO");
@@ -55,7 +65,7 @@ public class ModificaRuolo extends JPanel{
 		bottone_invia = new JButton("INVIA");
 		bottone_invia.setBorder(new LineBorder(Color.BLACK));
 		bottone_invia.setFocusPainted(false);
-		bottone_invia.setBackground(arancione_scuro);
+		bottone_invia.setBackground(colore_bottoni);
 		bottone_invia.setForeground(Color.BLACK);
 		bottone_invia.setFont(new Font("Serif", Font.PLAIN, 30));
 		

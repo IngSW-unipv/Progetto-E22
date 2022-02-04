@@ -42,6 +42,7 @@ public class Controller {
 		initListenersPanelApertura();
 		initListenersPanelAccedi();
 		initListenersPanelRegistrati();
+		initListenersPanelImpostazioni();
 	}
 	private void initListenersHomePage() {
 		initListenersPanelHomePage();
@@ -89,6 +90,13 @@ public class Controller {
 				frame.seePanelRegistrati();
 			}
 		});
+		//bottone impostazioni nel panel apertura:
+		frame.getPanel_apertura().getBottoneImpostazioni().addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				frame.seePanelImpostazioni();
+			}
+		});
 		//bottone esci nel panel apertura:
 		frame.getPanel_apertura().getBottoneEsci().addActionListener(new ActionListener() {
 			@Override
@@ -96,6 +104,29 @@ public class Controller {
 				frame.dispose();
 			}
 		});
+	}
+	
+	private void initListenersPanelImpostazioni() {
+		//bottone indietro nel panel impostazioni:
+		frame.getPanel_impostazioni().getBottoneIndietro().addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				frame.seePanelApertura();
+			}
+		});
+		//bottoni dei colori
+		for(JButton b : frame.getPanel_impostazioni().getAllBottoni()) {
+			b.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					frame.getPanel_impostazioni().selectColor(b.getText());
+					JOptionPane.showMessageDialog(frame, "modifica applicata, per renderla visibile riavviare l'applicazione");
+					frame.seePanelApertura();
+				}
+			});
+		}
+		
+		
 	}
 	
 	private void initListenersPanelAccedi() {
@@ -156,6 +187,7 @@ public class Controller {
 				}
 				try {
 					if(tm.createAccount(email, pw_conf)) {
+						JOptionPane.showMessageDialog(frame, "registrazione effettuata, per iniziare ad usare l'applicazione effettuare l'accesso");
 						frame.getPanel_registrati().getEmail().setText("");
 						frame.getPanel_registrati().getPw().setText("");
 						frame.getPanel_registrati().getPwConferma().setText("");

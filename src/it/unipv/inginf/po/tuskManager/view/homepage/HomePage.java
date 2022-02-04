@@ -4,7 +4,10 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Properties;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -16,14 +19,21 @@ public class HomePage extends JPanel{
 	/**
 	 * 
 	 */
-	private static Color arancione_scuro = new Color(255,128,0);
-	private static Color arancione = new Color(255,178,102);
+	private static Color colore_bottoni = new Color(255,128,0);
+	private static Color colore_sfondo = new Color(255,178,102);
 	private static final long serialVersionUID = 1L;
 	private JButton bottone_crea, bottone_seleziona, bottone_logout;
 	public HomePage() {
 		super();
-		setSize(1600, 900);
-		setBackground(arancione);
+		Properties p = System.getProperties();
+		try {
+			p.load(new FileInputStream("config/colors.txt"));
+			colore_bottoni = new Color(Integer.parseInt(p.getProperty("bottoni_red")),Integer.parseInt(p.getProperty("bottoni_green")),Integer.parseInt(p.getProperty("bottoni_blue")));
+			colore_sfondo = new Color(Integer.parseInt(p.getProperty("sfondo_red")),Integer.parseInt(p.getProperty("sfondo_green")),Integer.parseInt(p.getProperty("sfondo_blue")));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		setBackground(colore_sfondo);
 		this.setLayout(new BorderLayout());
 		
 		ArrayList<JLabel> label = new ArrayList<JLabel>();
@@ -34,14 +44,14 @@ public class HomePage extends JPanel{
 		bottone_crea = new JButton("CREA WORKSPACE");
 		bottone_crea.setBorder(new LineBorder(Color.BLACK));
 		bottone_crea.setFocusPainted(false);
-		bottone_crea.setBackground(arancione_scuro);
+		bottone_crea.setBackground(colore_bottoni);
 		bottone_crea.setForeground(Color.BLACK);
 		bottone_crea.setFont(new Font("Serif", Font.PLAIN, 40));
 		
 		bottone_seleziona = new JButton("SELEZIONA");
 		bottone_seleziona.setBorder(new LineBorder(Color.BLACK));
 		bottone_seleziona.setFocusPainted(false);
-		bottone_seleziona.setBackground(arancione_scuro);
+		bottone_seleziona.setBackground(colore_bottoni);
 		bottone_seleziona.setForeground(Color.BLACK);
 		bottone_seleziona.setFont(new Font("Serif", Font.PLAIN, 40));
 		

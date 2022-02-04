@@ -4,7 +4,10 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Properties;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -16,15 +19,22 @@ public class OperazioniCompito extends JPanel{
 	/**
 	 * 
 	 */
-	private static Color arancione_scuro = new Color(255,128,0);
-	private static Color arancione = new Color(255,178,102);
+	private static Color colore_bottoni = new Color(255,128,0);
+	private static Color colore_sfondo = new Color(255,178,102);
 	private static final long serialVersionUID = 1L;
 	private JButton bottone_aggiungi, bottone_rimuovi, bottone_modifica, bottone_sposta, bottone_indietro;
 	
 	public OperazioniCompito() {
 		super();
-		setSize(1600, 900);
-		setBackground(arancione);
+		Properties p = System.getProperties();
+		try {
+			p.load(new FileInputStream("config/colors.txt"));
+			colore_bottoni = new Color(Integer.parseInt(p.getProperty("bottoni_red")),Integer.parseInt(p.getProperty("bottoni_green")),Integer.parseInt(p.getProperty("bottoni_blue")));
+			colore_sfondo = new Color(Integer.parseInt(p.getProperty("sfondo_red")),Integer.parseInt(p.getProperty("sfondo_green")),Integer.parseInt(p.getProperty("sfondo_blue")));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		setBackground(colore_sfondo);
 		this.setLayout(new BorderLayout());
 		
 		ArrayList<JLabel> label = new ArrayList<JLabel>();
@@ -36,28 +46,28 @@ public class OperazioniCompito extends JPanel{
 		bottone_aggiungi = new JButton("AGGIUNGI COMPITO");
 		bottone_aggiungi.setBorder(new LineBorder(Color.BLACK));
 		bottone_aggiungi.setFocusPainted(false);
-		bottone_aggiungi.setBackground(arancione_scuro);
+		bottone_aggiungi.setBackground(colore_bottoni);
 		bottone_aggiungi.setForeground(Color.BLACK);
 		bottone_aggiungi.setFont(new Font("Serif", Font.PLAIN, 30));
 		
 		bottone_rimuovi = new JButton("ELIMINA COMPITO");
 		bottone_rimuovi.setBorder(new LineBorder(Color.BLACK));
 		bottone_rimuovi.setFocusPainted(false);
-		bottone_rimuovi.setBackground(arancione_scuro);
+		bottone_rimuovi.setBackground(colore_bottoni);
 		bottone_rimuovi.setForeground(Color.BLACK);
 		bottone_rimuovi.setFont(new Font("Serif", Font.PLAIN, 30));
 		
 		bottone_modifica = new JButton("MODIFICA COMPITO");
 		bottone_modifica.setBorder(new LineBorder(Color.BLACK));
 		bottone_modifica.setFocusPainted(false);
-		bottone_modifica.setBackground(arancione_scuro);
+		bottone_modifica.setBackground(colore_bottoni);
 		bottone_modifica.setForeground(Color.BLACK);
 		bottone_modifica.setFont(new Font("Serif", Font.PLAIN, 30));
 		
 		bottone_sposta = new JButton("GESTISCI STATO COMPITO");
 		bottone_sposta.setBorder(new LineBorder(Color.BLACK));
 		bottone_sposta.setFocusPainted(false);
-		bottone_sposta.setBackground(arancione_scuro);
+		bottone_sposta.setBackground(colore_bottoni);
 		bottone_sposta.setForeground(Color.BLACK);
 		bottone_sposta.setFont(new Font("Serif", Font.PLAIN, 30));
 		

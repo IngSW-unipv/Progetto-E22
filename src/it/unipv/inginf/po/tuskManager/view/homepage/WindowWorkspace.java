@@ -4,7 +4,10 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Properties;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -21,14 +24,22 @@ public class WindowWorkspace extends JPanel{
 	/**
 	 * 
 	 */
-	private static Color arancione_scuro = new Color(255,128,0);
-	private static Color arancione = new Color(255,178,102);
+	private static Color colore_bottoni = new Color(255,128,0);
+	private static Color colore_sfondo = new Color(255,178,102);
 	private static final long serialVersionUID = 1L;
 	private JButton bottone_operazioni, bottone_indietro;
 	private ArrayList<JButton> bottoni;
 	public WindowWorkspace(Workspace w, Ruolo r) {
 		super();
-		setBackground(arancione);
+		Properties p = System.getProperties();
+		try {
+			p.load(new FileInputStream("config/colors.txt"));
+			colore_bottoni = new Color(Integer.parseInt(p.getProperty("bottoni_red")),Integer.parseInt(p.getProperty("bottoni_green")),Integer.parseInt(p.getProperty("bottoni_blue")));
+			colore_sfondo = new Color(Integer.parseInt(p.getProperty("sfondo_red")),Integer.parseInt(p.getProperty("sfondo_green")),Integer.parseInt(p.getProperty("sfondo_blue")));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		setBackground(colore_sfondo);
 		this.setLayout(new BorderLayout());
 		
 		ArrayList<JLabel> label = new ArrayList<JLabel>();
@@ -41,7 +52,7 @@ public class WindowWorkspace extends JPanel{
 		bottone_operazioni = new JButton("OPERAZIONI");
 		bottone_operazioni.setBorder(new LineBorder(Color.BLACK));
 		bottone_operazioni.setFocusPainted(false);
-		bottone_operazioni.setBackground(arancione_scuro);
+		bottone_operazioni.setBackground(colore_bottoni);
 		bottone_operazioni.setForeground(Color.BLACK);
 		bottone_operazioni.setFont(new Font("Serif", Font.PLAIN, 30));
 		
@@ -60,7 +71,7 @@ public class WindowWorkspace extends JPanel{
 		JPanel pannello_schede = new JPanel();
 
 		pannello_schede.setBorder(new LineBorder(Color.WHITE));
-		pannello_schede.setBackground(arancione_scuro);
+		pannello_schede.setBackground(colore_bottoni);
 		pannello_schede.setLayout(new GridLayout(1,w.getLista_schede().size()));
 		
 		int numero_max_compiti = 0;//serve per avere le liste dei compiti grandi uguali
@@ -76,10 +87,10 @@ public class WindowWorkspace extends JPanel{
 		for(Scheda s : w.getLista_schede()) {
 			JPanel panel = new JPanel();
 			panel.setBorder(new LineBorder(Color.WHITE));
-			panel.setBackground(arancione_scuro);
+			panel.setBackground(colore_bottoni);
 			JLabel titolo = new JLabel(s.getTitolo());
 			titolo.setHorizontalAlignment(JLabel.CENTER);
-			titolo.setBackground(arancione_scuro);
+			titolo.setBackground(colore_bottoni);
 			titolo.setForeground(Color.WHITE);
 			titolo.setFont(new Font("Serif", Font.BOLD, 28));
 			
@@ -90,7 +101,7 @@ public class WindowWorkspace extends JPanel{
 				JButton b = new JButton(c.getTitolo());
 				b.setBorder(new LineBorder(Color.BLACK));
 				b.setFocusPainted(false);
-				b.setBackground(arancione_scuro);
+				b.setBackground(colore_bottoni);
 				b.setForeground(Color.BLACK);
 				b.setFont(new Font("Serif", Font.PLAIN, 20));
 				panel.add(b);
@@ -112,7 +123,8 @@ public class WindowWorkspace extends JPanel{
 		pannello_sopra.setOpaque(false);
 		pannello_sopra.setLayout(new GridLayout(1,3));
 		label.get(10).setText("Il tuo ruolo è: "+r.getNome());
-		label.get(10).setBackground(arancione_scuro);
+		label.get(10).setBackground(colore_bottoni);
+		label.get(10).setForeground(Color.WHITE);
 		label.get(10).setFont(new Font("Serif", Font.ITALIC, 15));
 		pannello_sopra.add(label.get(10));
 		pannello_sopra.add(label.get(11));

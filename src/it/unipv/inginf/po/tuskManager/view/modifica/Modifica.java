@@ -4,7 +4,10 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Properties;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -16,15 +19,22 @@ public class Modifica extends JPanel{
 	/**
 	 * 
 	 */
-	private static Color arancione_scuro = new Color(255,128,0);
-	private static Color arancione = new Color(255,178,102);
+	private static Color colore_bottoni = new Color(255,128,0);
+	private static Color colore_sfondo = new Color(255,178,102);
 	private static final long serialVersionUID = 1L;
 	private JButton bottone_membro, bottone_compito, bottone_ws, bottone_indietro;
 	
 	public Modifica() {
 		super();
-		setSize(1600, 900);
-		setBackground(arancione);
+		Properties p = System.getProperties();
+		try {
+			p.load(new FileInputStream("config/colors.txt"));
+			colore_bottoni = new Color(Integer.parseInt(p.getProperty("bottoni_red")),Integer.parseInt(p.getProperty("bottoni_green")),Integer.parseInt(p.getProperty("bottoni_blue")));
+			colore_sfondo = new Color(Integer.parseInt(p.getProperty("sfondo_red")),Integer.parseInt(p.getProperty("sfondo_green")),Integer.parseInt(p.getProperty("sfondo_blue")));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		setBackground(colore_sfondo);
 		this.setLayout(new BorderLayout());
 		
 		ArrayList<JLabel> label = new ArrayList<JLabel>();
@@ -36,21 +46,21 @@ public class Modifica extends JPanel{
 		bottone_membro = new JButton("OPERAZIONI SUI MEMBRI");
 		bottone_membro.setBorder(new LineBorder(Color.BLACK));
 		bottone_membro.setFocusPainted(false);
-		bottone_membro.setBackground(arancione_scuro);
+		bottone_membro.setBackground(colore_bottoni);
 		bottone_membro.setForeground(Color.BLACK);
 		bottone_membro.setFont(new Font("Serif", Font.PLAIN, 30));
 		
 		bottone_compito = new JButton("OPERAZIONI SUI COMPITI");
 		bottone_compito.setBorder(new LineBorder(Color.BLACK));
 		bottone_compito.setFocusPainted(false);
-		bottone_compito.setBackground(arancione_scuro);
+		bottone_compito.setBackground(colore_bottoni);
 		bottone_compito.setForeground(Color.BLACK);
 		bottone_compito.setFont(new Font("Serif", Font.PLAIN, 30));
 		
 		bottone_ws = new JButton("OPERAZIONI SUI WORKSPACE");
 		bottone_ws.setBorder(new LineBorder(Color.BLACK));
 		bottone_ws.setFocusPainted(false);
-		bottone_ws.setBackground(arancione_scuro);
+		bottone_ws.setBackground(colore_bottoni);
 		bottone_ws.setForeground(Color.BLACK);
 		bottone_ws.setFont(new Font("Serif", Font.PLAIN, 30));
 		

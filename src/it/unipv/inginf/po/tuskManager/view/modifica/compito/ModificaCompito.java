@@ -4,8 +4,12 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Properties;
+
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -17,16 +21,23 @@ public class ModificaCompito extends JPanel{
 	/**
 	 * 
 	 */
-	private static Color arancione_scuro = new Color(255,128,0);
-	private static Color arancione = new Color(255,178,102);
+	private static Color colore_bottoni = new Color(255,128,0);
+	private static Color colore_sfondo = new Color(255,178,102);
 	private static final long serialVersionUID = 1L;
 	private JButton bottone_avanti, bottone_indietro;
 	private JTextField titolo,titolo_vecchio, descrizione,scadenza_gg,scadenza_mm,scadenza_yyyy;
 	private JPanel pannello_scadenza;
 	public ModificaCompito() {
 		super();
-		setSize(1600, 900);
-		setBackground(arancione);
+		Properties p = System.getProperties();
+		try {
+			p.load(new FileInputStream("config/colors.txt"));
+			colore_bottoni = new Color(Integer.parseInt(p.getProperty("bottoni_red")),Integer.parseInt(p.getProperty("bottoni_green")),Integer.parseInt(p.getProperty("bottoni_blue")));
+			colore_sfondo = new Color(Integer.parseInt(p.getProperty("sfondo_red")),Integer.parseInt(p.getProperty("sfondo_green")),Integer.parseInt(p.getProperty("sfondo_blue")));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		setBackground(colore_sfondo);
 		this.setLayout(new BorderLayout());
 		
 		ArrayList<JLabel> label = new ArrayList<JLabel>();
@@ -37,7 +48,7 @@ public class ModificaCompito extends JPanel{
 		
 		titolo_vecchio = new JTextField("");
 		titolo_vecchio.setBorder(new LineBorder(Color.BLACK));
-		titolo_vecchio.setBackground(arancione_scuro);
+		titolo_vecchio.setBackground(colore_bottoni);
 		titolo_vecchio.setForeground(Color.BLACK);
 		titolo_vecchio.setFont(new Font("Serif", Font.PLAIN, 30));
 		titolo_vecchio.setToolTipText("INSERIRE IL VECCHIO TITOLO DEL COMPITO");
@@ -45,7 +56,7 @@ public class ModificaCompito extends JPanel{
 		
 		titolo = new JTextField("");
 		titolo.setBorder(new LineBorder(Color.BLACK));
-		titolo.setBackground(arancione_scuro);
+		titolo.setBackground(colore_bottoni);
 		titolo.setForeground(Color.BLACK);
 		titolo.setFont(new Font("Serif", Font.PLAIN, 30));
 		titolo.setToolTipText("INSERIRE IL NUOVO TITOLO DEL COMPITO");
@@ -53,18 +64,18 @@ public class ModificaCompito extends JPanel{
 		
 		descrizione = new JTextField("");
 		descrizione.setBorder(new LineBorder(Color.BLACK));
-		descrizione.setBackground(arancione_scuro);
+		descrizione.setBackground(colore_bottoni);
 		descrizione.setForeground(Color.BLACK);
 		descrizione.setFont(new Font("Serif", Font.PLAIN, 30));
 		descrizione.setToolTipText("INSERIRE UNA DESCRIZIONE");
 		descrizione.setHorizontalAlignment(JTextField.CENTER);
 		
 		pannello_scadenza = new JPanel();
-		pannello_scadenza.setBackground(arancione);
+		pannello_scadenza.setBackground(colore_sfondo);
 		
 		scadenza_gg = new JTextField();
 		scadenza_gg.setBorder(new LineBorder(Color.BLACK));
-		scadenza_gg.setBackground(arancione_scuro);
+		scadenza_gg.setBackground(colore_bottoni);
 		scadenza_gg.setForeground(Color.BLACK);
 		scadenza_gg.setFont(new Font("Serif", Font.PLAIN, 30));
 		scadenza_gg.setToolTipText("gg");
@@ -72,7 +83,7 @@ public class ModificaCompito extends JPanel{
 		
 		scadenza_mm = new JTextField();
 		scadenza_mm.setBorder(new LineBorder(Color.BLACK));
-		scadenza_mm.setBackground(arancione_scuro);
+		scadenza_mm.setBackground(colore_bottoni);
 		scadenza_mm.setForeground(Color.BLACK);
 		scadenza_mm.setFont(new Font("Serif", Font.PLAIN, 30));
 		scadenza_mm.setToolTipText("mm");
@@ -80,7 +91,7 @@ public class ModificaCompito extends JPanel{
 		
 		scadenza_yyyy = new JTextField();
 		scadenza_yyyy.setBorder(new LineBorder(Color.BLACK));
-		scadenza_yyyy.setBackground(arancione_scuro);
+		scadenza_yyyy.setBackground(colore_bottoni);
 		scadenza_yyyy.setForeground(Color.BLACK);
 		scadenza_yyyy.setFont(new Font("Serif", Font.PLAIN, 30));
 		scadenza_yyyy.setToolTipText("yyyy");
@@ -94,7 +105,7 @@ public class ModificaCompito extends JPanel{
 		bottone_avanti = new JButton("AVANTI");
 		bottone_avanti.setBorder(new LineBorder(Color.BLACK));
 		bottone_avanti.setFocusPainted(false);
-		bottone_avanti.setBackground(arancione_scuro);
+		bottone_avanti.setBackground(colore_bottoni);
 		bottone_avanti.setForeground(Color.BLACK);
 		bottone_avanti.setFont(new Font("Serif", Font.PLAIN, 30));
 		
