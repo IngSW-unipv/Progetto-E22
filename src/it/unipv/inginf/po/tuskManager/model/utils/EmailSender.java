@@ -79,7 +79,7 @@ public class EmailSender {
 
 	    // Creazione delle BodyParts del messaggio
 	    MimeBodyPart messageBodyPart1 = new MimeBodyPart();
-	    MimeBodyPart messageBodyPart2 = new MimeBodyPart();
+//	    MimeBodyPart messageBodyPart2 = new MimeBodyPart();
 
 	    try{
 	      // COSTRUZIONE DEL MESSAGGIO

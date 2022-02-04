@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import javax.swing.JButton;
-import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 import it.unipv.inginf.po.tuskManager.model.TaskManager;
 import it.unipv.inginf.po.tuskManager.model.beans.Membro;
@@ -107,12 +107,16 @@ public class Controller {
 				String pw = String.copyValueOf(frame.getPanel_accedi().getPw().getPassword());
 				try {
 					if(tm.login(email, pw)) {
+						frame.getPanel_accedi().getEmail().setText("");
+						frame.getPanel_accedi().getPw().setText("");
 						frame.seePanelHomePage(); 
 					}else {
-						// QUA POP UP CREDENZIALI ERRATE
+						JOptionPane.showMessageDialog(frame, "credenziali errate");
 					}
 				} catch (CannotConnectToDbException e1) {
-					e1.printStackTrace(); //QUA POP UP DB SPENTO
+					frame.getPanel_accedi().getEmail().setText("");
+					frame.getPanel_accedi().getPw().setText("");
+					JOptionPane.showMessageDialog(frame, "impossibile reperire informazioni dalla piattaforma");
 				}
 			}
 		});
@@ -120,6 +124,8 @@ public class Controller {
 		frame.getPanel_accedi().getBottoneIndietro().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				frame.getPanel_accedi().getEmail().setText("");
+				frame.getPanel_accedi().getPw().setText("");
 				frame.seePanelApertura();
 			}
 		});
@@ -130,6 +136,9 @@ public class Controller {
 		frame.getPanel_registrati().getBottoneIndietro().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				frame.getPanel_registrati().getEmail().setText("");
+				frame.getPanel_registrati().getPw().setText("");
+				frame.getPanel_registrati().getPwConferma().setText("");
 				frame.seePanelApertura();
 			}
 		});
@@ -142,18 +151,24 @@ public class Controller {
 				String pw_conf = String.copyValueOf(frame.getPanel_registrati().getPwConferma().getPassword());
 				
 				if(!pw.equals(pw_conf)) {
-					//QUA POP UP PASSWORD DIVERSE
+					JOptionPane.showMessageDialog(frame, "le password non coincidono");
 					return;
 				}
 				try {
 					if(tm.createAccount(email, pw_conf)) {
+						frame.getPanel_registrati().getEmail().setText("");
+						frame.getPanel_registrati().getPw().setText("");
+						frame.getPanel_registrati().getPwConferma().setText("");
 						frame.seePanelHomePage();
 					}
 					else {
-						//QUA POP UP EMAIL GIA USATA
+						JOptionPane.showMessageDialog(frame, "esiste gia' un account collegato a questa email");
 					}
 				} catch (CannotConnectToDbException e1) {
-					e1.printStackTrace();// QUA POP UP DB SPENTO
+					frame.getPanel_registrati().getEmail().setText("");
+					frame.getPanel_registrati().getPw().setText("");
+					frame.getPanel_registrati().getPwConferma().setText("");
+					JOptionPane.showMessageDialog(frame, "impossibile reperire informazioni dalla piattaforma");
 				}
 			}
 		});
@@ -186,7 +201,7 @@ public class Controller {
 				try {
 					lista_ws = tm.getAllWorkspaces();
 				} catch (CannotConnectToDbException e1) {
-					e1.printStackTrace(); //POP UP DB SPENTO
+					JOptionPane.showMessageDialog(frame, "impossibile reperire informazioni dalla piattaforma");
 				}
 				for(Workspace w : lista_ws) {
 					lista_nomi.add(w.getNome());
@@ -213,13 +228,20 @@ public class Controller {
 						tm.createScheda(new Scheda("DONE",null));
 						frame.seePanelWorkspace(tm.getWorkspace(new Workspace(0,frame.getPanel_crea().getNome().getText(),null,null)),tm.getMembroLogged().getRuolo());
 						initTempListenersPanelWorkspace();
+						frame.getPanel_crea().getNome().setText("");
 					}
 					else {
-						//POP UP WS NON CREATO
+						JOptionPane.showMessageDialog(frame, "nome non utilizzabile");
+						frame.getPanel_crea().getNome().setText("");
 						frame.seePanelHomePage();
 					}
-				} catch (CannotConnectToDbException | RoleNotAcceptedException e1) {
-					//POP UP DB SPENTO
+				} catch (CannotConnectToDbException e3) {
+					JOptionPane.showMessageDialog(frame, "impossibile reperire informazioni dalla piattaforma");
+					frame.getPanel_crea().getNome().setText("");
+					frame.seePanelHomePage();
+				}catch(RoleNotAcceptedException e1) {
+					JOptionPane.showMessageDialog(frame, "il tuo ruolo non e' adeguato a svolgere questa operazione");
+					frame.getPanel_crea().getNome().setText("");
 					frame.seePanelHomePage();
 				}
 			}
@@ -229,6 +251,7 @@ public class Controller {
 		frame.getPanel_crea().getBottoneIndietro().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				frame.getPanel_crea().getNome().setText("");
 				frame.seePanelHomePage();
 			}
 		});
@@ -251,7 +274,7 @@ public class Controller {
 						frame.seePanelWorkspace(tm.getWorkspace(new Workspace(0,b.getText(),null,null)),tm.getMembroLogged().getRuolo());
 						initTempListenersPanelWorkspace();
 					} catch (CannotConnectToDbException e1) {
-						e1.printStackTrace();//POP UP DB SPENTO
+						JOptionPane.showMessageDialog(frame, "impossibile reperire informazioni dalla piattaforma");
 					}
 				}
 			});
@@ -276,6 +299,7 @@ public class Controller {
 		//bottoni compiti
 		for (JButton b : frame.getPanel_workspace().getAllBottoni()) {
 			b.addActionListener(new ActionListener() {
+				@SuppressWarnings("deprecation")
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					Compito c = null;
@@ -288,12 +312,19 @@ public class Controller {
 							}
 						}
 						if(c!= null) {
-							//QUA POP UP CON INFO DEL COMPITO, info compito salvate in c
-							System.out.println(c.getTitolo());
+							String sruoli = "";
+							for (Ruolo r : c.getRuoli()) {
+								if(sruoli == "")
+									sruoli = r.getNome();
+								else {
+									sruoli =sruoli + ", "+r.getNome();
+								}
+							}
+							JOptionPane.showMessageDialog(frame, "titolo: "+c.getTitolo() + "\ndescrizione: "+ c.getDescrizione() + "\nscadenza: "+c.getScadenza().getDay()+"/"+c.getScadenza().getMonth()+"/"+c.getScadenza().getYear()+"\nruoli:"+sruoli);
 						}
 						
 					} catch (CannotConnectToDbException e1) {
-						e1.printStackTrace();//POP UP DB SPENTO
+						JOptionPane.showMessageDialog(frame, "impossibile reperire informazioni dalla piattaforma");
 					}
 				}
 			});
@@ -309,7 +340,7 @@ public class Controller {
 					frame.seePanelWorkspace(tm.getWorkspace(),tm.getMembroLogged().getRuolo());
 					initTempListenersPanelWorkspace();
 				} catch (CannotConnectToDbException e1) {
-					e1.printStackTrace();//POP UP DB SPENTO
+					JOptionPane.showMessageDialog(frame, "impossibile reperire informazioni dalla piattaforma");
 				}
 			}
 		});
@@ -374,22 +405,31 @@ public class Controller {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					if(tm.addMembro(frame.getPanel_aggiungiMembro().getEmail().getText(), new Ruolo(frame.getPanel_aggiungiMembro().getRuolo().getText()))) {
-						//POP UP AGGIUNTO MEMBRO
+						JOptionPane.showMessageDialog(frame, "il membro e' stato aggiunto correttamente");
+						frame.getPanel_aggiungiMembro().getEmail().setText("");
+						frame.getPanel_aggiungiMembro().getRuolo().setText("");
 						frame.seePanelModifica();
 					}else {
-						//POP UP NON AGGIUNTO MEMBRO
+						JOptionPane.showMessageDialog(frame, "il membro non e' stato aggiunto, assicurarsi che esista un account associato all'email inserita");
 						frame.seePanelAggiungiMembro();
 					}
-				} catch (RoleNotAcceptedException | CannotSendMailException | CannotConnectToDbException e1) {
-					// POP UP VARI
-					e1.printStackTrace();
+				} catch (CannotConnectToDbException e1) {
+					JOptionPane.showMessageDialog(frame, "impossibile reperire informazioni dalla piattaforma");
+				}catch(CannotSendMailException ex2) {
+					JOptionPane.showMessageDialog(frame, "impossibile inviare email di notifica");
+				}catch(RoleNotAcceptedException ex3) {
+					JOptionPane.showMessageDialog(frame, "il tuo ruolo non e' adeguato a svolgere questa operazione");
 				}
+				frame.getPanel_aggiungiMembro().getEmail().setText("");
+				frame.getPanel_aggiungiMembro().getRuolo().setText("");
 			}
 		});
 		//bottone indetro nel panel aggiungi membro:
-		frame.getPanel_aggiungiMembro().getBottoneInvia().addActionListener(new ActionListener() {
+		frame.getPanel_aggiungiMembro().getBottoneIndietro().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				frame.getPanel_aggiungiMembro().getEmail().setText("");
+				frame.getPanel_aggiungiMembro().getRuolo().setText("");
 				frame.seePanelMembro();
 			}
 		});
@@ -402,22 +442,29 @@ public class Controller {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					if(tm.modifyMembro(frame.getPanel_modificaRuolo().getEmail().getText(), new Ruolo(frame.getPanel_modificaRuolo().getRuolo().getText()))) {
-						//POP UP MODIFICATO MEMBRO
+						JOptionPane.showMessageDialog(frame, "le informazioni del membro sono state modificate con successo");
 						frame.seePanelMembro();
 					}else {
-						//POP UP NON MODIFICATO MEMBRO
+						JOptionPane.showMessageDialog(frame, "impossibile effettuare l'operazione richiesta");
 						frame.seePanelModificaRuolo();
 					}
-				} catch (RoleNotAcceptedException | CannotSendMailException | CannotConnectToDbException e1) {
-					// POP UP VARI
-					e1.printStackTrace();
+				} catch (CannotConnectToDbException e1) {
+					JOptionPane.showMessageDialog(frame, "impossibile reperire informazioni dalla piattaforma");
+				}catch(CannotSendMailException ex2) {
+					JOptionPane.showMessageDialog(frame, "impossibile inviare email di notifica");
+				}catch(RoleNotAcceptedException ex3) {
+					JOptionPane.showMessageDialog(frame, "il tuo ruolo non e' adeguato a svolgere questa operazione");
 				}
+				frame.getPanel_modificaRuolo().getEmail().setText("");
+				frame.getPanel_modificaRuolo().getRuolo().setText("");
 			}
 		});
 		//bottone indetro nel panel modifica ruolo:
 		frame.getPanel_modificaRuolo().getBottoneIndietro().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				frame.getPanel_modificaRuolo().getEmail().setText("");
+				frame.getPanel_modificaRuolo().getRuolo().setText("");
 				frame.seePanelMembro();
 			}
 		});
@@ -430,22 +477,27 @@ public class Controller {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					if(tm.removeMembro(new Membro(frame.getPanel_rimuoviMembro().getEmail().getText(),null,null))) {
-						//POP UP RIMOZIONE FATTA
+						JOptionPane.showMessageDialog(frame, "il membro e' stato rimosso con successo");
 						frame.seePanelMembro();
 					}else {
-						//POP UP NON RIMOSSO MEMBRO
+						JOptionPane.showMessageDialog(frame, "impossibile effettuare l'operazione richiesta");
 						frame.seePanelRimuoviMembro();
 					}
-				} catch (RoleNotAcceptedException | CannotSendMailException | CannotConnectToDbException e1) {
-					// POP UP VARI
-					e1.printStackTrace();
+				} catch (CannotConnectToDbException e1) {
+					JOptionPane.showMessageDialog(frame, "impossibile reperire informazioni dalla piattaforma");
+				}catch(CannotSendMailException ex2) {
+					JOptionPane.showMessageDialog(frame, "impossibile inviare email di notifica");
+				}catch(RoleNotAcceptedException ex3) {
+					JOptionPane.showMessageDialog(frame, "il tuo ruolo non e' adeguato a svolgere questa operazione");
 				}
+				frame.getPanel_rimuoviMembro().getEmail().setText("");
 			}
 		});
 		//bottone indietro nel panel rimuovi ruolo:
 		frame.getPanel_rimuoviMembro().getBottoneIndietro().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				frame.getPanel_rimuoviMembro().getEmail().setText("");
 				frame.seePanelMembro();
 			}
 		});
@@ -480,6 +532,7 @@ public class Controller {
 		frame.getPanel_modificaNome().getBottoneIndietro().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				frame.getPanel_modificaNome().getNome().setText("");
 				frame.seePanelOperazioniWs();
 			}
 		});
@@ -488,17 +541,24 @@ public class Controller {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
+					if(frame.getPanel_modificaNome().getNome().getText().equals("")) {
+						JOptionPane.showMessageDialog(frame, "impossibile effettuare l'operazione richiesta");
+						frame.seePanelModificaNome();
+						return;
+					}
 					if(tm.modifyWorkspace(tm.getWorkspace(), new Workspace(0,frame.getPanel_modificaNome().getNome().getText(),null,null))) {
-						//POP UP MODIFICA NOME WS RIUSCITA
 						frame.seePanelHomePage();
 					}
 					else {
-						//POP UP MODIFICA NOME WS NON RIUSCITA
+						JOptionPane.showMessageDialog(frame, "impossibile effettuare l'operazione richiesta");
 						frame.seePanelModificaNome();
 					}
-				} catch (RoleNotAcceptedException | CannotConnectToDbException e1) {
-					e1.printStackTrace(); //POP UP DB SPENTO
+				} catch (CannotConnectToDbException e1) {
+					JOptionPane.showMessageDialog(frame, "impossibile reperire informazioni dalla piattaforma");
+				}catch(RoleNotAcceptedException ex3) {
+					JOptionPane.showMessageDialog(frame, "il tuo ruolo non e' adeguato a svolgere questa operazione");
 				}
+				frame.getPanel_modificaNome().getNome().setText("");
 			}
 		});
 	}
@@ -508,6 +568,7 @@ public class Controller {
 		frame.getPanel_rimuoviWs().getBottoneIndietro().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				frame.getPanel_rimuoviWs().getNome().setText("");
 				frame.seePanelOperazioniWs();
 			}
 		});
@@ -517,16 +578,20 @@ public class Controller {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					if(frame.getPanel_rimuoviWs().getNome().getText().equals(tm.getWorkspace().getNome())) {
-						//POP UP ELIMINAZIONE RIUSCITA
 						tm.removeWorkspace(tm.getWorkspace());
 						frame.seePanelHomePage();
 					}else {
-						//POP UP ELIMINAZIONE NON RIUSCITA
+						JOptionPane.showMessageDialog(frame, "impossibile effettuare l'operazione richiesta");
 						frame.seePanelRimuoviWs();
 					}
-				} catch (CannotConnectToDbException | RoleNotAcceptedException | CannotSendMailException e1) {
-					e1.printStackTrace();//POP UP DB SPENTO
+				} catch (CannotConnectToDbException e1) {
+					JOptionPane.showMessageDialog(frame, "impossibile reperire informazioni dalla piattaforma");
+				}catch(CannotSendMailException ex2) {
+					JOptionPane.showMessageDialog(frame, "impossibile inviare email di notifica");
+				}catch(RoleNotAcceptedException ex3) {
+					JOptionPane.showMessageDialog(frame, "il tuo ruolo non e' adeguato a svolgere questa operazione");
 				}
+				frame.getPanel_rimuoviWs().getNome().setText("");
 			}
 		});
 	}
@@ -536,6 +601,11 @@ public class Controller {
 		frame.getPanel_aggiungiCompito().getBottoneIndietro().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				frame.getPanel_aggiungiCompito().getTitolo().setText("");
+				frame.getPanel_aggiungiCompito().getDescrizione().setText("");
+				frame.getPanel_aggiungiCompito().getGiorno().setText("");
+				frame.getPanel_aggiungiCompito().getMese().setText("");
+				frame.getPanel_aggiungiCompito().getAnno().setText("");
 				frame.seePanelOperazioniCompito();
 			}
 		});
@@ -550,12 +620,27 @@ public class Controller {
 				int giorno = scadenza.get(Calendar.DAY_OF_MONTH);
 				int mese = scadenza.get(Calendar.MONTH);
 				int anno = scadenza.get(Calendar.YEAR);
+				if((frame.getPanel_aggiungiCompito().getAnno().getText().length() != 4) || Integer.parseInt(frame.getPanel_aggiungiCompito().getMese().getText()) <1 || Integer.parseInt(frame.getPanel_aggiungiCompito().getMese().getText())>12 || Integer.parseInt(frame.getPanel_aggiungiCompito().getGiorno().getText()) < 1 || Integer.parseInt(frame.getPanel_aggiungiCompito().getGiorno().getText())>31|| titolo == null || scadenza == null) {
+					frame.getPanel_aggiungiCompito().getTitolo().setText("");
+					frame.getPanel_aggiungiCompito().getDescrizione().setText("");
+					frame.getPanel_aggiungiCompito().getGiorno().setText("");
+					frame.getPanel_aggiungiCompito().getMese().setText("");
+					frame.getPanel_aggiungiCompito().getAnno().setText("");
+					JOptionPane.showMessageDialog(frame, "impossibile effettuare l'operazione richiesta");
+					frame.seePanelModifica();
+					return;
+				}
 				frame.seePanelAggiungiCompito2(titolo,descrizione,giorno,mese,anno);
 				initListenersPanelAggiungiCompito2();
 				}catch(Exception ex) {
-					//POP UP COMPITO NON AGGIUNTO
+					JOptionPane.showMessageDialog(frame, "impossibile effettuare l'operazione richiesta");
 					frame.seePanelModifica();
 				}
+				frame.getPanel_aggiungiCompito().getTitolo().setText("");
+				frame.getPanel_aggiungiCompito().getDescrizione().setText("");
+				frame.getPanel_aggiungiCompito().getGiorno().setText("");
+				frame.getPanel_aggiungiCompito().getMese().setText("");
+				frame.getPanel_aggiungiCompito().getAnno().setText("");
 			}
 		});
 		
@@ -566,6 +651,7 @@ public class Controller {
 		frame.getPanel_aggiungiCompito2().getBottoneIndietro().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				frame.getPanel_aggiungiCompito2().getRuolo().setText("");
 				frame.seePanelOperazioniCompito();
 			}
 		});
@@ -591,16 +677,17 @@ public class Controller {
 				
 				try {//lo aggiunge nella prima!
 					if(tm.createCompito(tm.getWorkspace().getLista_schede().get(0), new Compito(frame.getPanel_aggiungiCompito2().getTitolo(),frame.getPanel_aggiungiCompito2().getDescrizione(),scadenza,ruoli))) {
-						//POP UP COMPITO CREATO
 						frame.seePanelOperazioniCompito();
 					}else {
-						//POP UP COMPITO NON CREATO
+						JOptionPane.showMessageDialog(frame, "impossibile effettuare l'operazione richiesta");
 						frame.seePanelOperazioniCompito();
 					}
-				} catch (RoleNotAcceptedException | CannotConnectToDbException e1) {
-					// POP UP DB SPENTO
-					e1.printStackTrace();
+				} catch (CannotConnectToDbException e1) {
+					JOptionPane.showMessageDialog(frame, "impossibile reperire informazioni dalla piattaforma");
+				}catch(RoleNotAcceptedException ex3) {
+					JOptionPane.showMessageDialog(frame, "il tuo ruolo non e' adeguato a svolgere questa operazione");
 				}
+				frame.getPanel_aggiungiCompito2().getRuolo().setText("");
 			}
 		});
 	}
@@ -648,6 +735,7 @@ public class Controller {
 		frame.getPanel_rimuoviCompito().getBottoneIndietro().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				frame.getPanel_rimuoviCompito().getTitolo().setText("");
 				frame.seePanelOperazioniCompito();
 			}
 		});
@@ -657,16 +745,17 @@ public class Controller {
 			public void actionPerformed(ActionEvent e) {
 				try {//n.b: un solo compito con quel titolo in tutto il ws
 					if(tm.removeCompito(new Compito(frame.getPanel_rimuoviCompito().getTitolo().getText(),null,null,null))) {
-						//POP UP RIMOZIONE COMPLETATA
 						frame.seePanelOperazioniCompito();
 					}else {
-						//POP UP RIMOZIONE FALLITA
+						JOptionPane.showMessageDialog(frame, "impossibile effettuare l'operazione richiesta");
 						frame.seePanelOperazioniCompito();
 					}
-				} catch (RoleNotAcceptedException | CannotConnectToDbException e1) {
-					//POP UP DB SPENTO
-					e1.printStackTrace();
+				} catch (CannotConnectToDbException e1) {
+					JOptionPane.showMessageDialog(frame, "impossibile reperire informazioni dalla piattaforma");
+				}catch(RoleNotAcceptedException ex3) {
+					JOptionPane.showMessageDialog(frame, "il tuo ruolo non e' adeguato a svolgere questa operazione");
 				}
+				frame.getPanel_rimuoviCompito().getTitolo().setText("");
 			}
 		});
 	}
@@ -676,6 +765,8 @@ public class Controller {
 		frame.getPanel_spostaCompito().getBottoneIndietro().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				frame.getPanel_spostaCompito().getScheda().setText("");
+				frame.getPanel_spostaCompito().getCompito().setText("");
 				frame.seePanelOperazioniCompito();
 			}
 		});
@@ -699,6 +790,13 @@ public class Controller {
 							}
 						}
 					}
+					if(sc_nuova1 == null) {
+						JOptionPane.showMessageDialog(frame, "impossibile effettuare l'operazione richiesta");
+						frame.seePanelOperazioniCompito();
+						frame.getPanel_spostaCompito().getScheda().setText("");
+						frame.getPanel_spostaCompito().getCompito().setText("");
+						return;
+					}
 					for(Scheda s : w.getLista_schede()) {
 						for(Compito c : s.getCompiti()) {
 							if(c.getTitolo().equals(frame.getPanel_spostaCompito().getCompito().getText())) {
@@ -709,18 +807,28 @@ public class Controller {
 							}
 						}
 					}
+					if(sc_vecchia1 == null) {
+						JOptionPane.showMessageDialog(frame, "impossibile effettuare l'operazione richiesta");
+						frame.seePanelOperazioniCompito();
+						frame.getPanel_spostaCompito().getScheda().setText("");
+						frame.getPanel_spostaCompito().getCompito().setText("");
+						return;
+					}
 					sc_vecchia2.removeCompito(compito_da_togliere);
 					if(tm.modifyScheda(sc_vecchia1,sc_vecchia2,sc_nuova1, sc_nuova2)) {
-						//POP UP COMPITO SPOSTATO
 						frame.seePanelOperazioniCompito();
+						frame.getPanel_spostaCompito().getScheda().setText("");
+						frame.getPanel_spostaCompito().getCompito().setText("");
+						return;
 					}else {
-						//POP UP SPOSTAMENTO FALLITO
+						JOptionPane.showMessageDialog(frame, "impossibile effettuare l'operazione richiesta");
 						frame.seePanelOperazioniCompito();
 					}
 				} catch (CannotConnectToDbException e1) {
-					// POP UP DB SPENTO
-					e1.printStackTrace();
+					JOptionPane.showMessageDialog(frame, "impossibile reperire informazioni dalla piattaforma");
 				}
+				frame.getPanel_spostaCompito().getScheda().setText("");
+				frame.getPanel_spostaCompito().getCompito().setText("");
 			}
 		});
 	}
@@ -730,6 +838,12 @@ public class Controller {
 		frame.getPanel_modificaCompito().getBottoneIndietro().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				frame.getPanel_modificaCompito().getTitoloVecchio().setText("");
+				frame.getPanel_modificaCompito().getTitolo().setText("");
+				frame.getPanel_modificaCompito().getDescrizione().setText("");
+				frame.getPanel_modificaCompito().getGiorno().setText("");
+				frame.getPanel_modificaCompito().getMese().setText("");
+				frame.getPanel_modificaCompito().getAnno().setText("");
 				frame.seePanelOperazioniCompito();
 			}
 		});
@@ -741,8 +855,24 @@ public class Controller {
 				String titolo = frame.getPanel_modificaCompito().getTitolo().getText();
 				String descrizione = frame.getPanel_modificaCompito().getDescrizione().getText();
 				Calendar scadenza = frame.getPanel_modificaCompito().getScadenza();
+				if((frame.getPanel_modificaCompito().getAnno().getText().length() != 4) || Integer.parseInt(frame.getPanel_modificaCompito().getMese().getText()) <1 || Integer.parseInt(frame.getPanel_modificaCompito().getMese().getText())>12 || Integer.parseInt(frame.getPanel_modificaCompito().getGiorno().getText()) < 1 || Integer.parseInt(frame.getPanel_modificaCompito().getGiorno().getText())>31 ||titolo_vecchio == null || titolo == null || scadenza == null) {
+					frame.getPanel_modificaCompito().getTitolo().setText("");
+					frame.getPanel_modificaCompito().getDescrizione().setText("");
+					frame.getPanel_modificaCompito().getGiorno().setText("");
+					frame.getPanel_modificaCompito().getMese().setText("");
+					frame.getPanel_modificaCompito().getAnno().setText("");
+					JOptionPane.showMessageDialog(frame, "impossibile effettuare l'operazione richiesta");
+					frame.seePanelModifica();
+					return;
+				}
 				frame.seePanelModificaCompito2(titolo_vecchio,titolo,descrizione,scadenza);
 				initListenersPanelModificaCompito2();
+				frame.getPanel_modificaCompito().getTitoloVecchio().setText("");
+				frame.getPanel_modificaCompito().getTitolo().setText("");
+				frame.getPanel_modificaCompito().getDescrizione().setText("");
+				frame.getPanel_modificaCompito().getGiorno().setText("");
+				frame.getPanel_modificaCompito().getMese().setText("");
+				frame.getPanel_modificaCompito().getAnno().setText("");
 			}
 		});
 	}
@@ -752,6 +882,7 @@ public class Controller {
 		frame.getPanel_modificaCompito2().getBottoneIndietro().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				frame.getPanel_modificaCompito2().getRuolo().setText("");
 				frame.seePanelOperazioniCompito();
 			}
 		});	
@@ -807,18 +938,21 @@ public class Controller {
 					}
 					
 					if(tm.modifyCompito(sc, new Compito(frame.getPanel_modificaCompito2().getTitoloVecchio(), null,null,null),new Compito(tit,desc,scad,ruoli))) {
-						//POP UP COMPITO MODIFICATO
 						frame.seePanelOperazioniCompito();
 					}else {
-						//POP UP MODIFICA FALLITA
+						JOptionPane.showMessageDialog(frame, "impossibile effettuare l'operazione richiesta");
 						frame.seePanelOperazioniCompito();
 					}
-				} catch (CannotConnectToDbException | RoleNotAcceptedException e1) {
-					// POP UP DB SPENTO
+				} catch (RoleNotAcceptedException e1) {
+					JOptionPane.showMessageDialog(frame, "il tuo ruolo non e' adeguato a svolgere questa operazione");
+					frame.seePanelOperazioniCompito();
+				}catch(CannotConnectToDbException ex3) {
+					JOptionPane.showMessageDialog(frame, "impossibile reperire informazioni dalla piattaforma");
 					frame.seePanelOperazioniCompito();
 				}catch(Exception ex1) {
-					//POP UP errore sconosciuto
+					JOptionPane.showMessageDialog(frame, "errore: riprovare piu' tardi");
 				}
+				frame.getPanel_modificaCompito2().getRuolo().setText("");
 			}
 		});	
 	}

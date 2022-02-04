@@ -4,7 +4,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Calendar;
 import javax.swing.JButton;
@@ -165,7 +164,15 @@ public class ModificaCompito extends JPanel{
 		
 		return temp;
 	}
-	
+	public JTextField getGiorno() {
+		return scadenza_gg;
+	}
+	public JTextField getMese() {
+		return scadenza_mm;
+	}
+	public JTextField getAnno() {
+		return scadenza_yyyy;
+	}
 	public JButton getBottoneAvanti() {
 		return this.bottone_avanti;
 	}

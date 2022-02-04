@@ -104,14 +104,33 @@ public class Workspace {
 	public void addScheda(Scheda scheda) {
 		lista_schede.add(scheda);
 		Scheda s,s1;
-		s = lista_schede.get(0);
-		for(int i =0; i<lista_schede.size();i++) {
-			s1 = lista_schede.get(i);
-			if (s1.getTitolo().equals("TO DO")){
-				lista_schede.remove(0);
-				lista_schede.add(0, s1);
-				lista_schede.remove(i);
-				lista_schede.add(i, s); 
+		
+		if(lista_schede.size() == 2) {
+			s = lista_schede.get(1);
+			for(int i =0; i<lista_schede.size();i++) {
+				s1 = lista_schede.get(i);
+				if (s1.getTitolo().equals("DOING")){
+					if(i == 1)
+						continue;
+					lista_schede.remove(1);
+					lista_schede.add(1, s1);
+					lista_schede.remove(i);
+					lista_schede.add(i, s); 
+				}
+			}
+		}
+		if(lista_schede.size() == 3) {
+			s = lista_schede.get(2);
+			for(int i =0; i<lista_schede.size();i++) {
+				s1 = lista_schede.get(i);
+				if (s1.getTitolo().equals("DONE")){
+					if(i == 2)
+						continue;
+					lista_schede.remove(2);
+					lista_schede.add(2, s1);
+					lista_schede.remove(i);
+					lista_schede.add(i, s); 
+				}
 			}
 		}
 		

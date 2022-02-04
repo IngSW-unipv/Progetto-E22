@@ -180,8 +180,8 @@ public class TaskManager {
 		updateWorkspace();
 		if(membro_logged.getRuolo().equals(new Ruolo("manager"))) {
 			if(db.createAssociazioneMembroWorkspace(ws_selected,new Membro(email," ",r))) {
-				String oggetto = "Ciao, sei stato aggiunto ad un workspace su TuskManager!"; //MODIFICARE
-				String contenuto = "";
+				String oggetto = "NOTIFICA TUSKMANAGER"; 
+				String contenuto = "Ciao!\nSei stato associato ad un workspace su TuskManager,\nse non sai di cosa si tratta visita : https://github.com/IngSW-unipv/Progetto-E22.git\n";
 				return sendMail(email,oggetto,contenuto);
 			}else
 				return false;
@@ -278,10 +278,10 @@ public class TaskManager {
 	 * */
 	public boolean modifyMembro(String  email, Ruolo r) throws RoleNotAcceptedException, CannotSendMailException, CannotConnectToDbException{
 		updateWorkspace();
-		if(membro_logged.getRuolo().equals(new Ruolo("manager"))) {
+		if(membro_logged.getRuolo().equals(new Ruolo("manager")) && !email.equals(membro_logged.getEmail())) {
 			if(db.modifyMembro(ws_selected, new Membro(email,null,r))) {
-				String oggetto = "Ciao, il tuo ruolo nel workspace "+ws_selected.getNome()+"� cambiato!\nOra �: "+r.getNome()+" su TuskManager!"; //MODIFICARE
-				String contenuto = "";
+				String contenuto = "Ciao!\nIl tuo ruolo nel workspace "+ws_selected.getNome()+" e' cambiato!\nOra e': "+r.getNome(); 
+				String oggetto = "NOTIFICA TUSKMANAGER";
 				updateWorkspace();
 				return sendMail(email,oggetto,contenuto);
 			}else {
@@ -347,8 +347,8 @@ public class TaskManager {
 		updateWorkspace();
 		if(membro_logged.getRuolo().equals(new Ruolo("manager"))) {
 			if(db.removeMembro(ws_selected,m)) {
-				String oggetto = "Ciao, sei stato rimosso dal workspace "+ws_selected.getNome()+" su TuskManager!"; //MODIFICARE
-				String contenuto = "";
+				String contenuto = "Ciao!\nSei stato rimosso dal workspace "+ws_selected.getNome()+".\nControlla le tue restanti attivita' su: https://github.com/IngSW-unipv/Progetto-E22.git\n"; 
+				String oggetto = "NOTIFICA TUSKMANAGER";
 				updateWorkspace();
 				return sendMail(m.getEmail(),oggetto,contenuto);
 			}else {
@@ -368,8 +368,8 @@ public class TaskManager {
 		if(membro_logged.getRuolo().equals(new Ruolo("manager"))) {
 			ArrayList<String> emails = db.selectAllEmailsByWorkspace(ws_selected);
 			if(db.removeWorkspace(w)) {
-				String oggetto = "Ciao, il workspace "+ws_selected.getNome()+" � stato eliminato su TuskManager!"; //MODIFICARE
-				String contenuto = "";
+				String contenuto = "Ciao!\nIl workspace "+ws_selected.getNome()+" e' stato eliminato.\nControlla lo stato delle tue restanti attivita' su: https://github.com/IngSW-unipv/Progetto-E22.git\n"; 
+				String oggetto = "NOTIFICA TUSKMANAGER";
 				for(String email : emails) {
 					sendMail(email,oggetto,contenuto);
 				}

@@ -1,5 +1,7 @@
 package it.unipv.inginf.po.tuskManager.view;
 
+import java.awt.GraphicsDevice;
+import java.awt.GraphicsEnvironment;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -32,10 +34,13 @@ import it.unipv.inginf.po.tuskManager.view.modifica.membro.RimuoviMembro;
 import it.unipv.inginf.po.tuskManager.view.modifica.ws.ModificaNome;
 import it.unipv.inginf.po.tuskManager.view.modifica.ws.OperazioniWs;
 import it.unipv.inginf.po.tuskManager.view.modifica.ws.RimuoviWs;
-import it.unipv.inginf.po.tuskManager.view.*;
 
 public class TMFrame extends JFrame{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private Apertura panel_apertura;
 	private Accedi panel_accedi;
 	private Registrati panel_registrati;
@@ -75,9 +80,11 @@ public class TMFrame extends JFrame{
 	public void initFrame() {
 		this.setTitle("Tusk Manager");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setSize(1600, 900);
 		this.setVisible(true);
-		this.setResizable(false);
+//		this.setResizable(false);
+		GraphicsEnvironment graphics = GraphicsEnvironment.getLocalGraphicsEnvironment();
+		GraphicsDevice device = graphics.getDefaultScreenDevice();
+		device.setFullScreenWindow(this);
 		try {
 			this.setIconImage(ImageIO.read(new File("assets/background.jpg")));
 		}

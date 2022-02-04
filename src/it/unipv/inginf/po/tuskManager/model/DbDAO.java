@@ -129,13 +129,15 @@ public class DbDAO implements ITaskManagerDAO{
 					while(compiti.next()) {
 						Compito c = new Compito(compiti.getString("TITOLO"),compiti.getString("DESCRIZIONE"),compiti.getDate("SCADENZA"),null);
 						statement_compiti = conn.prepareStatement("(SELECT * FROM GESTIONE WHERE TITOLO_COMPITO = ? AND TITOLO_SCHEDA = ? AND ID_WORKSPACE = ?)");
-						statement_compiti.setString(1,schede.getString("TITOLO"));
-						statement_compiti.setString(2,compiti.getString("TITOLO"));
+						statement_compiti.setString(1,compiti.getString("TITOLO"));
+						statement_compiti.setString(2,schede.getString("TITOLO"));
 						statement_compiti.setInt(3,w.getId());
 						
 						ruoli=statement_compiti.executeQuery();
 						while(ruoli.next()) {
-							c.addRuolo(new Ruolo(ruoli.getString("NOME_RUOLO")));
+							Ruolo ru = new Ruolo(ruoli.getString("NOME_RUOLO"));
+							if(!c.getRuoli().contains(ru))
+								c.addRuolo(ru);
 						}
 						s.addCompito(c);
 					}

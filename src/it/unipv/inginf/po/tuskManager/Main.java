@@ -1,29 +1,15 @@
 package it.unipv.inginf.po.tuskManager;
 
-import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.sql.Date;
 import java.sql.SQLException;
-import javax.imageio.ImageIO;
-import javax.swing.JFrame;
 
 import it.unipv.inginf.po.tuskManager.controller.Controller;
-import it.unipv.inginf.po.tuskManager.model.DbDAO;
 import it.unipv.inginf.po.tuskManager.model.TaskManager;
-import it.unipv.inginf.po.tuskManager.model.beans.Account;
-import it.unipv.inginf.po.tuskManager.model.beans.Compito;
-import it.unipv.inginf.po.tuskManager.model.beans.Ruolo;
-import it.unipv.inginf.po.tuskManager.model.beans.Scheda;
-import it.unipv.inginf.po.tuskManager.model.beans.Workspace;
 import it.unipv.inginf.po.tuskManager.model.exceptions.CannotConnectToDbException;
 import it.unipv.inginf.po.tuskManager.model.exceptions.CannotSendMailException;
 import it.unipv.inginf.po.tuskManager.model.exceptions.RoleNotAcceptedException;
 import it.unipv.inginf.po.tuskManager.view.TMFrame;
-import it.unipv.inginf.po.tuskManager.view.apertura.Apertura;
-import it.unipv.inginf.po.tuskManager.view.homepage.WindowWorkspace;
-import it.unipv.inginf.po.tuskManager.view.modifica.compito.ModificaCompito;
-
 /**
  * Classe utilizzata semplicemente per contenere il main.
  * @version 1.0
@@ -88,6 +74,7 @@ public class Main {
 //		}
 		
 		TMFrame frame = new TMFrame();
+		@SuppressWarnings("unused")
 		Controller c = new Controller(frame,t);
 	
 	}

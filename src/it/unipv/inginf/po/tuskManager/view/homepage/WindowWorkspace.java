@@ -2,7 +2,6 @@ package it.unipv.inginf.po.tuskManager.view.homepage;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.util.ArrayList;
@@ -10,7 +9,6 @@ import java.util.ArrayList;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 import javax.swing.border.LineBorder;
 
 import it.unipv.inginf.po.tuskManager.model.beans.Compito;
@@ -69,7 +67,7 @@ public class WindowWorkspace extends JPanel{
 		int numero_max_compiti = 0;//serve per avere le liste dei compiti grandi uguali
 		int count=0;
 		for(Scheda s : w.getLista_schede()) {
-			for(Compito c : s.getCompiti()) {
+			for(@SuppressWarnings("unused") Compito c : s.getCompiti()) {
 				count++;
 			}
 			numero_max_compiti = (count > numero_max_compiti) ? count : numero_max_compiti;
