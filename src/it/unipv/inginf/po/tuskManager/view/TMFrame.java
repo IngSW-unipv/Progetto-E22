@@ -81,10 +81,11 @@ public class TMFrame extends JFrame{
 		this.setTitle("Tusk Manager");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setVisible(true);
+		this.setSize(400,400);
 //		this.setResizable(false);
-		GraphicsEnvironment graphics = GraphicsEnvironment.getLocalGraphicsEnvironment();
-		GraphicsDevice device = graphics.getDefaultScreenDevice();
-		device.setFullScreenWindow(this);
+//		GraphicsEnvironment graphics = GraphicsEnvironment.getLocalGraphicsEnvironment();
+//		GraphicsDevice device = graphics.getDefaultScreenDevice();
+//		device.setFullScreenWindow(this);
 		try {
 			this.setIconImage(ImageIO.read(new File("assets/background.jpg")));
 		}
