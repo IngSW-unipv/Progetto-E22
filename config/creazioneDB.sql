@@ -215,3 +215,5 @@ UNLOCK TABLES;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
 -- Dump completed on 2022-02-04 12:58:20
+create user appTuskManager identified by "tricheco";
+grant all privileges on *.* to appTuskManager;
