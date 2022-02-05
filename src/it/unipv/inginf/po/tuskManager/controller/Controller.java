@@ -1,5 +1,6 @@
 package it.unipv.inginf.po.tuskManager.controller;
 
+import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Date;
@@ -808,47 +809,27 @@ public class Controller {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				try {
-					Scheda sc_vecchia1 = null;
-					Scheda sc_vecchia2 = null;
-					Scheda sc_nuova1 = null;
-					Scheda sc_nuova2 = null;
-					Compito compito_da_togliere = null;
-					Workspace w = tm.getWorkspace();
-					for(Scheda s : w.getLista_schede()) {
+					Compito in_questione = null;
+					Scheda scheda_in_questione = null;
+					for(Scheda s : tm.getWorkspace().getLista_schede()) {
 						if(s.getTitolo().equals(frame.getPanel_spostaCompito().getScheda().getText())) {
-							sc_nuova1 = s;
-							sc_nuova2 = new Scheda(s.getTitolo(),new ArrayList<Compito>());
-							for(Compito c : s.getCompiti()) {
-								sc_nuova2.addCompito(c);
-							}
+							scheda_in_questione = s;
 						}
-					}
-					if(sc_nuova1 == null) {
-						JOptionPane.showMessageDialog(frame, "impossibile effettuare l'operazione richiesta");
-						frame.seePanelOperazioniCompito();
-						frame.getPanel_spostaCompito().getScheda().setText("");
-						frame.getPanel_spostaCompito().getCompito().setText("");
-						return;
-					}
-					for(Scheda s : w.getLista_schede()) {
 						for(Compito c : s.getCompiti()) {
 							if(c.getTitolo().equals(frame.getPanel_spostaCompito().getCompito().getText())) {
-								sc_vecchia1 = s;
-								sc_vecchia2 = sc_vecchia1;
-								compito_da_togliere=c;
-								sc_nuova2.addCompito(c);
+								in_questione = c;
 							}
 						}
 					}
-					if(sc_vecchia1 == null) {
+					if(in_questione == null || scheda_in_questione == null) {
 						JOptionPane.showMessageDialog(frame, "impossibile effettuare l'operazione richiesta");
-						frame.seePanelOperazioniCompito();
 						frame.getPanel_spostaCompito().getScheda().setText("");
 						frame.getPanel_spostaCompito().getCompito().setText("");
+						frame.seePanelOperazioniCompito();
 						return;
 					}
-					sc_vecchia2.removeCompito(compito_da_togliere);
-					if(tm.modifyScheda(sc_vecchia1,sc_vecchia2,sc_nuova1, sc_nuova2)) {
+					
+					if(tm.removeCompito(in_questione) && tm.createCompito(scheda_in_questione, in_questione)) {
 						frame.seePanelOperazioniCompito();
 						frame.getPanel_spostaCompito().getScheda().setText("");
 						frame.getPanel_spostaCompito().getCompito().setText("");
@@ -857,8 +838,10 @@ public class Controller {
 						JOptionPane.showMessageDialog(frame, "impossibile effettuare l'operazione richiesta");
 						frame.seePanelOperazioniCompito();
 					}
-				} catch (CannotConnectToDbException e1) {
+				} catch (CannotConnectToDbException | HeadlessException e2) {
 					JOptionPane.showMessageDialog(frame, "impossibile reperire informazioni dalla piattaforma");
+				}catch(RoleNotAcceptedException e1) {
+					JOptionPane.showMessageDialog(frame, "il tuo ruolo non e' adeguato a svolgere questa operazione");
 				}
 				frame.getPanel_spostaCompito().getScheda().setText("");
 				frame.getPanel_spostaCompito().getCompito().setText("");

@@ -247,7 +247,7 @@ public class TaskManager {
 	 * */
 	public boolean modifyCompito(Scheda s, Compito vecchio, Compito nuovo) throws RoleNotAcceptedException, CannotConnectToDbException{
 		updateWorkspace();
-		if(membro_logged.getRuolo().equals(new Ruolo("manager")) || vecchio.getRuoli().contains(membro_logged.getRuolo())) {
+		if(membro_logged.getRuolo().equals(new Ruolo("manager"))) {
 			if(db.modifyCompito(ws_selected, s, vecchio, nuovo)) {
 				updateWorkspace();
 				return true;
@@ -328,7 +328,7 @@ public class TaskManager {
 			return false;
 		}
 		
-		if(membro_logged.getRuolo().equals(new Ruolo("manager")) || c.getRuoli().contains(membro_logged.getRuolo())) {
+		if(membro_logged.getRuolo().equals(new Ruolo("manager"))) {
 			if(db.removeCompito(ws_selected,scheda_sel,c)) {
 				updateWorkspace();
 				return true;
