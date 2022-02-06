@@ -1,4 +1,4 @@
-package it.unipv.inginf.po.tuskManager.model.utils;
+package it.unipv.inginf.po.tuskManager.model.persistence.utils;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;

@@ -1,4 +1,4 @@
-package it.unipv.inginf.po.tuskManager.model;
+package it.unipv.inginf.po.tuskManager.model.persistence;
 
 import java.sql.Connection;
 import java.sql.Date;
@@ -15,9 +15,9 @@ import it.unipv.inginf.po.tuskManager.model.beans.Ruolo;
 import it.unipv.inginf.po.tuskManager.model.beans.Scheda;
 import it.unipv.inginf.po.tuskManager.model.beans.Workspace;
 import it.unipv.inginf.po.tuskManager.model.exceptions.CannotConnectToDbException;
-import it.unipv.inginf.po.tuskManager.model.utils.DBConnection;
+import it.unipv.inginf.po.tuskManager.model.persistence.utils.DBConnection;
 
-public class DbDAO implements ITaskManagerDAO{
+public class DbDAO implements IDao{
 	
 	private Connection conn;
 	
@@ -388,38 +388,6 @@ public class DbDAO implements ITaskManagerDAO{
 			}
 			
 			conn = DBConnection.closeConnection(conn);
-			return true;
-		}
-		catch(Exception ex) {
-			ex.printStackTrace();
-			throw new CannotConnectToDbException();
-		}
-	}
-
-	@Override
-	public boolean modifyScheda(Workspace w, Scheda vecchia1, Scheda vecchia2, Scheda nuova1, Scheda nuova2) throws CannotConnectToDbException {
-		try {
-			conn = DBConnection.startConnection();
-			
-			PreparedStatement statement;
-			
-			statement = conn.prepareStatement("DELETE FROM TUSKMANAGER.SCHEDA WHERE TITOLO = ? AND ID_WORKSPACE = ?");
-			statement.setString(1,vecchia1.getTitolo());
-			statement.setInt(2,w.getId());
-			
-			statement.executeUpdate();
-			conn = DBConnection.closeConnection(conn);
-			insertIntoScheda(w, vecchia2);
-			conn = DBConnection.startConnection();
-			
-			statement = conn.prepareStatement("DELETE FROM TUSKMANAGER.SCHEDA WHERE TITOLO = ? AND ID_WORKSPACE = ?");
-			statement.setString(1,nuova1.getTitolo());
-			statement.setInt(2,w.getId());
-			
-			statement.executeUpdate();
-			conn = DBConnection.closeConnection(conn);
-			insertIntoScheda(w, nuova2);
-			
 			return true;
 		}
 		catch(Exception ex) {

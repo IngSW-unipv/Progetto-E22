@@ -1,4 +1,4 @@
-package it.unipv.inginf.po.tuskManager.model;
+package it.unipv.inginf.po.tuskManager.model.facade;
 
 import java.util.ArrayList;
 
@@ -15,8 +15,10 @@ import it.unipv.inginf.po.tuskManager.model.beans.Workspace;
 import it.unipv.inginf.po.tuskManager.model.exceptions.CannotConnectToDbException;
 import it.unipv.inginf.po.tuskManager.model.exceptions.CannotSendMailException;
 import it.unipv.inginf.po.tuskManager.model.exceptions.RoleNotAcceptedException;
-import it.unipv.inginf.po.tuskManager.model.utils.EmailSender;
-import it.unipv.inginf.po.tuskManager.model.utils.PasswordCoder;
+import it.unipv.inginf.po.tuskManager.model.facade.utils.EmailSender;
+import it.unipv.inginf.po.tuskManager.model.facade.utils.PasswordCoder;
+import it.unipv.inginf.po.tuskManager.model.persistence.DbDAO;
+import it.unipv.inginf.po.tuskManager.model.persistence.IDao;
 
 /**
  * Rappresenta il task manager stesso, fa comunicare controller e dao.
@@ -30,31 +32,30 @@ import it.unipv.inginf.po.tuskManager.model.utils.PasswordCoder;
  * @see Ruolo
  * @see DbDAO
  * */
-public class TaskManager {
+public class TaskManager implements ITaskManager{
 	private ArrayList<Workspace> workspaces;
 	private Membro membro_logged;
 	private Workspace ws_selected;
-	private ITaskManagerDAO db;
+	private IDao dao;
 	private static TaskManager tm;
 	
-	private TaskManager() {
-		db = new DbDAO();
-	}
-	
-	public Membro getMembroLogged() throws CannotConnectToDbException {
-		return membro_logged;
+	private TaskManager(IDao db) {
+		this.dao = db;
 	}
 	
 	/**
 	 * @return L'istanza del task manager.
 	 * */
-	public static TaskManager getInstance() {
+	public static TaskManager getInstance(IDao db) {
 		if(tm == null) {
-			tm = new TaskManager();
+			tm = new TaskManager(db);
 		}
 		return tm;
 	}
 	
+	public Membro getMembroLogged() throws CannotConnectToDbException {
+		return membro_logged;
+	}
 	/**
 	 * @return Il workspace(aggiornato) precedentemente selezionato.
 	 * */
@@ -67,8 +68,8 @@ public class TaskManager {
 	 * Aggiorna le informazione di questa classe.
 	 * */
 	private void updateWorkspace() throws CannotConnectToDbException {
-		ws_selected = db.selectWorkspace(ws_selected);
-		membro_logged = db.selectMembro(ws_selected, membro_logged);
+		ws_selected = dao.selectWorkspace(ws_selected);
+		membro_logged = dao.selectMembro(ws_selected, membro_logged);
 	}
 	
 	/**
@@ -103,10 +104,10 @@ public class TaskManager {
 	 * @return true se l'inserimento � andato a buon fine, false altrimenti.
 	 * */
 	public boolean createAccount(String email, String pw) throws CannotConnectToDbException {
-		ArrayList<String> lista_email = db.selectAllEmails();
+		ArrayList<String> lista_email = dao.selectAllEmails();
 		if(lista_email.contains(email))
 			return false;
-		return db.insertIntoAccount(new Account(email,PasswordCoder.codifica(pw)));
+		return dao.insertIntoAccount(new Account(email,PasswordCoder.codifica(pw)));
 	}
 	
 	/**
@@ -116,7 +117,7 @@ public class TaskManager {
 	 * @return true se login andato a buon fine.
 	 * */
 	public boolean login(String email, String pw) throws CannotConnectToDbException {
-		if(db.login(email, PasswordCoder.codifica(pw))) {
+		if(dao.login(email, PasswordCoder.codifica(pw))) {
 			membro_logged = new Membro(email,"",null);
 			return true;
 		}
@@ -139,7 +140,7 @@ public class TaskManager {
 	 * @see DbDAO
 	 * */
 	public ArrayList<Workspace> getAllWorkspaces() throws CannotConnectToDbException{
-		workspaces = db.selectWorkspaceByAccount((Account)membro_logged);
+		workspaces = dao.selectWorkspaceByAccount((Account)membro_logged);
 		return workspaces;
 	}
 	
@@ -149,8 +150,8 @@ public class TaskManager {
 	 * @return Il workspace richiesto.
 	 * */
 	public Workspace getWorkspace(Workspace w) throws CannotConnectToDbException {
-		ws_selected = db.selectWorkspace(w);
-		membro_logged.setRuolo(db.selectRuoloOfAccount(ws_selected, (Account) membro_logged).getRuolo());
+		ws_selected = dao.selectWorkspace(w);
+		membro_logged.setRuolo(dao.selectRuoloOfAccount(ws_selected, (Account) membro_logged).getRuolo());
 		return ws_selected;
 	}
 	
@@ -162,10 +163,10 @@ public class TaskManager {
 	public boolean createWorkspace(String nome) throws CannotConnectToDbException {
 		if(nome.isEmpty())
 			return false;
-		boolean res = db.insertIntoWorkspace(new Workspace(0,nome,null,null));
+		boolean res = dao.insertIntoWorkspace(new Workspace(0,nome,null,null));
 		if(res) {
-			ws_selected = db.selectWorkspace(new Workspace(0,nome,null,null));
-			db.createAssociazioneMembroWorkspace(ws_selected,new Membro(membro_logged.getEmail()," ",new Ruolo("manager")));
+			ws_selected = dao.selectWorkspace(new Workspace(0,nome,null,null));
+			dao.createAssociazioneMembroWorkspace(ws_selected,new Membro(membro_logged.getEmail()," ",new Ruolo("manager")));
 		}
 		return res;
 	}
@@ -179,28 +180,13 @@ public class TaskManager {
 	public boolean addMembro(String email, Ruolo r) throws RoleNotAcceptedException, CannotSendMailException, CannotConnectToDbException{
 		updateWorkspace();
 		if(membro_logged.getRuolo().equals(new Ruolo("manager"))) {
-			if(db.createAssociazioneMembroWorkspace(ws_selected,new Membro(email," ",r))) {
+			if(dao.createAssociazioneMembroWorkspace(ws_selected,new Membro(email," ",r))) {
 				String oggetto = "NOTIFICA TUSKMANAGER"; 
 				String contenuto = "Ciao!\nSei stato associato ad un workspace su TuskManager,\nse non sai di cosa si tratta visita : https://github.com/IngSW-unipv/Progetto-E22.git\n";
 				return sendMail(email,oggetto,contenuto);
 			}else
 				return false;
 		}else throw new RoleNotAcceptedException();
-	}
-	
-	/**
-	 * Crea un ruolo.
-	 * @param r
-	 * @return true se la creazione � andata a buon fine.
-	 * */
-	public boolean createRuolo(Ruolo r) throws RoleNotAcceptedException, CannotConnectToDbException{
-		updateWorkspace();
-		if(membro_logged.getRuolo().equals(new Ruolo("manager"))) {
-			r.setNome(r.getNome().toLowerCase());
-			r.setNome(r.getNome().replace(' ', '_'));
-			return db.insertIntoRuolo(r);
-		}
-		else throw new RoleNotAcceptedException();
 	}
 	
 	/**
@@ -212,7 +198,7 @@ public class TaskManager {
 	public boolean createCompito(Scheda s, Compito c) throws RoleNotAcceptedException, CannotConnectToDbException{
 		updateWorkspace();
 		if(membro_logged.getRuolo().equals(new Ruolo("manager"))) {
-			if(db.insertIntoCompito(ws_selected, s, c)) {
+			if(dao.insertIntoCompito(ws_selected, s, c)) {
 				updateWorkspace();
 				return true;
 			}
@@ -229,7 +215,7 @@ public class TaskManager {
 	public boolean createScheda(Scheda s) throws RoleNotAcceptedException, CannotConnectToDbException{
 		updateWorkspace();
 		if(membro_logged.getRuolo().equals(new Ruolo("manager"))) {
-			if(db.insertIntoScheda(ws_selected, s)) {
+			if(dao.insertIntoScheda(ws_selected, s)) {
 				updateWorkspace();
 				return true;
 			}
@@ -247,27 +233,12 @@ public class TaskManager {
 	 * */
 	public boolean modifyCompito(Scheda s, Compito vecchio, Compito nuovo) throws RoleNotAcceptedException, CannotConnectToDbException{
 		updateWorkspace();
-		if(membro_logged.getRuolo().equals(new Ruolo("manager"))) {
-			if(db.modifyCompito(ws_selected, s, vecchio, nuovo)) {
-				updateWorkspace();
-				return true;
-			}
-			return false;
-		}
-		else throw new RoleNotAcceptedException();
-	}
-	/**
-	 * Modifica una scheda.
-	 * @param vecchia
-	 * @param nuova
-	 * @return true se la modifica � andata a buon fine.
-	 * */
-	public boolean modifyScheda(Scheda vecchia1,Scheda vecchia2, Scheda nuova1, Scheda nuova2) throws CannotConnectToDbException {
-		if(db.modifyScheda(ws_selected, vecchia1, vecchia2, nuova1, nuova2)) {
+		if(dao.modifyCompito(ws_selected, s, vecchio, nuovo)) {
 			updateWorkspace();
 			return true;
 		}
 		return false;
+		
 	}
 	
 	/**
@@ -279,7 +250,7 @@ public class TaskManager {
 	public boolean modifyMembro(String  email, Ruolo r) throws RoleNotAcceptedException, CannotSendMailException, CannotConnectToDbException{
 		updateWorkspace();
 		if(membro_logged.getRuolo().equals(new Ruolo("manager")) && !email.equals(membro_logged.getEmail())) {
-			if(db.modifyMembro(ws_selected, new Membro(email,null,r))) {
+			if(dao.modifyMembro(ws_selected, new Membro(email,null,r))) {
 				String contenuto = "Ciao!\nIl tuo ruolo nel workspace "+ws_selected.getNome()+" e' cambiato!\nOra e': "+r.getNome(); 
 				String oggetto = "NOTIFICA TUSKMANAGER";
 				updateWorkspace();
@@ -300,7 +271,7 @@ public class TaskManager {
 	public boolean modifyWorkspace(Workspace vecchio, Workspace nuovo) throws RoleNotAcceptedException, CannotConnectToDbException{
 		updateWorkspace();
 		if(membro_logged.getRuolo().equals(new Ruolo("manager")) ) {
-			if(db.modifyWorkspace(vecchio, nuovo)) {
+			if(dao.modifyWorkspace(vecchio, nuovo)) {
 				return true;
 			}
 			return false;
@@ -329,7 +300,7 @@ public class TaskManager {
 		}
 		
 		if(membro_logged.getRuolo().equals(new Ruolo("manager"))) {
-			if(db.removeCompito(ws_selected,scheda_sel,c)) {
+			if(dao.removeCompito(ws_selected,scheda_sel,c)) {
 				updateWorkspace();
 				return true;
 			}
@@ -346,7 +317,7 @@ public class TaskManager {
 	public boolean removeMembro(Membro m) throws RoleNotAcceptedException, CannotSendMailException, CannotConnectToDbException{
 		updateWorkspace();
 		if(membro_logged.getRuolo().equals(new Ruolo("manager"))) {
-			if(db.removeMembro(ws_selected,m)) {
+			if(dao.removeMembro(ws_selected,m)) {
 				String contenuto = "Ciao!\nSei stato rimosso dal workspace "+ws_selected.getNome()+".\nControlla le tue restanti attivita' su: https://github.com/IngSW-unipv/Progetto-E22.git\n"; 
 				String oggetto = "NOTIFICA TUSKMANAGER";
 				updateWorkspace();
@@ -366,9 +337,9 @@ public class TaskManager {
 	public boolean removeWorkspace(Workspace w) throws RoleNotAcceptedException, CannotSendMailException, CannotConnectToDbException{
 		
 		if(membro_logged.getRuolo().equals(new Ruolo("manager"))) {
-			ArrayList<String> emails = db.selectAllEmailsByWorkspace(ws_selected);
-			if(db.removeWorkspace(w)) {
-				String contenuto = "Ciao!\nIl workspace "+ws_selected.getNome()+" e' stato eliminato.\nControlla lo stato delle tue restanti attivita' su: https://github.com/IngSW-unipv/Progetto-E22.git\n"; 
+			ArrayList<String> emails = dao.selectAllEmailsByWorkspace(ws_selected);
+			if(dao.removeWorkspace(w)) {
+				String contenuto = "Ciao!\nIl workspace "+ws_selected.getNome()+" e' stato eliminato.\nControlla lo stato delle tue restanti attivita' sulla nostra applicazione.\nSe non sai di cosa stiamo parlando visita: https://github.com/IngSW-unipv/Progetto-E22.git\n"; 
 				String oggetto = "NOTIFICA TUSKMANAGER";
 				for(String email : emails) {
 					sendMail(email,oggetto,contenuto);

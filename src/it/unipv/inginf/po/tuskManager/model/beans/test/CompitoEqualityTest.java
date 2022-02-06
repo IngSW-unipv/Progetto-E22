@@ -1,4 +1,4 @@
-package it.unipv.inginf.po.tuskManager.test.beansTest;
+package it.unipv.inginf.po.tuskManager.model.beans.test;
 
 import java.util.ArrayList;
 import java.sql.Date;

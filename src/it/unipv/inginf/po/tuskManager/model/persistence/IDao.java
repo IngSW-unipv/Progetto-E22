@@ -1,4 +1,4 @@
-package it.unipv.inginf.po.tuskManager.model;
+package it.unipv.inginf.po.tuskManager.model.persistence;
 
 import java.util.ArrayList;
 
@@ -10,7 +10,7 @@ import it.unipv.inginf.po.tuskManager.model.beans.Scheda;
 import it.unipv.inginf.po.tuskManager.model.beans.Workspace;
 import it.unipv.inginf.po.tuskManager.model.exceptions.CannotConnectToDbException;
 
-public interface ITaskManagerDAO {
+public interface IDao {
 	
 	public ArrayList<String> selectAllEmails() throws CannotConnectToDbException;
 	public ArrayList<String> selectAllEmailsByWorkspace(Workspace w) throws CannotConnectToDbException;
@@ -27,7 +27,6 @@ public interface ITaskManagerDAO {
 	
 	public boolean createAssociazioneMembroWorkspace(Workspace w, Membro m) throws CannotConnectToDbException;
 	public boolean modifyCompito(Workspace w, Scheda s, Compito vecchio, Compito nuovo) throws CannotConnectToDbException;
-	public boolean modifyScheda(Workspace w, Scheda vecchia1, Scheda vecchia2, Scheda nuova1, Scheda nuova2) throws CannotConnectToDbException;
 	public boolean modifyMembro(Workspace w, Membro m) throws CannotConnectToDbException;
 	public boolean modifyWorkspace(Workspace vecchio, Workspace nuovo) throws CannotConnectToDbException;//serve a cambiare il nome e basta
 	public boolean removeCompito(Workspace w, Scheda s, Compito c) throws CannotConnectToDbException;

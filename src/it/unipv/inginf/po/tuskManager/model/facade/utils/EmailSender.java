@@ -1,4 +1,4 @@
-package it.unipv.inginf.po.tuskManager.model.utils;
+package it.unipv.inginf.po.tuskManager.model.facade.utils;
 
 import java.util.Date;
 import java.util.Properties;

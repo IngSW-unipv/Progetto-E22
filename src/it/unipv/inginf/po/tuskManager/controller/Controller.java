@@ -10,7 +10,6 @@ import java.util.Calendar;
 import javax.swing.JButton;
 import javax.swing.JOptionPane;
 
-import it.unipv.inginf.po.tuskManager.model.TaskManager;
 import it.unipv.inginf.po.tuskManager.model.beans.Membro;
 import it.unipv.inginf.po.tuskManager.model.beans.Compito;
 import it.unipv.inginf.po.tuskManager.model.beans.Ruolo;
@@ -19,15 +18,16 @@ import it.unipv.inginf.po.tuskManager.model.beans.Workspace;
 import it.unipv.inginf.po.tuskManager.model.exceptions.CannotConnectToDbException;
 import it.unipv.inginf.po.tuskManager.model.exceptions.CannotSendMailException;
 import it.unipv.inginf.po.tuskManager.model.exceptions.RoleNotAcceptedException;
+import it.unipv.inginf.po.tuskManager.model.facade.ITaskManager;
 import it.unipv.inginf.po.tuskManager.view.TMFrame;
 
 public class Controller {
 
 
 	private TMFrame frame;
-	private TaskManager tm;
+	private ITaskManager tm;
 	
-	public Controller(TMFrame frame, TaskManager tm) {
+	public Controller(TMFrame frame, ITaskManager tm) {
 		this.frame = frame;
 		this.tm = tm;
 		initListeners();
@@ -653,7 +653,7 @@ public class Controller {
 				Calendar scadenza = frame.getPanel_aggiungiCompito().getScadenza();
 				int giorno = scadenza.get(Calendar.DAY_OF_MONTH);
 				int mese = scadenza.get(Calendar.MONTH);
-				int anno = scadenza.get(Calendar.YEAR);
+				int anno = scadenza.get(Calendar.YEAR)-1;
 				if((frame.getPanel_aggiungiCompito().getAnno().getText().length() != 4) || Integer.parseInt(frame.getPanel_aggiungiCompito().getMese().getText()) <1 || Integer.parseInt(frame.getPanel_aggiungiCompito().getMese().getText())>12 || Integer.parseInt(frame.getPanel_aggiungiCompito().getGiorno().getText()) < 1 || Integer.parseInt(frame.getPanel_aggiungiCompito().getGiorno().getText())>31|| titolo == null || scadenza == null) {
 					frame.getPanel_aggiungiCompito().getTitolo().setText("");
 					frame.getPanel_aggiungiCompito().getDescrizione().setText("");

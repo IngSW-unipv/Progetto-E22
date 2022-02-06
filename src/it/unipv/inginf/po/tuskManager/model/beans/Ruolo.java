@@ -14,6 +14,7 @@ public class Ruolo{
 	 * */
 	public Ruolo(String nome) {
 		this.nome = nome;
+		this.nome = this.nome.toLowerCase();
 	}
 	/**
 	 * Sostituisce il nome del ruolo.
@@ -21,6 +22,7 @@ public class Ruolo{
 	 * */
 	public void setNome(String nome) {
 		this.nome = nome;
+		this.nome = this.nome.toLowerCase();
 	}
 	/**
 	 * @return Il nome del ruolo.

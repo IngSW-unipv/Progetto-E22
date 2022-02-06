@@ -1,4 +1,4 @@
-package it.unipv.inginf.po.tuskManager.model.utils;
+package it.unipv.inginf.po.tuskManager.model.facade.utils;
 
 public class PasswordCoder {
 	public PasswordCoder() {
