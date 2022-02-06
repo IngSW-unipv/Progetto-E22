@@ -442,10 +442,9 @@ public class DbDAO implements IDao{
 			
 			PreparedStatement statement;
 			
-			statement = conn.prepareStatement("DELETE FROM TUSKMANAGER.COMPITO WHERE TITOLO = ? AND TITOLO_SCHEDA = ? AND ID_WORKSPACE = ?");
+			statement = conn.prepareStatement("DELETE FROM TUSKMANAGER.COMPITO WHERE TITOLO = ? AND ID_WORKSPACE = ?");
 			statement.setString(1,c.getTitolo());
-			statement.setString(2,s.getTitolo());
-			statement.setInt(3,w.getId());
+			statement.setInt(2,w.getId());
 			
 			statement.executeUpdate();
 			
