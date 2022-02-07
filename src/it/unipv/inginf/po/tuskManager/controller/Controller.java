@@ -836,7 +836,7 @@ public class Controller {
 						return;
 					}
 					
-					if(tm.removeCompito(in_questione) && tm.createCompito(scheda_in_questione, in_questione)) {
+					if(tm.modifyCompito(scheda_in_questione, in_questione, in_questione)) {
 						frame.seePanelOperazioniCompito();
 						frame.getPanel_spostaCompito().getScheda().setText("");
 						frame.getPanel_spostaCompito().getCompito().setText("");

@@ -217,13 +217,15 @@ public class TaskManager implements ITaskManager{
 	 * @param s La scheda contentente il vecchio compito.
 	 * @param vecchio Compito vecchio.
 	 * @param nuovo Compito nuovo.
-	 * @return true se la modifica � andata a buon fine. 
+	 * @return true se la modifica e' andata a buon fine. 
 	 * */
 	public boolean modifyCompito(Scheda s, Compito vecchio, Compito nuovo) throws RoleNotAcceptedException, CannotConnectToDbException{
 		updateWorkspace();
-		if(dao.modifyCompito(ws_selected, s, vecchio, nuovo)) {
-			updateWorkspace();
-			return true;
+		if(membro_logged.getRuolo().equals(new Ruolo("manager")) || vecchio.equals(nuovo)) {//se vecchio = nuovo voglio solo spostarlo quindi non mi serve essere manager
+			if(dao.modifyCompito(ws_selected, s, vecchio, nuovo)) {
+				updateWorkspace();
+				return true;
+			}
 		}
 		return false;
 		
