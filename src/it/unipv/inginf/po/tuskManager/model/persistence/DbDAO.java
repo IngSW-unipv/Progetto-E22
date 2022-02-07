@@ -19,11 +19,10 @@ import it.unipv.inginf.po.tuskManager.model.persistence.utils.DBConnection;
 
 public class DbDAO implements IDao{
 	
-	private Connection conn;
-	
 	@Override
 	public ArrayList<String> selectAllEmails() throws CannotConnectToDbException {
 		try {
+			Connection conn;
 			ArrayList<String> res = new ArrayList<String>();
 			conn = DBConnection.startConnection();
 			
@@ -43,6 +42,7 @@ public class DbDAO implements IDao{
 	@Override
 	public ArrayList<String> selectAllEmailsByWorkspace(Workspace w) throws CannotConnectToDbException {//da provare
 		try {
+			Connection conn;
 			ArrayList<String> res = new ArrayList<String>();
 			conn = DBConnection.startConnection();
 			
@@ -68,6 +68,7 @@ public class DbDAO implements IDao{
 	@Override
 	public ArrayList<Workspace> selectWorkspaceByAccount(Account a) throws CannotConnectToDbException { // da provare
 		try {
+			Connection conn;
 			ArrayList<Workspace> res = new ArrayList<Workspace>();
 			conn = DBConnection.startConnection();
 			
@@ -93,6 +94,7 @@ public class DbDAO implements IDao{
 	@Override
 	public Workspace selectWorkspace(Workspace w) throws CannotConnectToDbException {
 		try {
+			Connection conn;
 			Workspace res = null;
 			conn = DBConnection.startConnection();
 			
@@ -163,6 +165,7 @@ public class DbDAO implements IDao{
 	@Override
 	public Membro selectRuoloOfAccount(Workspace w, Account a) throws CannotConnectToDbException {
 		try {
+			Connection conn;
 			Membro res = null;
 			conn = DBConnection.startConnection();
 			
@@ -188,33 +191,13 @@ public class DbDAO implements IDao{
 
 	@Override
 	public Membro selectMembro(Workspace w, Membro m) throws CannotConnectToDbException {
-		try {
-			Membro res = null;
-			conn = DBConnection.startConnection();
-			
-			PreparedStatement statement;
-			ResultSet resultset;
-			
-			statement = conn.prepareStatement("(SELECT NOME_RUOLO FROM TUSKMANAGER.MEMBRO WHERE EMAIL_UTENTE = ? AND ID_WORKSPACE = ?)");
-			statement.setString(1,m.getEmail());
-			statement.setInt(2,w.getId());
-			
-			resultset=statement.executeQuery();
-			
-			while(resultset.next()) {
-				res = new Membro(m.getEmail(), m.getPassword(), new Ruolo(resultset.getString("NOME_RUOLO")));
-			}
-			conn = DBConnection.closeConnection(conn);
-			return res;
-		}catch(Exception ex) {
-			ex.printStackTrace();
-			throw new CannotConnectToDbException();
-		}
+		return selectRuoloOfAccount(w,(Account)m);
 	}
 
 	@Override
 	public boolean insertIntoAccount(Account a) throws CannotConnectToDbException {
 		try {
+			Connection conn;
 			conn = DBConnection.startConnection();
 			
 			PreparedStatement statement;
@@ -235,6 +218,7 @@ public class DbDAO implements IDao{
 	@Override
 	public boolean insertIntoWorkspace(Workspace w) throws CannotConnectToDbException {//da provare
 		try {
+			Connection conn;
 			conn = DBConnection.startConnection();
 			
 			PreparedStatement statement;
@@ -247,7 +231,6 @@ public class DbDAO implements IDao{
 			conn = DBConnection.closeConnection(conn);
 			return true;
 		}catch(SQLIntegrityConstraintViolationException exs) {
-			conn = DBConnection.closeConnection(conn);
 			return false;
 		}catch(Exception ex) {
 			ex.printStackTrace();
@@ -258,6 +241,7 @@ public class DbDAO implements IDao{
 	@Override
 	public boolean insertIntoRuolo(Ruolo r) throws CannotConnectToDbException {
 		try {
+			Connection conn;
 			conn = DBConnection.startConnection();
 			
 			PreparedStatement statement;
@@ -270,7 +254,6 @@ public class DbDAO implements IDao{
 			conn = DBConnection.closeConnection(conn);
 			return true;
 		}catch(SQLIntegrityConstraintViolationException e) {//se c'è gia va bene uguale
-			conn = DBConnection.closeConnection(conn);
 			return true;
 		}
 		catch(Exception ex) {
@@ -281,6 +264,7 @@ public class DbDAO implements IDao{
 	@Override
 	public boolean insertIntoScheda(Workspace w, Scheda s) throws CannotConnectToDbException { //da provare
 		try {
+			Connection conn;
 			conn = DBConnection.startConnection();
 			
 			PreparedStatement statement;
@@ -298,7 +282,6 @@ public class DbDAO implements IDao{
 			conn = DBConnection.closeConnection(conn);
 			return true;
 		}catch(SQLIntegrityConstraintViolationException e) {
-			conn = DBConnection.closeConnection(conn);
 			return false;
 		}catch(Exception ex) {
 			throw new CannotConnectToDbException();
@@ -308,6 +291,7 @@ public class DbDAO implements IDao{
 	@Override
 	public boolean insertIntoCompito(Workspace w, Scheda s, Compito c) throws CannotConnectToDbException {
 		try {
+			Connection conn;
 			for(Ruolo r : c.getRuoli()) {
 				insertIntoRuolo(r);
 			}
@@ -337,7 +321,6 @@ public class DbDAO implements IDao{
 			conn = DBConnection.closeConnection(conn);
 			return true;
 		}catch(SQLIntegrityConstraintViolationException e) {
-			conn = DBConnection.closeConnection(conn);
 			return false;
 		}catch(Exception ex) {
 			ex.printStackTrace();
@@ -350,7 +333,7 @@ public class DbDAO implements IDao{
 		try {
 			
 			insertIntoRuolo(m.getRuolo());
-			
+			Connection conn;
 			conn = DBConnection.startConnection();
 			
 			PreparedStatement statement;
@@ -364,7 +347,6 @@ public class DbDAO implements IDao{
 			conn = DBConnection.closeConnection(conn);
 			return true;
 		}catch(SQLIntegrityConstraintViolationException e) {
-			conn = DBConnection.closeConnection(conn);
 			return false;
 		}
 		catch(Exception ex) {
@@ -379,6 +361,7 @@ public class DbDAO implements IDao{
 			for(Ruolo r : nuovo.getRuoli()) {
 				insertIntoRuolo(r);
 			}
+			Connection conn;
 			conn = DBConnection.startConnection();
 			
 			removeCompito(w,s,vecchio);
@@ -399,6 +382,7 @@ public class DbDAO implements IDao{
 	@Override
 	public boolean modifyMembro(Workspace w, Membro m) throws CannotConnectToDbException {
 		try {
+			Connection conn;
 			conn = DBConnection.startConnection();
 			
 			removeMembro(w,m);
@@ -417,6 +401,7 @@ public class DbDAO implements IDao{
 	@Override
 	public boolean modifyWorkspace(Workspace vecchio, Workspace nuovo) throws CannotConnectToDbException {//serve a cambiare il nome e basta
 		try {
+			Connection conn;
 			conn = DBConnection.startConnection();
 			
 			PreparedStatement statement;
@@ -438,6 +423,7 @@ public class DbDAO implements IDao{
 	@Override
 	public boolean removeCompito(Workspace w, Scheda s, Compito c) throws CannotConnectToDbException {
 		try {
+			Connection conn;
 			conn = DBConnection.startConnection();
 			
 			PreparedStatement statement;
@@ -458,9 +444,11 @@ public class DbDAO implements IDao{
 		}
 	}
 
+	@SuppressWarnings("resource")
 	@Override
 	public boolean removeMembro(Workspace w, Membro m) throws CannotConnectToDbException {
 		try {
+			Connection conn;
 			conn = DBConnection.startConnection();
 			
 			PreparedStatement statement;
@@ -485,6 +473,7 @@ public class DbDAO implements IDao{
 	@Override
 	public boolean removeWorkspace(Workspace w) throws CannotConnectToDbException {//da provare
 		try {
+			Connection conn;
 			conn = DBConnection.startConnection();
 			
 			PreparedStatement statement;
@@ -503,9 +492,11 @@ public class DbDAO implements IDao{
 		}
 	}
 
+	@SuppressWarnings("resource")
 	@Override
 	public boolean login(String user, String pw) throws CannotConnectToDbException {
 		try {
+			Connection conn;
 			conn = DBConnection.startConnection();
 			
 			PreparedStatement statement;

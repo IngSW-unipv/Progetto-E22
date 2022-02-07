@@ -354,7 +354,13 @@ public class Controller {
 							}
 							Calendar cal = Calendar.getInstance();
 							cal.setTimeInMillis(c.getScadenza().getTime());
-							JOptionPane.showMessageDialog(frame, "titolo: "+c.getTitolo() + "\ndescrizione: "+ c.getDescrizione() + "\nscadenza: "+cal.get(Calendar.DAY_OF_MONTH)+"/"+cal.get(Calendar.MONTH)+"/"+cal.get(Calendar.YEAR)+"\nruoli:"+sruoli);
+//							int mese;
+//							if(cal.get(Calendar.MONTH) == 0)
+//								mese = 12;
+//							else{
+//								mese = cal.get(Calendar.MONTH);//dicembre viene tradotto in 0, cosi risolve
+//							}
+							JOptionPane.showMessageDialog(frame, "titolo: "+c.getTitolo() + "\ndescrizione: "+ c.getDescrizione() + "\nscadenza: "+(cal.get(Calendar.DAY_OF_MONTH))+"/"+(cal.get(Calendar.MONTH)+1)+"/"+cal.get(Calendar.YEAR)+"\nruoli:"+sruoli);
 						}
 						
 					} catch (CannotConnectToDbException e1) {
@@ -444,15 +450,15 @@ public class Controller {
 						frame.getPanel_aggiungiMembro().getRuolo().setText("");
 						frame.seePanelModifica();
 					}else {
-						JOptionPane.showMessageDialog(frame, "il membro non e' stato aggiunto, assicurarsi che esista un account associato all'email inserita");
+						JOptionPane.showMessageDialog(frame, "il membro non e' stato aggiunto, assicurarsi che esista un account associato all'email inserita e che l'email sia valida");
 						frame.seePanelAggiungiMembro();
 					}
 				} catch (CannotConnectToDbException e1) {
 					JOptionPane.showMessageDialog(frame, "impossibile reperire informazioni dalla piattaforma");
-				}catch(CannotSendMailException ex2) {
-					JOptionPane.showMessageDialog(frame, "impossibile inviare email di notifica");
 				}catch(RoleNotAcceptedException ex3) {
 					JOptionPane.showMessageDialog(frame, "il tuo ruolo non e' adeguato a svolgere questa operazione");
+				}catch(Exception ex2) {
+					JOptionPane.showMessageDialog(frame, "impossibile inviare email di notifica");
 				}
 				frame.getPanel_aggiungiMembro().getEmail().setText("");
 				frame.getPanel_aggiungiMembro().getRuolo().setText("");
@@ -653,7 +659,7 @@ public class Controller {
 				Calendar scadenza = frame.getPanel_aggiungiCompito().getScadenza();
 				int giorno = scadenza.get(Calendar.DAY_OF_MONTH);
 				int mese = scadenza.get(Calendar.MONTH);
-				int anno = scadenza.get(Calendar.YEAR)-1;
+				int anno = scadenza.get(Calendar.YEAR);
 				if((frame.getPanel_aggiungiCompito().getAnno().getText().length() != 4) || Integer.parseInt(frame.getPanel_aggiungiCompito().getMese().getText()) <1 || Integer.parseInt(frame.getPanel_aggiungiCompito().getMese().getText())>12 || Integer.parseInt(frame.getPanel_aggiungiCompito().getGiorno().getText()) < 1 || Integer.parseInt(frame.getPanel_aggiungiCompito().getGiorno().getText())>31|| titolo == null || scadenza == null) {
 					frame.getPanel_aggiungiCompito().getTitolo().setText("");
 					frame.getPanel_aggiungiCompito().getDescrizione().setText("");
@@ -702,8 +708,9 @@ public class Controller {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Calendar cal = Calendar.getInstance();
-				cal.set(frame.getPanel_aggiungiCompito2().getAnno(), frame.getPanel_aggiungiCompito2().getMese(), frame.getPanel_aggiungiCompito2().getGiorno());
+				cal.set(frame.getPanel_aggiungiCompito2().getAnno(), frame.getPanel_aggiungiCompito2().getMese(), frame.getPanel_aggiungiCompito2().getGiorno(),0,0,0);
 				Date scadenza = new Date(cal.getTimeInMillis());
+				
 				ArrayList<Ruolo> ruoli = new ArrayList<Ruolo>();
 				for(String s : frame.getPanel_aggiungiCompito2().getLista()) {
 					ruoli.add(new Ruolo(s));

@@ -153,7 +153,7 @@ public class AggiungiCompito extends JPanel{
 		Calendar temp = Calendar.getInstance();
 //		Date res;
 		try {
-			temp.set(Integer.parseInt(scadenza_yyyy.getText()), Integer.parseInt(scadenza_mm.getText()), Integer.parseInt(scadenza_gg.getText()));
+			temp.set(Integer.parseInt(scadenza_yyyy.getText()), (Integer.parseInt(scadenza_mm.getText())-1), Integer.parseInt(scadenza_gg.getText()));
 //			res = new Date(temp.getTimeInMillis());
 		}catch(Exception ex) {
 			return null;

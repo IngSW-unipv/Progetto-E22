@@ -2,10 +2,6 @@ package it.unipv.inginf.po.tuskManager.model.facade;
 
 import java.util.ArrayList;
 
-import javax.mail.MessagingException;
-import javax.mail.NoSuchProviderException;
-import javax.mail.internet.AddressException;
-
 import it.unipv.inginf.po.tuskManager.model.beans.Account;
 import it.unipv.inginf.po.tuskManager.model.beans.Compito;
 import it.unipv.inginf.po.tuskManager.model.beans.Membro;
@@ -81,17 +77,9 @@ public class TaskManager implements ITaskManager{
 		boolean res = false;
 		try {
 			res = es.inviaEmail();
-		}catch(AddressException ae) {
-	      ae.printStackTrace();
-	      throw new CannotSendMailException();
-	    }catch(NoSuchProviderException nspe){
-	      nspe.printStackTrace();
-	      throw new CannotSendMailException();
-	    }catch(MessagingException me){
-	      me.printStackTrace();
-	      throw new CannotSendMailException();
-	    }catch(Exception ex) {
-	    	ex.printStackTrace();
+		}catch(Exception ex1) {
+	    	throw new CannotSendMailException();
+	    }catch(Error ex) {
 	    	throw new CannotSendMailException();
 	    }
 		return res;
