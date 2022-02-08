@@ -2,8 +2,10 @@ package it.unipv.inginf.po.tuskManager.view.apertura;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Font;
+import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
@@ -13,22 +15,20 @@ import java.util.ArrayList;
 import java.util.Properties;
 import java.util.Scanner;
 
-import javax.swing.JButton;
+import javax.imageio.ImageIO;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.border.LineBorder;
+
+import it.unipv.inginf.po.tuskManager.view.utils.JTuskButton;
 
 public class Impostazioni extends JPanel{
 	
-	/**
-	 * 
-	 */
 	private static Color colore_bottoni = new Color(255,128,0);
-	private static Color colore_sfondo = new Color(255,178,102);
-	ArrayList<JButton> bottoni;
+//	private static Color colore_sfondo = new Color(255,178,102);
+	ArrayList<JTuskButton> bottoni;
 	private static final long serialVersionUID = 1L;
-	private JButton bottone_esci;
-	
+	private JTuskButton bottone_esci;
+	private Image img;
 	public Impostazioni() {
 		super();
 		
@@ -37,18 +37,13 @@ public class Impostazioni extends JPanel{
 		try {
 			p.load(new FileInputStream("config/colors.txt"));
 			colore_bottoni = new Color(Integer.parseInt(p.getProperty("bottoni_red")),Integer.parseInt(p.getProperty("bottoni_green")),Integer.parseInt(p.getProperty("bottoni_blue")));
-			colore_sfondo = new Color(Integer.parseInt(p.getProperty("sfondo_red")),Integer.parseInt(p.getProperty("sfondo_green")),Integer.parseInt(p.getProperty("sfondo_blue")));
+//			colore_sfondo = new Color(Integer.parseInt(p.getProperty("sfondo_red")),Integer.parseInt(p.getProperty("sfondo_green")),Integer.parseInt(p.getProperty("sfondo_blue")));
+			img = ImageIO.read(new File("assets/background.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		ArrayList<JLabel> label = new ArrayList<JLabel>();
-		for(int i = 0; i< 16; i++) {
-			JLabel lab = new JLabel();
-			label.add(lab);
-		}
-		setBackground(colore_sfondo);
 		
-		bottoni = new ArrayList<JButton>();
+		bottoni = new ArrayList<JTuskButton>();
 		String nome = "";
 		String data;
 		try {
@@ -58,13 +53,8 @@ public class Impostazioni extends JPanel{
 				data = myReader.nextLine();
 				if(data.charAt(0) == '-') {
 					nome = (data.substring(1, data.length()));
-					JButton b;
-					b = new JButton(nome);
-					b.setBorder(new LineBorder(Color.BLACK));
-					b.setFocusPainted(false);
-					b.setBackground(colore_bottoni);
-					b.setForeground(Color.BLACK);
-					b.setFont(new Font("Serif", Font.BOLD, 20));
+					JTuskButton b;
+					b = new JTuskButton(nome,colore_bottoni, Color.BLACK,false,new Dimension(150,75),new Dimension(20,20));
 					bottoni.add(b);
 				}
 				else
@@ -76,45 +66,41 @@ public class Impostazioni extends JPanel{
 			e.printStackTrace();
 			}	
 	   
-		bottone_esci = new JButton("INDIETRO");
-		bottone_esci.setBorder(new LineBorder(Color.BLACK));
-		bottone_esci.setFocusPainted(false);
-		bottone_esci.setBackground(Color.RED);
-		bottone_esci.setForeground(Color.WHITE);
-		bottone_esci.setFont(new Font("Serif", Font.BOLD, 20));
+		bottone_esci = new JTuskButton("INDIETRO",Color.RED, Color.BLACK,false,new Dimension(150,75),new Dimension(20,20));
 		
 		JPanel pannello = new JPanel();
 		pannello.setOpaque(false);
-		pannello.setLayout(new GridLayout((2+bottoni.size()),3));
-		pannello.add(label.get(0));
-		pannello.add(label.get(1));
-		pannello.add(label.get(2));
-		pannello.add(label.get(3));
-		for(JButton b : bottoni) {
+		pannello.setLayout(new GridLayout((3+bottoni.size()),3));
+		pannello.add(new JLabel());
+		pannello.add(new JLabel());
+		pannello.add(new JLabel());
+		pannello.add(new JLabel());
+		for(JTuskButton b : bottoni) {
 			pannello.add(b);
 			pannello.add(new JLabel());
 			pannello.add(new JLabel());
 		}
-		pannello.add(label.get(10));
-		pannello.add(label.get(11));
+		pannello.add(bottone_esci);
+		pannello.add(new JLabel());
+		pannello.add(new JLabel());
+		pannello.add(new JLabel());
+		pannello.add(new JLabel());
 		this.add(pannello, BorderLayout.CENTER);
 		
-		JPanel pannello_sopra = new JPanel();
-		pannello_sopra.setOpaque(false);
-		pannello_sopra.setLayout(new GridLayout(1,3));
-		pannello_sopra.add(label.get(12));
-		pannello_sopra.add(label.get(13));
-		pannello_sopra.add(label.get(14));
-		pannello_sopra.add(label.get(15));
-		pannello_sopra.add(bottone_esci);
-		this.add(pannello_sopra, BorderLayout.SOUTH);
+	}
+	@Override
+	protected void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		g.drawImage(img, 0, 0,this.getParent().getSize().width, this.getParent().getSize().height, null);
+		this.setSize(this.getParent().getSize());
+//		bottone_esci.setBounds(bottone_esci, 0, (int)this.getSize().width/8, (int)this.getSize().height/12);
+
 	}
 	
-	
-	public JButton getBottoneIndietro() {
+	public JTuskButton getBottoneIndietro() {
 		return this.bottone_esci;
 	}
-	public ArrayList<JButton> getAllBottoni(){
+	public ArrayList<JTuskButton> getAllBottoni(){
 		return bottoni;
 	}
 	public void selectColor(String name) {

@@ -81,14 +81,14 @@ public class TMFrame extends JFrame{
 		this.setTitle("Tusk Manager");
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setVisible(true);
-		this.setSize(1200,600);
 		
 //		this.setResizable(false);
 //		GraphicsEnvironment graphics = GraphicsEnvironment.getLocalGraphicsEnvironment();
 //		GraphicsDevice device = graphics.getDefaultScreenDevice();
 //		device.setFullScreenWindow(this);
 		try {
-			this.setIconImage(ImageIO.read(new File("assets/background.jpg")));
+			this.setIconImage(ImageIO.read(new File("assets/background.png")));
+			this.setSize(ImageIO.read(new File("assets/background_apertura.png")).getWidth(),ImageIO.read(new File("assets/background_apertura.png")).getHeight());
 		}
 		catch (IOException exc) {
 		    exc.printStackTrace();

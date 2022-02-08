@@ -2,47 +2,49 @@ package it.unipv.inginf.po.tuskManager.view.apertura;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.GridLayout;
+import java.awt.Image;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Properties;
 
-import javax.swing.JButton;
+import javax.imageio.ImageIO;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
-import javax.swing.border.LineBorder;
+import it.unipv.inginf.po.tuskManager.view.utils.JTuskButton;
+import it.unipv.inginf.po.tuskManager.view.utils.JTuskField;
+import it.unipv.inginf.po.tuskManager.view.utils.JTuskPassword;
 
 public class Registrati extends JPanel{
 	
-	/**
-	 * 
-	 */
-	
 	private static Color colore_bottoni = new Color(255,128,0);
-	private static Color colore_sfondo = new Color(255,178,102);
+//	private static Color colore_sfondo = new Color(255,178,102);
 	private static final long serialVersionUID = 1L;
-	private JButton bottone_accedi, bottone_esci;
-	private JTextField email; 
-	private JPasswordField pw,pw_conferma;
-	
+	private JTuskButton bottone_accedi, bottone_esci;
+	private JTuskField email; 
+	private JTuskPassword pw,pw_conferma;
+	private Image img;
 	public Registrati() {
 		super();
-		setSize(1600, 900);
 		
 		Properties p = System.getProperties();
 		try {
 			p.load(new FileInputStream("config/colors.txt"));
 			colore_bottoni = new Color(Integer.parseInt(p.getProperty("bottoni_red")),Integer.parseInt(p.getProperty("bottoni_green")),Integer.parseInt(p.getProperty("bottoni_blue")));
-			colore_sfondo = new Color(Integer.parseInt(p.getProperty("sfondo_red")),Integer.parseInt(p.getProperty("sfondo_green")),Integer.parseInt(p.getProperty("sfondo_blue")));
+//			colore_sfondo = new Color(Integer.parseInt(p.getProperty("sfondo_red")),Integer.parseInt(p.getProperty("sfondo_green")),Integer.parseInt(p.getProperty("sfondo_blue")));
+			img = ImageIO.read(new File("assets/background.png"));
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 		
-		setBackground(colore_sfondo);
 		this.setLayout(new BorderLayout());
 		
 		ArrayList<JLabel> label = new ArrayList<JLabel>();
@@ -51,44 +53,16 @@ public class Registrati extends JPanel{
 			label.add(lab);
 		}
 		
-		email = new JTextField("");
-		email.setBorder(new LineBorder(Color.BLACK));
-		email.setBackground(colore_bottoni);
-		email.setForeground(Color.BLACK);
-		email.setFont(new Font("Serif", Font.PLAIN, 30));
-		email.setToolTipText("INSERIRE EMAIL");
-		email.setHorizontalAlignment(JTextField.CENTER);
+		email = new JTuskField("email",colore_bottoni,Color.BLACK,new Font("Arial", Font.PLAIN, 20));
 		
-		pw = new JPasswordField("");
-		pw.setBorder(new LineBorder(Color.BLACK));
-		pw.setBackground(colore_bottoni);
-		pw.setForeground(Color.BLACK);
-		pw.setFont(new Font("Serif", Font.PLAIN, 30));
-		pw.setToolTipText("INSERIRE PASSWORD");
-		pw.setHorizontalAlignment(JTextField.CENTER);
+		pw = new JTuskPassword("password",colore_bottoni,Color.BLACK,new Font("Arial", Font.PLAIN, 20));
 		
-		pw_conferma = new JPasswordField("");
-		pw_conferma.setBorder(new LineBorder(Color.BLACK));
-		pw_conferma.setBackground(colore_bottoni);
-		pw_conferma.setForeground(Color.BLACK);
-		pw_conferma.setFont(new Font("Serif", Font.PLAIN, 30));
-		pw_conferma.setToolTipText("CONFERMARE PASSWORD");
-		pw_conferma.setHorizontalAlignment(JTextField.CENTER);
+		pw_conferma = new JTuskPassword("password",colore_bottoni,Color.BLACK,new Font("Arial", Font.PLAIN, 20));
 		
-		bottone_accedi = new JButton("INVIA");
-		bottone_accedi.setBorder(new LineBorder(Color.BLACK));
-		bottone_accedi.setFocusPainted(false);
-		bottone_accedi.setBackground(colore_bottoni);
-		bottone_accedi.setForeground(Color.BLACK);
-		bottone_accedi.setFont(new Font("Serif", Font.PLAIN, 30));
+		bottone_accedi = new JTuskButton("registrati",colore_bottoni, Color.BLACK,false,new Dimension(150,75),new Dimension(20,20));
 		
 		
-		bottone_esci = new JButton("INDIETRO");
-		bottone_esci.setBorder(new LineBorder(Color.BLACK));
-		bottone_esci.setFocusPainted(false);
-		bottone_esci.setBackground(Color.RED);
-		bottone_esci.setForeground(Color.WHITE);
-		bottone_esci.setFont(new Font("Serif", Font.BOLD, 20));
+		bottone_esci = new JTuskButton("    INDIETRO",Color.red, Color.BLACK,true,new Dimension(150,75),new Dimension(20,20));
 		
 		JPanel pannello = new JPanel();
 		pannello.setOpaque(false);
@@ -123,7 +97,12 @@ public class Registrati extends JPanel{
 		pannello_sopra.add(bottone_esci);
 		this.add(pannello_sopra, BorderLayout.SOUTH);
 	}
-	
+	@Override
+	protected void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		g.drawImage(img, 0, 0,this.getParent().getSize().width, this.getParent().getSize().height, null);
+		this.setSize(this.getParent().getSize());
+	}
 	public JTextField getEmail() {
 		return email;
 	}
@@ -136,10 +115,10 @@ public class Registrati extends JPanel{
 		return pw_conferma;
 	}
 	
-	public JButton getBottoneInvia() {
+	public JTuskButton getBottoneInvia() {
 		return this.bottone_accedi;
 	}
-	public JButton getBottoneIndietro() {
+	public JTuskButton getBottoneIndietro() {
 		return this.bottone_esci;
 	}
 }

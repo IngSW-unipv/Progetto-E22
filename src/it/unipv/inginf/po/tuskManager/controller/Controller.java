@@ -20,7 +20,7 @@ import it.unipv.inginf.po.tuskManager.model.exceptions.CannotSendMailException;
 import it.unipv.inginf.po.tuskManager.model.exceptions.RoleNotAcceptedException;
 import it.unipv.inginf.po.tuskManager.model.facade.ITaskManager;
 import it.unipv.inginf.po.tuskManager.view.TMFrame;
-
+import it.unipv.inginf.po.tuskManager.view.utils.JTuskButton;
 public class Controller {
 
 
@@ -116,7 +116,7 @@ public class Controller {
 			}
 		});
 		//bottoni dei colori
-		for(JButton b : frame.getPanel_impostazioni().getAllBottoni()) {
+		for(JTuskButton b : frame.getPanel_impostazioni().getAllBottoni()) {
 			b.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
