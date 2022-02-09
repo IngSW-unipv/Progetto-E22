@@ -1,46 +1,46 @@
--SAHARA
+- SAHARA 
 //sfondo_red=255
 //sfondo_green=178
 //sfondo_blue=102
 //bottoni_red=255
 //bottoni_green=128
 //bottoni_blue=0
--SAD
+- SADNESS 
 //sfondo_red=58
 //sfondo_green=58
 //sfondo_blue=60
 //bottoni_red=174
 //bottoni_green=174
 //bottoni_blue=178
--NAVY
+-  NAVY  
 //sfondo_red=102
 //sfondo_green=212
 //sfondo_blue=207
 //bottoni_red=0
 //bottoni_green=113
 //bottoni_blue=164
--HOPE
+-  HOPE  
 //sfondo_red=48
 //sfondo_green=219
 //sfondo_blue=91
 //bottoni_red=36
 //bottoni_green=138
 //bottoni_blue=61
--SKIN
+-  SKIN  
 //sfondo_red=218
 //sfondo_green=143
 //sfondo_blue=255
 //bottoni_red=137
 //bottoni_green=68
 //bottoni_blue=171
--GROUND
+-  GROUND  
 //sfondo_red=181
 //sfondo_green=148
 //sfondo_blue=105
 //bottoni_red=127
 //bottoni_green=101
 //bottoni_blue=69
--LAKERS
+-  LAKERS  
 //sfondo_red=137
 //sfondo_green=68
 //sfondo_blue=171
@@ -54,14 +54,14 @@
 //bottoni_red=201
 //bottoni_green=52
 //bottoni_blue=0
--SUNSET
+-  SUNSET  
 //sfondo_red=0
 //sfondo_green=130
 //sfondo_blue=153
 //bottoni_red=255
 //bottoni_green=179
 //bottoni_blue=64
--LIGHT
+-  BRIGHT  
 sfondo_red=0
 sfondo_green=130
 sfondo_blue=153

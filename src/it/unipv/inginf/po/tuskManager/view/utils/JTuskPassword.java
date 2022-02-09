@@ -30,7 +30,9 @@ public class JTuskPassword extends JPasswordField implements MouseListener{
         addMouseListener(this);
         mouse_clicked = false;
     }
-    
+    public void reset() {
+    	mouse_clicked = false;
+    }
     
     @Override
     public void paintComponent(Graphics g) {
@@ -40,7 +42,6 @@ public class JTuskPassword extends JPasswordField implements MouseListener{
     		this.setForeground(Color.GRAY);
     		this.setText(testo);
     	}
-    		
     }
     
     @Override

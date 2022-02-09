@@ -1,102 +1,67 @@
 package it.unipv.inginf.po.tuskManager.view.homepage;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Font;
-import java.awt.GridLayout;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Image;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Properties;
 
-import javax.swing.JButton;
-import javax.swing.JLabel;
+import javax.imageio.ImageIO;
 import javax.swing.JPanel;
-import javax.swing.border.LineBorder;
+import it.unipv.inginf.po.tuskManager.view.utils.JTuskButton;
 
 public class HomePage extends JPanel{
 	
-	/**
-	 * 
-	 */
 	private static Color colore_bottoni = new Color(255,128,0);
-	private static Color colore_sfondo = new Color(255,178,102);
+//	private static Color colore_sfondo = new Color(255,178,102);
 	private static final long serialVersionUID = 1L;
-	private JButton bottone_crea, bottone_seleziona, bottone_logout;
+	private JTuskButton bottone_crea, bottone_seleziona, bottone_indietro;
+	private Image img;
 	public HomePage() {
 		super();
 		Properties p = System.getProperties();
 		try {
 			p.load(new FileInputStream("config/colors.txt"));
 			colore_bottoni = new Color(Integer.parseInt(p.getProperty("bottoni_red")),Integer.parseInt(p.getProperty("bottoni_green")),Integer.parseInt(p.getProperty("bottoni_blue")));
-			colore_sfondo = new Color(Integer.parseInt(p.getProperty("sfondo_red")),Integer.parseInt(p.getProperty("sfondo_green")),Integer.parseInt(p.getProperty("sfondo_blue")));
+//			colore_sfondo = new Color(Integer.parseInt(p.getProperty("sfondo_red")),Integer.parseInt(p.getProperty("sfondo_green")),Integer.parseInt(p.getProperty("sfondo_blue")));
+			img = ImageIO.read(new File("assets/background.png"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		setBackground(colore_sfondo);
-		this.setLayout(new BorderLayout());
+		bottone_crea = new JTuskButton("  CREA  ",colore_bottoni, Color.BLACK,false,new Dimension(150,75),new Dimension(20,20));
 		
-		ArrayList<JLabel> label = new ArrayList<JLabel>();
-		for(int i = 0; i< 14; i++) {
-			JLabel lab = new JLabel();
-			label.add(lab);
-		}
-		bottone_crea = new JButton("CREA WORKSPACE");
-		bottone_crea.setBorder(new LineBorder(Color.BLACK));
-		bottone_crea.setFocusPainted(false);
-		bottone_crea.setBackground(colore_bottoni);
-		bottone_crea.setForeground(Color.BLACK);
-		bottone_crea.setFont(new Font("Serif", Font.PLAIN, 40));
+		bottone_seleziona = new JTuskButton("SELEZIONA",colore_bottoni, Color.BLACK,false,new Dimension(150,75),new Dimension(20,20));
 		
-		bottone_seleziona = new JButton("SELEZIONA");
-		bottone_seleziona.setBorder(new LineBorder(Color.BLACK));
-		bottone_seleziona.setFocusPainted(false);
-		bottone_seleziona.setBackground(colore_bottoni);
-		bottone_seleziona.setForeground(Color.BLACK);
-		bottone_seleziona.setFont(new Font("Serif", Font.PLAIN, 40));
+		bottone_indietro = new JTuskButton("    LOGOUT",Color.red, Color.BLACK,true,new Dimension(150,75),new Dimension(20,20));
 		
-		bottone_logout = new JButton("LOGOUT");
-		bottone_logout.setBorder(new LineBorder(Color.BLACK));
-		bottone_logout.setFocusPainted(false);
-		bottone_logout.setBackground(Color.RED);
-		bottone_logout.setForeground(Color.WHITE);
-		bottone_logout.setFont(new Font("Serif", Font.BOLD, 20));
+		this.setOpaque(false);
 		
-		JPanel pannello = new JPanel();
-		pannello.setOpaque(false);
-		pannello.setLayout(new GridLayout(4,3));
-		pannello.add(label.get(0));
-		pannello.add(label.get(1));
-		pannello.add(label.get(2));
-		pannello.add(label.get(3));
-		pannello.add(bottone_crea);
-		pannello.add(label.get(4));
-		pannello.add(label.get(5));
-		pannello.add(bottone_seleziona);
-		pannello.add(label.get(6));
-		pannello.add(label.get(7));
-		pannello.add(label.get(8));
-		pannello.add(label.get(9));
-		this.add(pannello, BorderLayout.CENTER);
+		this.add(bottone_crea);
 		
-		JPanel pannello_sopra = new JPanel();
-		pannello_sopra.setOpaque(false);
-		pannello_sopra.setLayout(new GridLayout(1,3));
-		pannello_sopra.add(label.get(10));
-		pannello_sopra.add(label.get(11));
-		pannello_sopra.add(label.get(12));
-		pannello_sopra.add(label.get(13));
-		pannello_sopra.add(bottone_logout);
-		this.add(pannello_sopra, BorderLayout.NORTH);
+		this.add(bottone_seleziona);
+		
+		this.add(bottone_indietro);
 	}
-	
-	public JButton getBottoneCrea() {
+	@Override
+	protected void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		g.drawImage(img, 0, 0,this.getParent().getSize().width, this.getParent().getSize().height, null);
+		this.setSize(this.getParent().getSize());
+		bottone_indietro.setBounds((int)this.getSize().width-bottone_indietro.getSize().width, (int)(this.getSize().height-bottone_indietro.getSize().height), (int)this.getSize().width/8, (int)this.getSize().height/12);
+		bottone_crea.setBounds((int)(this.getSize().width/2-bottone_crea.getSize().width/2), (int)(this.getSize().height/2-bottone_crea.getSize().height/2), (int)this.getSize().width/4, (int)this.getSize().height/8);
+		bottone_seleziona.setBounds((int)(this.getSize().width/2-bottone_seleziona.getSize().width/2), (int)(this.getSize().height/2+bottone_seleziona.getSize().height/2), (int)this.getSize().width/4, (int)this.getSize().height/8);
+
+	}
+	public JTuskButton getBottoneCrea() {
 		return this.bottone_crea;
 	}
-	public JButton getBottoneSeleziona() {
+	public JTuskButton getBottoneSeleziona() {
 		return this.bottone_seleziona;
 	}
-	public JButton getBottoneLogout() {
-		return this.bottone_logout;
+	public JTuskButton getBottoneLogout() {
+		return this.bottone_indietro;
 	}
 }

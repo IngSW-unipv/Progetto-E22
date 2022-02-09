@@ -137,17 +137,20 @@ public class Controller {
 			public void actionPerformed(ActionEvent e) {
 				String email = frame.getPanel_accedi().getEmail().getText();
 				String pw = String.copyValueOf(frame.getPanel_accedi().getPw().getPassword());
+				frame.getPanel_accedi().getEmail().reset();
+				frame.getPanel_accedi().getPw().reset();
 				try {
 					if(tm.login(email, pw)) {
-						frame.getPanel_accedi().getEmail().setText("");
-						frame.getPanel_accedi().getPw().setText("");
+						frame.getPanel_accedi().getEmail().reset();
+						frame.getPanel_accedi().getPw().reset();
 						frame.seePanelHomePage(); 
 					}else {
+						
 						JOptionPane.showMessageDialog(frame, "credenziali errate");
 					}
 				} catch (CannotConnectToDbException e1) {
-					frame.getPanel_accedi().getEmail().setText("");
-					frame.getPanel_accedi().getPw().setText("");
+					frame.getPanel_accedi().getEmail().reset();
+					frame.getPanel_accedi().getPw().reset();
 					JOptionPane.showMessageDialog(frame, "impossibile reperire informazioni dalla piattaforma");
 				}
 			}
@@ -156,8 +159,8 @@ public class Controller {
 		frame.getPanel_accedi().getBottoneIndietro().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				frame.getPanel_accedi().getEmail().setText("");
-				frame.getPanel_accedi().getPw().setText("");
+				frame.getPanel_accedi().getEmail().reset();
+				frame.getPanel_accedi().getPw().reset();
 				frame.seePanelApertura();
 			}
 		});
@@ -299,7 +302,7 @@ public class Controller {
 			}
 		});
 		//bottoni workspaces nel panel seleziona:
-		for(JButton b : frame.getPanel_seleziona().getAllBottoni()){
+		for(JTuskButton b : frame.getPanel_seleziona().getAllBottoni()){
 			b.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {

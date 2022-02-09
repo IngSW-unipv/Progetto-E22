@@ -28,7 +28,10 @@ public class JTuskField extends JTextField implements MouseListener{
         addMouseListener(this);
         mouse_clicked = false;
     }
-    
+    public void reset() {
+    	mouse_clicked = false;
+    	repaint();
+    }
     
     @Override
     public void paintComponent(Graphics g) {
@@ -38,7 +41,6 @@ public class JTuskField extends JTextField implements MouseListener{
     		this.setForeground(Color.GRAY);
     		this.setText(testo);
     	}
-    		
     }
     
     @Override

@@ -35,9 +35,9 @@ public class Apertura extends JPanel{
 		
 		bottone_impostazioni = new JTuskButton("OPZIONI",colore_bottoni, Color.BLACK,false, "assets/impostazioni.png",new Dimension(150,75),new Dimension(20,20));
 		
-		bottone_esci = new JTuskButton("    ESCI",Color.red, Color.BLACK,true, "assets/quit.png",new Dimension(150,75),new Dimension(20,20));
+		bottone_esci = new JTuskButton("    ESCI",6,Color.red, Color.BLACK,true, "assets/quit.png",new Dimension(150,75),new Dimension(20,20));
 		
-		bottone_accedi = new JTuskButton("ACCEDI    ",colore_bottoni, Color.BLACK,false, "assets/accedi.png",new Dimension(300,150),new Dimension(40,40));
+		bottone_accedi = new JTuskButton("ACCEDI    ",10,colore_bottoni, Color.BLACK,false, "assets/accedi.png",new Dimension(300,150),new Dimension(40,40));
 		
 		bottone_registrati = new JTuskButton("REGISTRATI",colore_bottoni, Color.BLACK,false, "assets/registrati.png",new Dimension(300,150),new Dimension(40,40));
 		

@@ -13,7 +13,6 @@ import java.util.Properties;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
 
 import it.unipv.inginf.po.tuskManager.view.utils.JTuskButton;
 import it.unipv.inginf.po.tuskManager.view.utils.JTuskField;
@@ -47,7 +46,7 @@ public class Accedi extends JPanel{
 		
 		pw = new JTuskPassword("password",colore_bottoni,Color.BLACK,new Font("Arial", Font.PLAIN, 20));
 		
-		bottone_accedi = new JTuskButton("accedi",colore_bottoni, Color.BLACK,false,new Dimension(150,75),new Dimension(20,20));
+		bottone_accedi = new JTuskButton(" accedi ",colore_bottoni, Color.BLACK,false,new Dimension(150,75),new Dimension(20,20));
 		bottone_indietro = new JTuskButton("    INDIETRO",Color.red, Color.BLACK,true,new Dimension(150,75),new Dimension(20,20));
 		
 		this.setOpaque(false);
@@ -66,7 +65,7 @@ public class Accedi extends JPanel{
 		email.setBounds((int)(this.getSize().width/2-email.getSize().width/2), (int)(this.getSize().height/2-email.getSize().height*3/2), (int)this.getSize().width/4, (int)this.getSize().height/8);
 		pw.setBounds((int)(this.getSize().width/2-pw.getSize().width/2), (int)(this.getSize().height/2-pw.getSize().height/2), (int)this.getSize().width/4, (int)this.getSize().height/8);
 	}
-	public JTextField getEmail() {
+	public JTuskField getEmail() {
 		return email;
 	}
 	

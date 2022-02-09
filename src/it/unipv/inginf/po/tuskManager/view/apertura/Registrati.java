@@ -27,7 +27,7 @@ public class Registrati extends JPanel{
 	private static Color colore_bottoni = new Color(255,128,0);
 //	private static Color colore_sfondo = new Color(255,178,102);
 	private static final long serialVersionUID = 1L;
-	private JTuskButton bottone_accedi, bottone_esci;
+	private JTuskButton bottone_accedi, bottone_indietro;
 	private JTuskField email; 
 	private JTuskPassword pw,pw_conferma;
 	private Image img;
@@ -45,13 +45,6 @@ public class Registrati extends JPanel{
 			e.printStackTrace();
 		}
 		
-		this.setLayout(new BorderLayout());
-		
-		ArrayList<JLabel> label = new ArrayList<JLabel>();
-		for(int i = 0; i< 18; i++) {
-			JLabel lab = new JLabel();
-			label.add(lab);
-		}
 		
 		email = new JTuskField("email",colore_bottoni,Color.BLACK,new Font("Arial", Font.PLAIN, 20));
 		
@@ -59,49 +52,28 @@ public class Registrati extends JPanel{
 		
 		pw_conferma = new JTuskPassword("password",colore_bottoni,Color.BLACK,new Font("Arial", Font.PLAIN, 20));
 		
-		bottone_accedi = new JTuskButton("registrati",colore_bottoni, Color.BLACK,false,new Dimension(150,75),new Dimension(20,20));
+		bottone_accedi = new JTuskButton("REGISTRATI",colore_bottoni, Color.BLACK,false,new Dimension(150,75),new Dimension(20,20));
+		
+		bottone_indietro = new JTuskButton("INDIETRO",Color.red, Color.BLACK,true,new Dimension(150,75),new Dimension(20,20));
 		
 		
-		bottone_esci = new JTuskButton("    INDIETRO",Color.red, Color.BLACK,true,new Dimension(150,75),new Dimension(20,20));
-		
-		JPanel pannello = new JPanel();
-		pannello.setOpaque(false);
-		pannello.setLayout(new GridLayout(6,3));
-		pannello.add(label.get(0));
-		pannello.add(label.get(1));
-		pannello.add(label.get(2));
-		pannello.add(label.get(3));
-		pannello.add(email);
-		pannello.add(label.get(4));
-		pannello.add(label.get(5));
-		pannello.add(pw);
-		pannello.add(label.get(16));
-		pannello.add(label.get(17));
-		pannello.add(pw_conferma);
-		pannello.add(label.get(6));
-		pannello.add(label.get(7));
-		pannello.add(bottone_accedi);
-		pannello.add(label.get(8));
-		pannello.add(label.get(9));
-		pannello.add(label.get(10));
-		pannello.add(label.get(11));
-		this.add(pannello, BorderLayout.CENTER);
-		
-		JPanel pannello_sopra = new JPanel();
-		pannello_sopra.setOpaque(false);
-		pannello_sopra.setLayout(new GridLayout(1,3));
-		pannello_sopra.add(label.get(12));
-		pannello_sopra.add(label.get(13));
-		pannello_sopra.add(label.get(14));
-		pannello_sopra.add(label.get(15));
-		pannello_sopra.add(bottone_esci);
-		this.add(pannello_sopra, BorderLayout.SOUTH);
+		this.add(email);
+		this.add(pw);
+		this.add(pw_conferma);
+		this.add(bottone_accedi);
+		this.add(bottone_indietro);
 	}
 	@Override
 	protected void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		g.drawImage(img, 0, 0,this.getParent().getSize().width, this.getParent().getSize().height, null);
 		this.setSize(this.getParent().getSize());
+		bottone_indietro.setBounds((int)this.getSize().width-bottone_indietro.getSize().width, (int)(this.getSize().height-bottone_indietro.getSize().height), (int)this.getSize().width/8, (int)this.getSize().height/12);
+		email.setBounds((int)(this.getSize().width/2-email.getSize().width/2), (int)(this.getSize().height/2-email.getSize().height*2), (int)this.getSize().width/4, (int)this.getSize().height/8);
+		pw.setBounds((int)(this.getSize().width/2-pw.getSize().width/2), (int)(this.getSize().height/2-pw.getSize().height), (int)this.getSize().width/4, (int)this.getSize().height/8);
+		pw_conferma.setBounds((int)(this.getSize().width/2-pw_conferma.getSize().width/2), (int)(this.getSize().height/2), (int)this.getSize().width/4, (int)this.getSize().height/8);
+		bottone_accedi.setBounds((int)(this.getSize().width/2-bottone_accedi.getSize().width/2), (int)(this.getSize().height/2+bottone_accedi.getSize().height), (int)this.getSize().width/4, (int)this.getSize().height/8);
+		
 	}
 	public JTextField getEmail() {
 		return email;
@@ -119,6 +91,6 @@ public class Registrati extends JPanel{
 		return this.bottone_accedi;
 	}
 	public JTuskButton getBottoneIndietro() {
-		return this.bottone_esci;
+		return this.bottone_indietro;
 	}
 }

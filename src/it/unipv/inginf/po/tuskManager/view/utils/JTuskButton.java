@@ -18,8 +18,10 @@ import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.SwingConstants;
 
-public class JTuskButton extends JComponent implements MouseListener{
+public class JTuskButton extends JComponent implements MouseListener{//c'e' un bug, il cursore non cambia se il bottone ha anche l'immagine
 	
 	private static final long serialVersionUID = 1L;
 	private Dimension size;
@@ -33,11 +35,15 @@ public class JTuskButton extends JComponent implements MouseListener{
 	private Image image;
 	private String path_image;
 	private ArrayList<ActionListener> listeners;
+	JLabel label;
 	public JTuskButton(String s, Color c, Color ctext, boolean txtbold, Dimension button_size, Dimension button_arc) {
 		this(s,c,ctext,txtbold,"",button_size,button_arc);
 	}
 	
 	public JTuskButton(String s, Color c, Color ctext, boolean txtbold, String path_img, Dimension button_size, Dimension button_arc) {
+		this(s,s.trim().length(),c,ctext,txtbold,path_img,button_size,button_arc);
+	}
+	public JTuskButton(String s,int charlen, Color c, Color ctext, boolean txtbold, String path_img, Dimension button_size, Dimension button_arc) {
 		super();
 		size = button_size;
 		arc = button_arc;
@@ -49,6 +55,10 @@ public class JTuskButton extends JComponent implements MouseListener{
 		mouse_entered = false;
 		mouse_pressed = false;
 		testo = s;
+		testo = testo.trim();
+		while(testo.length()<charlen) {
+			testo = " " + testo + " ";
+		}
 		colore = c;
 		colore_testo = ctext;
 		bold = txtbold;
@@ -60,9 +70,12 @@ public class JTuskButton extends JComponent implements MouseListener{
 			image = null;
 		}
 		listeners = new ArrayList<ActionListener>();
-		
+		label = new JLabel(testo);
+		label.setOpaque(false);
+		label.setHorizontalAlignment(SwingConstants.CENTER);
+        label.setForeground(colore_testo);
+        this.add(label);
 	}
-	
 	@Override 
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -74,37 +87,37 @@ public class JTuskButton extends JComponent implements MouseListener{
         int padding_y = (int)getHeight()/15;
         //border
         g.setColor(colore_testo);
-        g.fillRoundRect(padding_x, padding_y, getWidth() - padding_x*2 -1, getHeight() - padding_y*2 -1, arc.width, arc.height);
+        g.fillRoundRect(padding_x, padding_y, getWidth() - padding_x*2 -2, getHeight() - padding_y*2 -2, arc.width, arc.height);
         //interno
         g.setColor(colore);       
 //        if(mouse_entered) 
 //        	g.setColor(g.getColor().darker());
         if(mouse_pressed)
         	g.setColor(g.getColor().darker());
-        g.fillRoundRect(padding_x+2, padding_y+2, getWidth() - padding_x*2 -5, getHeight() - padding_y*2 -5, arc.width, arc.height);
+        g.fillRoundRect(padding_x+2, padding_y+2, getWidth() - padding_x*2 -6, getHeight() - padding_y*2 -6, arc.width, arc.height);
         
-        g.setColor(colore_testo);
-        
-        g.setColor(colore_testo);
-        int size_testo;
-        size_testo = (int)Math.min(getHeight()/2, getWidth()*2/(3*testo.length()));
-        if(bold)
-        	g.setFont(new Font("Serif",Font.BOLD,size_testo));
-        else
-        	g.setFont(new Font("Serif",Font.PLAIN,size_testo));
-        int stringX;
-        stringX = (!path_image.equals("")) ? (int)getWidth()/7 : ((int)((getWidth()/2) -(size_testo*(testo.length()-2)/2) + padding_x));
-        int stringY = ((int)getHeight()/2 + (int)size_testo/2 - padding_y);
-        
-        g.drawString(testo, stringX, stringY);
         if(image != null) {
     		int image_scale = Math.min((int)getHeight()/2, (int)getWidth()/5);
     		g.drawImage(image, getWidth()*2/3, padding_y + (int)getHeight()/7, image_scale,image_scale, null);
         }
-    
         
+        int tipo_font = bold ? Font.BOLD : Font.PLAIN;
+        int size_testo = Math.min((int)getHeight()/5, (int)getWidth()*7/8);
+        label.setFont(new Font("Serif",tipo_font,size_testo));
+        if(path_image.equals("")) {
+        	label.setHorizontalAlignment(SwingConstants.CENTER);
+        	label.setBounds(0, 0, this.getWidth(), this.getHeight());
+        }else {
+        	label.setHorizontalAlignment(SwingConstants.LEFT);	
+        	label.setBounds((padding_x+2)*3, 0, this.getWidth(), this.getHeight());
+        }
+
+        
+        
+     
         
 	}
+	
 	@Override
 	public void mouseClicked(MouseEvent arg0) {
 	}
@@ -170,4 +183,7 @@ public class JTuskButton extends JComponent implements MouseListener{
     public String getText() {
     	return testo;
     }
+    
 }
+
+
