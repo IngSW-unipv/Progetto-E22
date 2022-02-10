@@ -2,124 +2,63 @@ package it.unipv.inginf.po.tuskManager.view.modifica.membro;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.GridLayout;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Properties;
-
-import javax.swing.JButton;
-import javax.swing.JLabel;
+import java.awt.Graphics;
+import java.awt.Image;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.border.LineBorder;
+import it.unipv.inginf.po.tuskManager.view.utils.JTuskButton;
+import it.unipv.inginf.po.tuskManager.view.utils.JTuskField;
 
 public class AggiungiMembro extends JPanel{
 	
-	/**
-	 * 
-	 */
 	private static Color colore_bottoni = new Color(255,128,0);
-	private static Color colore_sfondo = new Color(255,178,102);
+//	private static Color colore_sfondo = new Color(255,178,102);
 	private static final long serialVersionUID = 1L;
-	private JButton bottone_invia, bottone_indietro;
-	private JTextField email; 
-	private JTextField ruolo;
-	
-	public AggiungiMembro() {
+	private JTuskButton bottone_invia, bottone_indietro;
+	private JTuskField email; 
+	private JTuskField ruolo;
+	private Image img;
+	public AggiungiMembro(Image image, Color col_bottoni) {
 		super();
-		Properties p = System.getProperties();
-		try {
-			p.load(new FileInputStream("config/colors.txt"));
-			colore_bottoni = new Color(Integer.parseInt(p.getProperty("bottoni_red")),Integer.parseInt(p.getProperty("bottoni_green")),Integer.parseInt(p.getProperty("bottoni_blue")));
-			colore_sfondo = new Color(Integer.parseInt(p.getProperty("sfondo_red")),Integer.parseInt(p.getProperty("sfondo_green")),Integer.parseInt(p.getProperty("sfondo_blue")));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		setBackground(colore_sfondo);
+		img = image;
+		colore_bottoni = col_bottoni;
 		this.setLayout(new BorderLayout());
+		email = new JTuskField("email",colore_bottoni,Color.BLACK,new Font("Arial", Font.PLAIN, 20));
 		
-		ArrayList<JLabel> label = new ArrayList<JLabel>();
-		for(int i = 0; i< 16; i++) {
-			JLabel lab = new JLabel();
-			label.add(lab);
-		}
+		ruolo = new JTuskField("ruolo",colore_bottoni,Color.BLACK,new Font("Arial", Font.PLAIN, 20));
 		
-		email = new JTextField("");
-		email.setBorder(new LineBorder(Color.BLACK));
-		email.setBackground(colore_bottoni);
-		email.setForeground(Color.BLACK);
-		email.setFont(new Font("Serif", Font.PLAIN, 30));
-		email.setToolTipText("INSERIRE EMAIL DEL MEMBRO DA AGGIUNGERE AL WORKSPACE");
-		email.setHorizontalAlignment(JTextField.CENTER);
+		bottone_invia = new JTuskButton(" aggiungi ",colore_bottoni, Color.BLACK,false,new Dimension(150,75),new Dimension(20,20));
 		
-		ruolo = new JTextField("");
-		ruolo.setBorder(new LineBorder(Color.BLACK));
-		ruolo.setBackground(colore_bottoni);
-		ruolo.setForeground(Color.BLACK);
-		ruolo.setFont(new Font("Serif", Font.PLAIN, 30));
-		ruolo.setToolTipText("INSERIRE IL RUOLO ASSOCIATO");
-		ruolo.setHorizontalAlignment(JTextField.CENTER);
+		bottone_indietro = new JTuskButton("    INDIETRO",Color.red, Color.BLACK,true,new Dimension(150,75),new Dimension(20,20));
 		
-		bottone_invia = new JButton("INVIA");
-		bottone_invia.setBorder(new LineBorder(Color.BLACK));
-		bottone_invia.setFocusPainted(false);
-		bottone_invia.setBackground(colore_bottoni);
-		bottone_invia.setForeground(Color.BLACK);
-		bottone_invia.setFont(new Font("Serif", Font.PLAIN, 30));
-		
-		
-		bottone_indietro = new JButton("INDIETRO");
-		bottone_indietro.setBorder(new LineBorder(Color.BLACK));
-		bottone_indietro.setFocusPainted(false);
-		bottone_indietro.setBackground(Color.RED);
-		bottone_indietro.setForeground(Color.WHITE);
-		bottone_indietro.setFont(new Font("Serif", Font.BOLD, 20));
-		
-		JPanel pannello = new JPanel();
-		pannello.setOpaque(false);
-		pannello.setLayout(new GridLayout(5,3));
-		pannello.add(label.get(0));
-		pannello.add(label.get(1));
-		pannello.add(label.get(2));
-		pannello.add(label.get(3));
-		pannello.add(email);
-		pannello.add(label.get(4));
-		pannello.add(label.get(5));
-		pannello.add(ruolo);
-		pannello.add(label.get(6));
-		pannello.add(label.get(7));
-		pannello.add(bottone_invia);
-		pannello.add(label.get(8));
-		pannello.add(label.get(9));
-		pannello.add(label.get(10));
-		pannello.add(label.get(11));
-		this.add(pannello, BorderLayout.CENTER);
-		
-		JPanel pannello_sopra = new JPanel();
-		pannello_sopra.setOpaque(false);
-		pannello_sopra.setLayout(new GridLayout(1,3));
-		pannello_sopra.add(label.get(12));
-		pannello_sopra.add(label.get(13));
-		pannello_sopra.add(label.get(14));
-		pannello_sopra.add(label.get(15));
-		pannello_sopra.add(bottone_indietro);
-		this.add(pannello_sopra, BorderLayout.SOUTH);
+		this.add(email);
+		this.add(ruolo);
+		this.add(bottone_invia);
+		this.add(bottone_indietro);
 	}
-	
-	public JTextField getEmail() {
+	@Override
+	protected void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		g.drawImage(img, 0, 0,this.getParent().getSize().width, this.getParent().getSize().height, null);
+		this.setSize(this.getParent().getSize());
+		bottone_indietro.setBounds((int)this.getSize().width-bottone_indietro.getSize().width, (int)(this.getSize().height-bottone_indietro.getSize().height), (int)this.getSize().width/8, (int)this.getSize().height/12);
+		ruolo.setBounds((int)(this.getSize().width/2-bottone_invia.getSize().width/2), (int)(this.getSize().height/2-bottone_invia.getSize().height/2), (int)this.getSize().width/4, (int)this.getSize().height/8);
+		email.setBounds((int)(this.getSize().width/2-bottone_invia.getSize().width/2), (int)(this.getSize().height/2-bottone_invia.getSize().height*3/2), (int)this.getSize().width/4, (int)this.getSize().height/8);
+		bottone_invia.setBounds((int)(this.getSize().width/2-bottone_invia.getSize().width/2), (int)(this.getSize().height/2+bottone_invia.getSize().height/2), (int)this.getSize().width/4, (int)this.getSize().height/8);
+		}
+	public JTuskField getEmail() {
 		return email;
 	}
 	
-	public JTextField getRuolo() {
+	public JTuskField getRuolo() {
 		return ruolo;
 	}
 	
-	public JButton getBottoneInvia() {
+	public JTuskButton getBottoneInvia() {
 		return this.bottone_invia;
 	}
-	public JButton getBottoneIndietro() {
+	public JTuskButton getBottoneIndietro() {
 		return this.bottone_indietro;
 	}
 }

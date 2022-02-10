@@ -21,7 +21,7 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 
-public class JTuskButton extends JComponent implements MouseListener{//c'e' un bug, il cursore non cambia se il bottone ha anche l'immagine
+public class JTuskButton extends JComponent implements MouseListener{
 	
 	private static final long serialVersionUID = 1L;
 	private Dimension size;
@@ -124,7 +124,7 @@ public class JTuskButton extends JComponent implements MouseListener{//c'e' un b
 
 	@Override
 	public void mouseEntered(MouseEvent arg0) {
-		setCursor(new Cursor(Cursor.HAND_CURSOR));
+		setCursor(new Cursor(Cursor.HAND_CURSOR));//il cursore non cambia se il container di questo bottone non ha layout border, va testato per capire perche'
 		mouse_entered = true;
 		repaint();
 	}

@@ -171,9 +171,9 @@ public class Controller {
 		frame.getPanel_registrati().getBottoneIndietro().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				frame.getPanel_registrati().getEmail().setText("");
-				frame.getPanel_registrati().getPw().setText("");
-				frame.getPanel_registrati().getPwConferma().setText("");
+				frame.getPanel_registrati().getEmail().reset();
+				frame.getPanel_registrati().getPw().reset();
+				frame.getPanel_registrati().getPwConferma().reset();
 				frame.seePanelApertura();
 			}
 		});
@@ -192,18 +192,18 @@ public class Controller {
 				try {
 					if(tm.createAccount(email, pw_conf)) {
 						JOptionPane.showMessageDialog(frame, "registrazione effettuata, per iniziare ad usare l'applicazione effettuare l'accesso");
-						frame.getPanel_registrati().getEmail().setText("");
-						frame.getPanel_registrati().getPw().setText("");
-						frame.getPanel_registrati().getPwConferma().setText("");
+						frame.getPanel_registrati().getEmail().reset();
+						frame.getPanel_registrati().getPw().reset();
+						frame.getPanel_registrati().getPwConferma().reset();
 						frame.seePanelApertura();
 					}
 					else {
 						JOptionPane.showMessageDialog(frame, "esiste gia' un account collegato a questa email");
 					}
 				} catch (CannotConnectToDbException e1) {
-					frame.getPanel_registrati().getEmail().setText("");
-					frame.getPanel_registrati().getPw().setText("");
-					frame.getPanel_registrati().getPwConferma().setText("");
+					frame.getPanel_registrati().getEmail().reset();
+					frame.getPanel_registrati().getPw().reset();
+					frame.getPanel_registrati().getPwConferma().reset();
 					JOptionPane.showMessageDialog(frame, "impossibile reperire informazioni dalla piattaforma");
 				}
 			}
@@ -264,20 +264,20 @@ public class Controller {
 						tm.createScheda(new Scheda("DONE",null));
 						frame.seePanelWorkspace(tm.getWorkspace(new Workspace(0,frame.getPanel_crea().getNome().getText(),null,null)),tm.getMembroLogged().getRuolo());
 						initTempListenersPanelWorkspace();
-						frame.getPanel_crea().getNome().setText("");
+						frame.getPanel_crea().getNome().reset();
 					}
 					else {
 						JOptionPane.showMessageDialog(frame, "nome non utilizzabile");
-						frame.getPanel_crea().getNome().setText("");
+						frame.getPanel_crea().getNome().reset();
 						frame.seePanelHomePage();
 					}
 				} catch (CannotConnectToDbException e3) {
 					JOptionPane.showMessageDialog(frame, "impossibile reperire informazioni dalla piattaforma");
-					frame.getPanel_crea().getNome().setText("");
+					frame.getPanel_crea().getNome().reset();
 					frame.seePanelHomePage();
 				}catch(RoleNotAcceptedException e1) {
 					JOptionPane.showMessageDialog(frame, "il tuo ruolo non e' adeguato a svolgere questa operazione");
-					frame.getPanel_crea().getNome().setText("");
+					frame.getPanel_crea().getNome().reset();
 					frame.seePanelHomePage();
 				}
 			}
@@ -287,7 +287,7 @@ public class Controller {
 		frame.getPanel_crea().getBottoneIndietro().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				frame.getPanel_crea().getNome().setText("");
+				frame.getPanel_crea().getNome().reset();
 				frame.seePanelHomePage();
 			}
 		});
@@ -449,8 +449,8 @@ public class Controller {
 				try {
 					if(tm.addMembro(frame.getPanel_aggiungiMembro().getEmail().getText(), new Ruolo(frame.getPanel_aggiungiMembro().getRuolo().getText()))) {
 						JOptionPane.showMessageDialog(frame, "il membro e' stato aggiunto correttamente");
-						frame.getPanel_aggiungiMembro().getEmail().setText("");
-						frame.getPanel_aggiungiMembro().getRuolo().setText("");
+						frame.getPanel_aggiungiMembro().getEmail().reset();
+						frame.getPanel_aggiungiMembro().getRuolo().reset();
 						frame.seePanelModifica();
 					}else {
 						JOptionPane.showMessageDialog(frame, "il membro non e' stato aggiunto, assicurarsi che esista un account associato all'email inserita e che l'email sia valida");
@@ -463,16 +463,16 @@ public class Controller {
 				}catch(Exception ex2) {
 					JOptionPane.showMessageDialog(frame, "impossibile inviare email di notifica");
 				}
-				frame.getPanel_aggiungiMembro().getEmail().setText("");
-				frame.getPanel_aggiungiMembro().getRuolo().setText("");
+				frame.getPanel_aggiungiMembro().getEmail().reset();
+				frame.getPanel_aggiungiMembro().getRuolo().reset();
 			}
 		});
 		//bottone indetro nel panel aggiungi membro:
 		frame.getPanel_aggiungiMembro().getBottoneIndietro().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				frame.getPanel_aggiungiMembro().getEmail().setText("");
-				frame.getPanel_aggiungiMembro().getRuolo().setText("");
+				frame.getPanel_aggiungiMembro().getEmail().reset();
+				frame.getPanel_aggiungiMembro().getRuolo().reset();
 				frame.seePanelMembro();
 			}
 		});
@@ -498,16 +498,16 @@ public class Controller {
 				}catch(RoleNotAcceptedException ex3) {
 					JOptionPane.showMessageDialog(frame, "il tuo ruolo non e' adeguato a svolgere questa operazione");
 				}
-				frame.getPanel_modificaRuolo().getEmail().setText("");
-				frame.getPanel_modificaRuolo().getRuolo().setText("");
+				frame.getPanel_modificaRuolo().getEmail().reset();
+				frame.getPanel_modificaRuolo().getRuolo().reset();
 			}
 		});
 		//bottone indetro nel panel modifica ruolo:
 		frame.getPanel_modificaRuolo().getBottoneIndietro().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				frame.getPanel_modificaRuolo().getEmail().setText("");
-				frame.getPanel_modificaRuolo().getRuolo().setText("");
+				frame.getPanel_modificaRuolo().getEmail().reset();
+				frame.getPanel_modificaRuolo().getRuolo().reset();
 				frame.seePanelMembro();
 			}
 		});
@@ -533,14 +533,14 @@ public class Controller {
 				}catch(RoleNotAcceptedException ex3) {
 					JOptionPane.showMessageDialog(frame, "il tuo ruolo non e' adeguato a svolgere questa operazione");
 				}
-				frame.getPanel_rimuoviMembro().getEmail().setText("");
+				frame.getPanel_rimuoviMembro().getEmail().reset();
 			}
 		});
 		//bottone indietro nel panel rimuovi ruolo:
 		frame.getPanel_rimuoviMembro().getBottoneIndietro().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				frame.getPanel_rimuoviMembro().getEmail().setText("");
+				frame.getPanel_rimuoviMembro().getEmail().reset();
 				frame.seePanelMembro();
 			}
 		});
@@ -575,7 +575,7 @@ public class Controller {
 		frame.getPanel_modificaNome().getBottoneIndietro().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				frame.getPanel_modificaNome().getNome().setText("");
+				frame.getPanel_modificaNome().getNome().reset();
 				frame.seePanelOperazioniWs();
 			}
 		});
@@ -601,7 +601,7 @@ public class Controller {
 				}catch(RoleNotAcceptedException ex3) {
 					JOptionPane.showMessageDialog(frame, "il tuo ruolo non e' adeguato a svolgere questa operazione");
 				}
-				frame.getPanel_modificaNome().getNome().setText("");
+				frame.getPanel_modificaNome().getNome().reset();
 			}
 		});
 	}
@@ -611,7 +611,7 @@ public class Controller {
 		frame.getPanel_rimuoviWs().getBottoneIndietro().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				frame.getPanel_rimuoviWs().getNome().setText("");
+				frame.getPanel_rimuoviWs().getNome().reset();
 				frame.seePanelOperazioniWs();
 			}
 		});
@@ -634,7 +634,7 @@ public class Controller {
 				}catch(RoleNotAcceptedException ex3) {
 					JOptionPane.showMessageDialog(frame, "il tuo ruolo non e' adeguato a svolgere questa operazione");
 				}
-				frame.getPanel_rimuoviWs().getNome().setText("");
+				frame.getPanel_rimuoviWs().getNome().reset();
 			}
 		});
 	}
@@ -644,11 +644,11 @@ public class Controller {
 		frame.getPanel_aggiungiCompito().getBottoneIndietro().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				frame.getPanel_aggiungiCompito().getTitolo().setText("");
-				frame.getPanel_aggiungiCompito().getDescrizione().setText("");
-				frame.getPanel_aggiungiCompito().getGiorno().setText("");
-				frame.getPanel_aggiungiCompito().getMese().setText("");
-				frame.getPanel_aggiungiCompito().getAnno().setText("");
+				frame.getPanel_aggiungiCompito().getTitolo().reset();
+				frame.getPanel_aggiungiCompito().getDescrizione().reset();
+				frame.getPanel_aggiungiCompito().getGiorno().reset();
+				frame.getPanel_aggiungiCompito().getMese().reset();
+				frame.getPanel_aggiungiCompito().getAnno().reset();
 				frame.seePanelOperazioniCompito();
 			}
 		});
@@ -664,11 +664,11 @@ public class Controller {
 				int mese = scadenza.get(Calendar.MONTH);
 				int anno = scadenza.get(Calendar.YEAR);
 				if((frame.getPanel_aggiungiCompito().getAnno().getText().length() != 4) || Integer.parseInt(frame.getPanel_aggiungiCompito().getMese().getText()) <1 || Integer.parseInt(frame.getPanel_aggiungiCompito().getMese().getText())>12 || Integer.parseInt(frame.getPanel_aggiungiCompito().getGiorno().getText()) < 1 || Integer.parseInt(frame.getPanel_aggiungiCompito().getGiorno().getText())>31|| titolo == null || scadenza == null) {
-					frame.getPanel_aggiungiCompito().getTitolo().setText("");
-					frame.getPanel_aggiungiCompito().getDescrizione().setText("");
-					frame.getPanel_aggiungiCompito().getGiorno().setText("");
-					frame.getPanel_aggiungiCompito().getMese().setText("");
-					frame.getPanel_aggiungiCompito().getAnno().setText("");
+					frame.getPanel_aggiungiCompito().getTitolo().reset();
+					frame.getPanel_aggiungiCompito().getDescrizione().reset();
+					frame.getPanel_aggiungiCompito().getGiorno().reset();
+					frame.getPanel_aggiungiCompito().getMese().reset();
+					frame.getPanel_aggiungiCompito().getAnno().reset();
 					JOptionPane.showMessageDialog(frame, "impossibile effettuare l'operazione richiesta");
 					frame.seePanelModifica();
 					return;
@@ -679,11 +679,11 @@ public class Controller {
 					JOptionPane.showMessageDialog(frame, "impossibile effettuare l'operazione richiesta");
 					frame.seePanelModifica();
 				}
-				frame.getPanel_aggiungiCompito().getTitolo().setText("");
-				frame.getPanel_aggiungiCompito().getDescrizione().setText("");
-				frame.getPanel_aggiungiCompito().getGiorno().setText("");
-				frame.getPanel_aggiungiCompito().getMese().setText("");
-				frame.getPanel_aggiungiCompito().getAnno().setText("");
+				frame.getPanel_aggiungiCompito().getTitolo().reset();
+				frame.getPanel_aggiungiCompito().getDescrizione().reset();
+				frame.getPanel_aggiungiCompito().getGiorno().reset();
+				frame.getPanel_aggiungiCompito().getMese().reset();
+				frame.getPanel_aggiungiCompito().getAnno().reset();
 			}
 		});
 		
@@ -694,7 +694,7 @@ public class Controller {
 		frame.getPanel_aggiungiCompito2().getBottoneIndietro().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				frame.getPanel_aggiungiCompito2().getRuolo().setText("");
+				frame.getPanel_aggiungiCompito2().getRuolo().reset();
 				frame.seePanelOperazioniCompito();
 			}
 		});
@@ -703,7 +703,7 @@ public class Controller {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				frame.getPanel_aggiungiCompito2().addRuolo(frame.getPanel_aggiungiCompito2().getRuolo().getText());
-				frame.getPanel_aggiungiCompito2().getRuolo().setText("");
+				frame.getPanel_aggiungiCompito2().getRuolo().reset();
 			}
 		});
 		//bottone invia nel panel aggiungi compito2:
@@ -731,7 +731,7 @@ public class Controller {
 				}catch(RoleNotAcceptedException ex3) {
 					JOptionPane.showMessageDialog(frame, "il tuo ruolo non e' adeguato a svolgere questa operazione");
 				}
-				frame.getPanel_aggiungiCompito2().getRuolo().setText("");
+				frame.getPanel_aggiungiCompito2().getRuolo().reset();
 			}
 		});
 	}
@@ -779,7 +779,7 @@ public class Controller {
 		frame.getPanel_rimuoviCompito().getBottoneIndietro().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				frame.getPanel_rimuoviCompito().getTitolo().setText("");
+				frame.getPanel_rimuoviCompito().getTitolo().reset();
 				frame.seePanelOperazioniCompito();
 			}
 		});
@@ -799,7 +799,7 @@ public class Controller {
 				}catch(RoleNotAcceptedException ex3) {
 					JOptionPane.showMessageDialog(frame, "il tuo ruolo non e' adeguato a svolgere questa operazione");
 				}
-				frame.getPanel_rimuoviCompito().getTitolo().setText("");
+				frame.getPanel_rimuoviCompito().getTitolo().reset();
 			}
 		});
 	}
@@ -809,8 +809,8 @@ public class Controller {
 		frame.getPanel_spostaCompito().getBottoneIndietro().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				frame.getPanel_spostaCompito().getScheda().setText("");
-				frame.getPanel_spostaCompito().getCompito().setText("");
+				frame.getPanel_spostaCompito().getScheda().reset();
+				frame.getPanel_spostaCompito().getCompito().reset();
 				frame.seePanelOperazioniCompito();
 			}
 		});
@@ -833,16 +833,16 @@ public class Controller {
 					}
 					if(in_questione == null || scheda_in_questione == null) {
 						JOptionPane.showMessageDialog(frame, "impossibile effettuare l'operazione richiesta");
-						frame.getPanel_spostaCompito().getScheda().setText("");
-						frame.getPanel_spostaCompito().getCompito().setText("");
+						frame.getPanel_spostaCompito().getScheda().reset();
+						frame.getPanel_spostaCompito().getCompito().reset();
 						frame.seePanelOperazioniCompito();
 						return;
 					}
 					
 					if(tm.modifyCompito(scheda_in_questione, in_questione, in_questione)) {
 						frame.seePanelOperazioniCompito();
-						frame.getPanel_spostaCompito().getScheda().setText("");
-						frame.getPanel_spostaCompito().getCompito().setText("");
+						frame.getPanel_spostaCompito().getScheda().reset();
+						frame.getPanel_spostaCompito().getCompito().reset();
 						return;
 					}else {
 						JOptionPane.showMessageDialog(frame, "impossibile effettuare l'operazione richiesta");
@@ -853,8 +853,8 @@ public class Controller {
 				}catch(RoleNotAcceptedException e1) {
 					JOptionPane.showMessageDialog(frame, "il tuo ruolo non e' adeguato a svolgere questa operazione");
 				}
-				frame.getPanel_spostaCompito().getScheda().setText("");
-				frame.getPanel_spostaCompito().getCompito().setText("");
+				frame.getPanel_spostaCompito().getScheda().reset();
+				frame.getPanel_spostaCompito().getCompito().reset();
 			}
 		});
 	}
@@ -864,12 +864,12 @@ public class Controller {
 		frame.getPanel_modificaCompito().getBottoneIndietro().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				frame.getPanel_modificaCompito().getTitoloVecchio().setText("");
-				frame.getPanel_modificaCompito().getTitolo().setText("");
-				frame.getPanel_modificaCompito().getDescrizione().setText("");
-				frame.getPanel_modificaCompito().getGiorno().setText("");
-				frame.getPanel_modificaCompito().getMese().setText("");
-				frame.getPanel_modificaCompito().getAnno().setText("");
+				frame.getPanel_modificaCompito().getTitoloVecchio().reset();
+				frame.getPanel_modificaCompito().getTitolo().reset();
+				frame.getPanel_modificaCompito().getDescrizione().reset();
+				frame.getPanel_modificaCompito().getGiorno().reset();
+				frame.getPanel_modificaCompito().getMese().reset();
+				frame.getPanel_modificaCompito().getAnno().reset();
 				frame.seePanelOperazioniCompito();
 			}
 		});
@@ -882,23 +882,23 @@ public class Controller {
 				String descrizione = frame.getPanel_modificaCompito().getDescrizione().getText();
 				Calendar scadenza = frame.getPanel_modificaCompito().getScadenza();
 				if((frame.getPanel_modificaCompito().getAnno().getText().length() != 4) || Integer.parseInt(frame.getPanel_modificaCompito().getMese().getText()) <1 || Integer.parseInt(frame.getPanel_modificaCompito().getMese().getText())>12 || Integer.parseInt(frame.getPanel_modificaCompito().getGiorno().getText()) < 1 || Integer.parseInt(frame.getPanel_modificaCompito().getGiorno().getText())>31 ||titolo_vecchio == null || titolo == null || scadenza == null) {
-					frame.getPanel_modificaCompito().getTitolo().setText("");
-					frame.getPanel_modificaCompito().getDescrizione().setText("");
-					frame.getPanel_modificaCompito().getGiorno().setText("");
-					frame.getPanel_modificaCompito().getMese().setText("");
-					frame.getPanel_modificaCompito().getAnno().setText("");
+					frame.getPanel_modificaCompito().getTitolo().reset();
+					frame.getPanel_modificaCompito().getDescrizione().reset();
+					frame.getPanel_modificaCompito().getGiorno().reset();
+					frame.getPanel_modificaCompito().getMese().reset();
+					frame.getPanel_modificaCompito().getAnno().reset();
 					JOptionPane.showMessageDialog(frame, "impossibile effettuare l'operazione richiesta");
 					frame.seePanelModifica();
 					return;
 				}
 				frame.seePanelModificaCompito2(titolo_vecchio,titolo,descrizione,scadenza);
 				initListenersPanelModificaCompito2();
-				frame.getPanel_modificaCompito().getTitoloVecchio().setText("");
-				frame.getPanel_modificaCompito().getTitolo().setText("");
-				frame.getPanel_modificaCompito().getDescrizione().setText("");
-				frame.getPanel_modificaCompito().getGiorno().setText("");
-				frame.getPanel_modificaCompito().getMese().setText("");
-				frame.getPanel_modificaCompito().getAnno().setText("");
+				frame.getPanel_modificaCompito().getTitoloVecchio().reset();
+				frame.getPanel_modificaCompito().getTitolo().reset();
+				frame.getPanel_modificaCompito().getDescrizione().reset();
+				frame.getPanel_modificaCompito().getGiorno().reset();
+				frame.getPanel_modificaCompito().getMese().reset();
+				frame.getPanel_modificaCompito().getAnno().reset();
 			}
 		});
 	}
@@ -908,7 +908,7 @@ public class Controller {
 		frame.getPanel_modificaCompito2().getBottoneIndietro().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				frame.getPanel_modificaCompito2().getRuolo().setText("");
+				frame.getPanel_modificaCompito2().getRuolo().reset();
 				frame.seePanelOperazioniCompito();
 			}
 		});	
@@ -917,7 +917,7 @@ public class Controller {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				frame.getPanel_modificaCompito2().addRuolo(new Ruolo(frame.getPanel_modificaCompito2().getRuolo().getText()));
-				frame.getPanel_modificaCompito2().getRuolo().setText("");
+				frame.getPanel_modificaCompito2().getRuolo().reset();
 			}
 		});
 		//bottone rimuovi nel panel modifica compito 2:
@@ -925,7 +925,7 @@ public class Controller {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				frame.getPanel_modificaCompito2().removeRuolo(new Ruolo(frame.getPanel_modificaCompito2().getRuolo().getText()));
-				frame.getPanel_modificaCompito2().getRuolo().setText("");
+				frame.getPanel_modificaCompito2().getRuolo().reset();
 			}
 		});	
 		//bottone aggiungi nel panel modifica compito 2:
@@ -978,7 +978,7 @@ public class Controller {
 				}catch(Exception ex1) {
 					JOptionPane.showMessageDialog(frame, "errore: riprovare piu' tardi");
 				}
-				frame.getPanel_modificaCompito2().getRuolo().setText("");
+				frame.getPanel_modificaCompito2().getRuolo().reset();
 			}
 		});	
 	}

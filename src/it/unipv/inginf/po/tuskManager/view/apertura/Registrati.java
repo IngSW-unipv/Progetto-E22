@@ -5,19 +5,8 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
-import java.awt.GridLayout;
 import java.awt.Image;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Properties;
-
-import javax.imageio.ImageIO;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
 import it.unipv.inginf.po.tuskManager.view.utils.JTuskButton;
 import it.unipv.inginf.po.tuskManager.view.utils.JTuskField;
 import it.unipv.inginf.po.tuskManager.view.utils.JTuskPassword;
@@ -31,20 +20,11 @@ public class Registrati extends JPanel{
 	private JTuskField email; 
 	private JTuskPassword pw,pw_conferma;
 	private Image img;
-	public Registrati() {
+	public Registrati(Image image, Color col_bottoni) {
 		super();
-		
-		Properties p = System.getProperties();
-		try {
-			p.load(new FileInputStream("config/colors.txt"));
-			colore_bottoni = new Color(Integer.parseInt(p.getProperty("bottoni_red")),Integer.parseInt(p.getProperty("bottoni_green")),Integer.parseInt(p.getProperty("bottoni_blue")));
-//			colore_sfondo = new Color(Integer.parseInt(p.getProperty("sfondo_red")),Integer.parseInt(p.getProperty("sfondo_green")),Integer.parseInt(p.getProperty("sfondo_blue")));
-			img = ImageIO.read(new File("assets/background.png"));
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
+		img = image;
+		colore_bottoni = col_bottoni;
+		this.setLayout(new BorderLayout());
 		
 		email = new JTuskField("email",colore_bottoni,Color.BLACK,new Font("Arial", Font.PLAIN, 20));
 		
@@ -69,21 +49,21 @@ public class Registrati extends JPanel{
 		g.drawImage(img, 0, 0,this.getParent().getSize().width, this.getParent().getSize().height, null);
 		this.setSize(this.getParent().getSize());
 		bottone_indietro.setBounds((int)this.getSize().width-bottone_indietro.getSize().width, (int)(this.getSize().height-bottone_indietro.getSize().height), (int)this.getSize().width/8, (int)this.getSize().height/12);
-		email.setBounds((int)(this.getSize().width/2-email.getSize().width/2), (int)(this.getSize().height/2-email.getSize().height*2), (int)this.getSize().width/4, (int)this.getSize().height/8);
-		pw.setBounds((int)(this.getSize().width/2-pw.getSize().width/2), (int)(this.getSize().height/2-pw.getSize().height), (int)this.getSize().width/4, (int)this.getSize().height/8);
-		pw_conferma.setBounds((int)(this.getSize().width/2-pw_conferma.getSize().width/2), (int)(this.getSize().height/2), (int)this.getSize().width/4, (int)this.getSize().height/8);
+		email.setBounds((int)(this.getSize().width/2-bottone_accedi.getSize().width/2), (int)(this.getSize().height/2-bottone_accedi.getSize().height*2), (int)this.getSize().width/4, (int)this.getSize().height/8);
+		pw.setBounds((int)(this.getSize().width/2-bottone_accedi.getSize().width/2), (int)(this.getSize().height/2-bottone_accedi.getSize().height), (int)this.getSize().width/4, (int)this.getSize().height/8);
+		pw_conferma.setBounds((int)(this.getSize().width/2-bottone_accedi.getSize().width/2), (int)(this.getSize().height/2), (int)this.getSize().width/4, (int)this.getSize().height/8);
 		bottone_accedi.setBounds((int)(this.getSize().width/2-bottone_accedi.getSize().width/2), (int)(this.getSize().height/2+bottone_accedi.getSize().height), (int)this.getSize().width/4, (int)this.getSize().height/8);
 		
 	}
-	public JTextField getEmail() {
+	public JTuskField getEmail() {
 		return email;
 	}
 	
-	public JPasswordField getPw() {
+	public JTuskPassword getPw() {
 		return pw;
 	}
 	
-	public JPasswordField getPwConferma() {
+	public JTuskPassword getPwConferma() {
 		return pw_conferma;
 	}
 	

@@ -2,42 +2,31 @@ package it.unipv.inginf.po.tuskManager.view.modifica.compito;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.GridLayout;
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.awt.Graphics;
+import java.awt.Image;
 import java.util.ArrayList;
-import java.util.Properties;
-
-import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.border.LineBorder;
+
+import it.unipv.inginf.po.tuskManager.view.utils.JTuskButton;
+import it.unipv.inginf.po.tuskManager.view.utils.JTuskField;
 
 public class AggiungiCompito2 extends JPanel{
 	
-	/**
-	 * 
-	 */
 	private static Color colore_bottoni = new Color(255,128,0);
-	private static Color colore_sfondo = new Color(255,178,102);
+//	private static Color colore_sfondo = new Color(255,178,102);
 	private static final long serialVersionUID = 1L;
-	private JButton bottone_aggiungi, bottone_fine, bottone_indietro;
-	private JTextField ruolo;
+	private JTuskButton bottone_aggiungi, bottone_fine, bottone_indietro;
+	private JTuskField ruolo;
 	private ArrayList<String> ruoli;
 	private String titolo,descrizione;
 	private int giorno,mese,anno;
-	public AggiungiCompito2(String titolo, String descrizione, int giorno, int mese, int anno) {
+	private Image img;
+	public AggiungiCompito2(String titolo, String descrizione, int giorno, int mese, int anno,Image image, Color col_bottoni) {
 		super();
-		Properties p = System.getProperties();
-		try {
-			p.load(new FileInputStream("config/colors.txt"));
-			colore_bottoni = new Color(Integer.parseInt(p.getProperty("bottoni_red")),Integer.parseInt(p.getProperty("bottoni_green")),Integer.parseInt(p.getProperty("bottoni_blue")));
-			colore_sfondo = new Color(Integer.parseInt(p.getProperty("sfondo_red")),Integer.parseInt(p.getProperty("sfondo_green")),Integer.parseInt(p.getProperty("sfondo_blue")));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		img = image;
+		colore_bottoni = col_bottoni;
 		this.titolo = titolo;
 		this.descrizione=descrizione;
 		this.giorno = giorno;
@@ -45,79 +34,34 @@ public class AggiungiCompito2 extends JPanel{
 		this.anno = anno;
 		ruoli = new ArrayList<String>();
 		
-		setSize(1600, 900);
-		setBackground(colore_sfondo);
 		this.setLayout(new BorderLayout());
 		
-		ArrayList<JLabel> label = new ArrayList<JLabel>();
-		for(int i = 0; i< 16; i++) {
-			JLabel lab = new JLabel();
-			label.add(lab);
-		}
+		ruolo = new JTuskField("ruolo",colore_bottoni,Color.BLACK,new Font("Arial", Font.PLAIN, 20));
 		
-		ruolo = new JTextField("");
-		ruolo.setBorder(new LineBorder(Color.BLACK));
-		ruolo.setBackground(colore_bottoni);
-		ruolo.setForeground(Color.BLACK);
-		ruolo.setFont(new Font("Serif", Font.PLAIN, 30));
-		ruolo.setToolTipText("INSERIRE IL RUOLO DA ASSOCIARE");
-		ruolo.setHorizontalAlignment(JTextField.CENTER);
+		bottone_aggiungi = new JTuskButton(" + ",colore_bottoni, Color.BLACK,false,new Dimension(150,75),new Dimension(20,20));
+		
+		bottone_fine = new JTuskButton(" fine ",colore_bottoni, Color.BLACK,false,new Dimension(150,75),new Dimension(20,20));
 		
 		
-		bottone_aggiungi = new JButton("+");
-		bottone_aggiungi.setBorder(new LineBorder(Color.BLACK));
-		bottone_aggiungi.setFocusPainted(false);
-		bottone_aggiungi.setBackground(colore_bottoni);
-		bottone_aggiungi.setForeground(Color.BLACK);
-		bottone_aggiungi.setFont(new Font("Serif", Font.PLAIN, 30));
+		bottone_indietro = new JTuskButton("    INDIETRO",Color.red, Color.BLACK,true,new Dimension(150,75),new Dimension(20,20));
 		
-		bottone_fine = new JButton("FINE");
-		bottone_fine.setBorder(new LineBorder(Color.BLACK));
-		bottone_fine.setFocusPainted(false);
-		bottone_fine.setBackground(colore_bottoni);
-		bottone_fine.setForeground(Color.BLACK);
-		bottone_fine.setFont(new Font("Serif", Font.PLAIN, 30));
-		
-		
-		bottone_indietro = new JButton("INDIETRO");
-		bottone_indietro.setBorder(new LineBorder(Color.BLACK));
-		bottone_indietro.setFocusPainted(false);
-		bottone_indietro.setBackground(Color.RED);
-		bottone_indietro.setForeground(Color.WHITE);
-		bottone_indietro.setFont(new Font("Serif", Font.BOLD, 20));
-		
-		JPanel pannello = new JPanel();
-		pannello.setOpaque(false);
-		pannello.setLayout(new GridLayout(5,3));
-		pannello.add(label.get(0));
-		pannello.add(label.get(1));
-		pannello.add(label.get(2));
-		pannello.add(label.get(3));
-		pannello.add(ruolo);
-		pannello.add(label.get(4));
-		pannello.add(label.get(5));
-		pannello.add(bottone_aggiungi);
-		pannello.add(label.get(6));
-		pannello.add(label.get(7));
-		pannello.add(bottone_fine);
-		pannello.add(label.get(8));
-		pannello.add(label.get(9));
-		pannello.add(label.get(10));
-		pannello.add(label.get(11));
-		this.add(pannello, BorderLayout.CENTER);
-		
-		JPanel pannello_sopra = new JPanel();
-		pannello_sopra.setOpaque(false);
-		pannello_sopra.setLayout(new GridLayout(1,3));
-		pannello_sopra.add(label.get(12));
-		pannello_sopra.add(label.get(13));
-		pannello_sopra.add(label.get(14));
-		pannello_sopra.add(label.get(15));
-		pannello_sopra.add(bottone_indietro);
-		this.add(pannello_sopra, BorderLayout.SOUTH);
+		this.add(ruolo);
+		this.add(bottone_aggiungi);
+		this.add(bottone_fine);
+		this.add(bottone_indietro);
 	}
+	@Override
+	protected void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		g.drawImage(img, 0, 0,this.getParent().getSize().width, this.getParent().getSize().height, null);
+		this.setSize(this.getParent().getSize());
+		bottone_indietro.setBounds((int)this.getSize().width-bottone_indietro.getSize().width, (int)(this.getSize().height-bottone_indietro.getSize().height), (int)this.getSize().width/8, (int)this.getSize().height/12);
+		ruolo.setBounds((int)(this.getSize().width/2-ruolo.getSize().width/2), (int)(this.getSize().height/2-ruolo.getSize().height*3/2), (int)this.getSize().width/4, (int)this.getSize().height/8);
+		bottone_aggiungi.setBounds((int)(this.getSize().width/2-bottone_aggiungi.getSize().width/2), (int)(this.getSize().height/2-bottone_aggiungi.getSize().height/2), (int)this.getSize().width/4, (int)this.getSize().height/8);
+		bottone_fine.setBounds((int)(this.getSize().width/2-bottone_fine.getSize().width/2), (int)(this.getSize().height/2+bottone_fine.getSize().height/2), (int)this.getSize().width/4, (int)this.getSize().height/8);
 		
-	public JTextField getRuolo() {
+	}	
+	public JTuskField getRuolo() {
 		return ruolo;
 	}
 	public void addRuolo(String s) {
@@ -142,13 +86,13 @@ public class AggiungiCompito2 extends JPanel{
 	public int getAnno() {
 		return this.anno;
 	}
-	public JButton getBottoneAggiungi() {
+	public JTuskButton getBottoneAggiungi() {
 		return this.bottone_aggiungi;
 	}
-	public JButton getBottoneFine() {
+	public JTuskButton getBottoneFine() {
 		return this.bottone_fine;
 	}
-	public JButton getBottoneIndietro() {
+	public JTuskButton getBottoneIndietro() {
 		return this.bottone_indietro;
 	}
 }

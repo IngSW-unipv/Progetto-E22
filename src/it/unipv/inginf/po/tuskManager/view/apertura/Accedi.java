@@ -6,12 +6,6 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.Properties;
-
-import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 import it.unipv.inginf.po.tuskManager.view.utils.JTuskButton;
@@ -28,20 +22,11 @@ public class Accedi extends JPanel{
 	private JTuskPassword pw;
 	private Image img;
 	
-	public Accedi() {
+	public Accedi(Image image, Color col_bottoni) {
 		super();
-		
+		img = image;
+		colore_bottoni = col_bottoni;
 		this.setLayout(new BorderLayout());
-		Properties p = System.getProperties();
-		try {
-			p.load(new FileInputStream("config/colors.txt"));
-			colore_bottoni = new Color(Integer.parseInt(p.getProperty("bottoni_red")),Integer.parseInt(p.getProperty("bottoni_green")),Integer.parseInt(p.getProperty("bottoni_blue")));
-//			colore_sfondo = new Color(Integer.parseInt(p.getProperty("sfondo_red")),Integer.parseInt(p.getProperty("sfondo_green")),Integer.parseInt(p.getProperty("sfondo_blue")));
-			img = ImageIO.read(new File("assets/background.png"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
 		email = new JTuskField("email",colore_bottoni,Color.BLACK,new Font("Arial", Font.PLAIN, 20));
 		
 		pw = new JTuskPassword("password",colore_bottoni,Color.BLACK,new Font("Arial", Font.PLAIN, 20));

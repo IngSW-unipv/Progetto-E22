@@ -2,6 +2,7 @@ package it.unipv.inginf.po.tuskManager.view.homepage;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.io.FileInputStream;
@@ -18,16 +19,15 @@ import it.unipv.inginf.po.tuskManager.model.beans.Compito;
 import it.unipv.inginf.po.tuskManager.model.beans.Ruolo;
 import it.unipv.inginf.po.tuskManager.model.beans.Scheda;
 import it.unipv.inginf.po.tuskManager.model.beans.Workspace;
+import it.unipv.inginf.po.tuskManager.view.utils.JTuskButton;
 
 public class WindowWorkspace extends JPanel{
 	
-	/**
-	 * 
-	 */
 	private static Color colore_bottoni = new Color(255,128,0);
 	private static Color colore_sfondo = new Color(255,178,102);
 	private static final long serialVersionUID = 1L;
-	private JButton bottone_operazioni, bottone_indietro;
+	private JTuskButton bottone_operazioni;
+	private JTuskButton bottone_indietro;
 	private ArrayList<JButton> bottoni;
 	public WindowWorkspace(Workspace w, Ruolo r) {
 		super();
@@ -40,6 +40,11 @@ public class WindowWorkspace extends JPanel{
 			e.printStackTrace();
 		}
 		setBackground(colore_sfondo);
+		
+		if(colore_bottoni.equals(new Color(255,255,255))) {
+			colore_bottoni = colore_sfondo.brighter();
+		}
+		
 		this.setLayout(new BorderLayout());
 		
 		ArrayList<JLabel> label = new ArrayList<JLabel>();
@@ -49,20 +54,9 @@ public class WindowWorkspace extends JPanel{
 		}
 		bottoni = new ArrayList<JButton>();
 		
-		bottone_operazioni = new JButton("OPERAZIONI");
-		bottone_operazioni.setBorder(new LineBorder(Color.BLACK));
-		bottone_operazioni.setFocusPainted(false);
-		bottone_operazioni.setBackground(colore_bottoni);
-		bottone_operazioni.setForeground(Color.BLACK);
-		bottone_operazioni.setFont(new Font("Serif", Font.PLAIN, 30));
+		bottone_operazioni = new JTuskButton("  OPERAZIONI  ",colore_bottoni, Color.BLACK,true,new Dimension(150,75),new Dimension(20,20));
 		
-		
-		bottone_indietro = new JButton("INDIETRO");
-		bottone_indietro.setBorder(new LineBorder(Color.BLACK));
-		bottone_indietro.setFocusPainted(false);
-		bottone_indietro.setBackground(Color.RED);
-		bottone_indietro.setForeground(Color.WHITE);
-		bottone_indietro.setFont(new Font("Serif", Font.BOLD, 20));
+		bottone_indietro = new JTuskButton("    INDIETRO",Color.red, Color.BLACK,true,new Dimension(150,75),new Dimension(20,20));
 		
 		JPanel pannello = new JPanel();
 		pannello.setOpaque(false);
@@ -144,10 +138,10 @@ public class WindowWorkspace extends JPanel{
 		this.add(pannello_sotto, BorderLayout.SOUTH);
 	}
 	
-	public JButton getBottoneOperazioni() {
+	public JTuskButton getBottoneOperazioni() {
 		return this.bottone_operazioni;
 	}
-	public JButton getBottoneIndietro() {
+	public JTuskButton getBottoneIndietro() {
 		return this.bottone_indietro;
 	}
 	public ArrayList<JButton> getAllBottoni(){

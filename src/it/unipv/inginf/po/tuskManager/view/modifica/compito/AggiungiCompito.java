@@ -2,151 +2,79 @@ package it.unipv.inginf.po.tuskManager.view.modifica.compito;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Graphics;
 import java.awt.GridLayout;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.ArrayList;
+import java.awt.Image;
 import java.util.Calendar;
-import java.util.Properties;
-
-import javax.swing.JButton;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.border.LineBorder;
+
+import it.unipv.inginf.po.tuskManager.view.utils.JTuskButton;
+import it.unipv.inginf.po.tuskManager.view.utils.JTuskField;
 
 public class AggiungiCompito extends JPanel{
 	
-	/**
-	 * 
-	 */
 	private static Color colore_bottoni = new Color(255,128,0);
 	private static Color colore_sfondo = new Color(255,178,102);
 	private static final long serialVersionUID = 1L;
-	private JButton bottone_avanti, bottone_indietro;
-	private JTextField titolo, descrizione,scadenza_gg,scadenza_mm,scadenza_yyyy;
+	private JTuskButton bottone_avanti, bottone_indietro;
+	private JTuskField titolo, descrizione,scadenza_gg,scadenza_mm,scadenza_yyyy;
 	private JPanel pannello_scadenza;
-	public AggiungiCompito() {
+	private Image img;
+	
+	public AggiungiCompito(Image image, Color col_bottoni) {
 		super();
-		Properties p = System.getProperties();
-		try {
-			p.load(new FileInputStream("config/colors.txt"));
-			colore_bottoni = new Color(Integer.parseInt(p.getProperty("bottoni_red")),Integer.parseInt(p.getProperty("bottoni_green")),Integer.parseInt(p.getProperty("bottoni_blue")));
-			colore_sfondo = new Color(Integer.parseInt(p.getProperty("sfondo_red")),Integer.parseInt(p.getProperty("sfondo_green")),Integer.parseInt(p.getProperty("sfondo_blue")));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		setBackground(colore_sfondo);
+		img = image;
+		colore_bottoni = col_bottoni;
 		this.setLayout(new BorderLayout());
 		
-		ArrayList<JLabel> label = new ArrayList<JLabel>();
-		for(int i = 0; i< 18; i++) {
-			JLabel lab = new JLabel();
-			label.add(lab);
-		}
+		titolo = new JTuskField("titolo",colore_bottoni,Color.BLACK,new Font("Arial", Font.PLAIN, 20));
 		
-		titolo = new JTextField("");
-		titolo.setBorder(new LineBorder(Color.BLACK));
-		titolo.setBackground(colore_bottoni);
-		titolo.setForeground(Color.BLACK);
-		titolo.setFont(new Font("Serif", Font.PLAIN, 30));
-		titolo.setToolTipText("INSERIRE IL TITOLO DEL COMPITO");
-		titolo.setHorizontalAlignment(JTextField.CENTER);
-		
-		descrizione = new JTextField("");
-		descrizione.setBorder(new LineBorder(Color.BLACK));
-		descrizione.setBackground(colore_bottoni);
-		descrizione.setForeground(Color.BLACK);
-		descrizione.setFont(new Font("Serif", Font.PLAIN, 30));
-		descrizione.setToolTipText("INSERIRE UNA DESCRIZIONE");
-		descrizione.setHorizontalAlignment(JTextField.CENTER);
+		descrizione = new JTuskField("descrizione",colore_bottoni,Color.BLACK,new Font("Arial", Font.PLAIN, 20));
 		
 		pannello_scadenza = new JPanel();
 		pannello_scadenza.setBackground(colore_sfondo);
 		
-		scadenza_gg = new JTextField();
-		scadenza_gg.setBorder(new LineBorder(Color.BLACK));
-		scadenza_gg.setBackground(colore_bottoni);
-		scadenza_gg.setForeground(Color.BLACK);
-		scadenza_gg.setFont(new Font("Serif", Font.PLAIN, 30));
-		scadenza_gg.setToolTipText("gg");
-		scadenza_gg.setHorizontalAlignment(JTextField.CENTER);;
+		scadenza_gg = new JTuskField("giorno",colore_bottoni,Color.BLACK,new Font("Arial", Font.PLAIN, 20));
 		
-		scadenza_mm = new JTextField();
-		scadenza_mm.setBorder(new LineBorder(Color.BLACK));
-		scadenza_mm.setBackground(colore_bottoni);
-		scadenza_mm.setForeground(Color.BLACK);
-		scadenza_mm.setFont(new Font("Serif", Font.PLAIN, 30));
-		scadenza_mm.setToolTipText("mm");
-		scadenza_mm.setHorizontalAlignment(JTextField.CENTER);;
+		scadenza_mm = new JTuskField("mese",colore_bottoni,Color.BLACK,new Font("Arial", Font.PLAIN, 20));
 		
-		scadenza_yyyy = new JTextField();
-		scadenza_yyyy.setBorder(new LineBorder(Color.BLACK));
-		scadenza_yyyy.setBackground(colore_bottoni);
-		scadenza_yyyy.setForeground(Color.BLACK);
-		scadenza_yyyy.setFont(new Font("Serif", Font.PLAIN, 30));
-		scadenza_yyyy.setToolTipText("yyyy");
-		scadenza_yyyy.setHorizontalAlignment(JTextField.CENTER);;
+		scadenza_yyyy = new JTuskField("anno",colore_bottoni,Color.BLACK,new Font("Arial", Font.PLAIN, 20));
 		
 		pannello_scadenza.setLayout(new GridLayout(1,3));
 		pannello_scadenza.add(scadenza_gg);
 		pannello_scadenza.add(scadenza_mm);
 		pannello_scadenza.add(scadenza_yyyy);
 		
-		bottone_avanti = new JButton("AVANTI");
-		bottone_avanti.setBorder(new LineBorder(Color.BLACK));
-		bottone_avanti.setFocusPainted(false);
-		bottone_avanti.setBackground(colore_bottoni);
-		bottone_avanti.setForeground(Color.BLACK);
-		bottone_avanti.setFont(new Font("Serif", Font.PLAIN, 30));
+		bottone_avanti = new JTuskButton(" avanti ",colore_bottoni, Color.BLACK,false,new Dimension(150,75),new Dimension(20,20));
 		
 		
-		bottone_indietro = new JButton("INDIETRO");
-		bottone_indietro.setBorder(new LineBorder(Color.BLACK));
-		bottone_indietro.setFocusPainted(false);
-		bottone_indietro.setBackground(Color.RED);
-		bottone_indietro.setForeground(Color.WHITE);
-		bottone_indietro.setFont(new Font("Serif", Font.BOLD, 20));
+		bottone_indietro = new JTuskButton("    INDIETRO",Color.red, Color.BLACK,true,new Dimension(150,75),new Dimension(20,20));
 		
-		JPanel pannello = new JPanel();
-		pannello.setOpaque(false);
-		pannello.setLayout(new GridLayout(6,3));
-		pannello.add(label.get(0));
-		pannello.add(label.get(1));
-		pannello.add(label.get(2));
-		pannello.add(label.get(3));
-		pannello.add(titolo);
-		pannello.add(label.get(4));
-		pannello.add(label.get(5));
-		pannello.add(descrizione);
-		pannello.add(label.get(16));
-		pannello.add(label.get(17));
-		pannello.add(pannello_scadenza);
-		pannello.add(label.get(6));
-		pannello.add(label.get(7));
-		pannello.add(bottone_avanti);
-		pannello.add(label.get(8));
-		pannello.add(label.get(9));
-		pannello.add(label.get(10));
-		pannello.add(label.get(11));
-		this.add(pannello, BorderLayout.CENTER);
 		
-		JPanel pannello_sopra = new JPanel();
-		pannello_sopra.setOpaque(false);
-		pannello_sopra.setLayout(new GridLayout(1,3));
-		pannello_sopra.add(label.get(12));
-		pannello_sopra.add(label.get(13));
-		pannello_sopra.add(label.get(14));
-		pannello_sopra.add(label.get(15));
-		pannello_sopra.add(bottone_indietro);
-		this.add(pannello_sopra, BorderLayout.SOUTH);
+		this.add(titolo);
+		this.add(descrizione);
+		this.add(pannello_scadenza);
+		this.add(bottone_avanti);
+		this.add(bottone_indietro);
 	}
-	
-	public JTextField getTitolo() {
+	@Override
+	protected void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		g.drawImage(img, 0, 0,this.getParent().getSize().width, this.getParent().getSize().height, null);
+		this.setSize(this.getParent().getSize());
+		bottone_indietro.setBounds((int)this.getSize().width-bottone_indietro.getSize().width, (int)(this.getSize().height-bottone_indietro.getSize().height), (int)this.getSize().width/8, (int)this.getSize().height/12);
+		titolo.setBounds((int)(this.getSize().width/2-titolo.getSize().width/2), (int)(this.getSize().height/2-titolo.getSize().height*2), (int)this.getSize().width/4, (int)this.getSize().height/8);
+		descrizione.setBounds((int)(this.getSize().width/2-descrizione.getSize().width/2), (int)(this.getSize().height/2-descrizione.getSize().height), (int)this.getSize().width/4, (int)this.getSize().height/8);
+		pannello_scadenza.setBounds((int)(this.getSize().width/2-pannello_scadenza.getSize().width/2), (int)(this.getSize().height/2), (int)this.getSize().width/4, (int)this.getSize().height/8);
+		bottone_avanti.setBounds((int)(this.getSize().width/2-bottone_avanti.getSize().width/2 ), (int)(this.getSize().height/2+bottone_avanti.getSize().height), (int)this.getSize().width/4, (int)this.getSize().height/8);
+		
+	}
+	public JTuskField getTitolo() {
 		return titolo;
 	}
-	public JTextField getDescrizione() {
+	public JTuskField getDescrizione() {
 		return descrizione;
 	}
 	public Calendar getScadenza() {
@@ -161,19 +89,19 @@ public class AggiungiCompito extends JPanel{
 		
 		return temp;
 	}
-	public JTextField getGiorno() {
+	public JTuskField getGiorno() {
 		return this.scadenza_gg;
 	}
-	public JTextField getMese() {
+	public JTuskField getMese() {
 		return this.scadenza_mm;
 	}
-	public JTextField getAnno() {
+	public JTuskField getAnno() {
 		return this.scadenza_yyyy;
 	}
-	public JButton getBottoneAvanti() {
+	public JTuskButton getBottoneAvanti() {
 		return this.bottone_avanti;
 	}
-	public JButton getBottoneIndietro() {
+	public JTuskButton getBottoneIndietro() {
 		return this.bottone_indietro;
 	}
 }
