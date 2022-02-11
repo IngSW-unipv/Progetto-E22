@@ -40,9 +40,6 @@ import it.unipv.inginf.po.tuskManager.view.modifica.ws.RimuoviWs;
 
 public class TMFrame extends JFrame{
 	
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 1L;
 	private Apertura panel_apertura;
 	private Accedi panel_accedi;
@@ -73,7 +70,7 @@ public class TMFrame extends JFrame{
 	private OperazioniWs panel_operazioni_ws;
 	private RimuoviWs panel_rimuovi_ws;
 	
-	private Image sfondo_schede;
+	private Image sfondo_schede, sfondo_apertura;
 	private Color colore_bottoni;
 	public TMFrame() {
 		super();
@@ -91,7 +88,8 @@ public class TMFrame extends JFrame{
 //		GraphicsDevice device = graphics.getDefaultScreenDevice();
 //		device.setFullScreenWindow(this);
 		try {
-			sfondo_schede = ImageIO.read(new File("assets/background_apertura.png"));
+			sfondo_schede = ImageIO.read(new File("assets/background.png"));
+			sfondo_apertura = ImageIO.read(new File("assets/background_apertura.png"));
 			this.setIconImage(sfondo_schede);
 			this.setSize(ImageIO.read(new File("assets/background_apertura.png")).getWidth(),ImageIO.read(new File("assets/background_apertura.png")).getHeight());
 			Properties p = System.getProperties();
@@ -106,7 +104,7 @@ public class TMFrame extends JFrame{
 	
 	public Apertura getPanel_apertura() {
 		if(panel_apertura == null)
-			panel_apertura = new Apertura(sfondo_schede,colore_bottoni);
+			panel_apertura = new Apertura(sfondo_apertura,colore_bottoni);
 		return panel_apertura;
 	}
 
@@ -226,7 +224,7 @@ public class TMFrame extends JFrame{
 	
 	public void seePanelApertura() {
 		if(panel_apertura == null)
-			panel_apertura = new Apertura(sfondo_schede,colore_bottoni);
+			panel_apertura = new Apertura(sfondo_apertura,colore_bottoni);
 		this.seePanel(panel_apertura);
 	}
 	
